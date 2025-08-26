@@ -1,6 +1,6 @@
+#include "slist.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "slist.h"
 
 void runSinglyLinkedList()
 {
