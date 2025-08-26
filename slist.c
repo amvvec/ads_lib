@@ -1,18 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "slist.h"
 
-struct SNode
-{
+/** @struct SNode
+ *  @brief Represents a node in a singly linked list.
+ *  @var SNode::data Integer data stored in the node.
+ *  @var SNode::next Pointer to the next node in the list.
+ */
+struct SNode {
     int data;
     struct SNode* next;
 };
 
-SNode* createNode(int data)
-{
+/** @brief Creates a new node with the given data.
+ *  @param data The integer value to store in the node.
+ *  @return Pointer to the new node, or NULL if data is out of range or memory allocation fails.
+ *  @note Checks for integer overflow and memory allocation errors.
+ */
+SNode* createNode(int data) {
+    if (data > INT_MAX || data < INT_MIN) {
+        fprintf(stderr, "Data value out of integer range\n");
+        return NULL;
+    }
+
     SNode* node = (SNode*)malloc(sizeof(SNode));
-    if (!node)
-    {
+    if (!node) {
         fprintf(stderr, "Memory allocation failed\n");
         exit(1);
     }
@@ -21,67 +34,117 @@ SNode* createNode(int data)
     return node;
 }
 
-void insertFront(SNode** head, int data)
-{
+/** @brief Inserts a new node with the given data at the front of the list.
+ *  @param head Double pointer to the list's head.
+ *  @param data The integer value to insert.
+ *  @return None.
+ *  @note Handles null head pointer and failed node creation. O(1) time complexity.
+ */
+void insertFront(SNode** head, int data) {
+    if (!head) {
+        fprintf(stderr, "Invalid head pointer\n");
+        return;
+    }
+    
     SNode* newNode = createNode(data);
+    if (!newNode) {
+        return;
+    }
+    
     newNode->next = *head;
     *head = newNode;
 }
 
-void insertEnd(SNode** head, int data)
-{
+/** @brief Inserts a new node with the given data at the end of the list.
+ *  @param head Double pointer to the list's head.
+ *  @param data The integer value to insert.
+ *  @return None.
+ *  @note Handles null head pointer, empty list, and failed node creation. O(n) time complexity.
+ */
+void insertEnd(SNode** head, int data) {
+    if (!head) {
+        fprintf(stderr, "Invalid head pointer\n");
+        return;
+    }
+    
     SNode* newNode = createNode(data);
-    if (!*head)
-    {
+    if (!newNode) {
+        return;
+    }
+    
+    if (!*head) {
         *head = newNode;
         return;
     }
     SNode* tmp = *head;
-    while (tmp->next)
-    {
+    while (tmp->next) {
         tmp = tmp->next;
     }
     tmp->next = newNode;
 }
 
-void deleteNode(SNode** head, int data)
-{
+/** @brief Deletes the first node with the given data from the list.
+ *  @param head Double pointer to the list's head.
+ *  @param data The integer value to delete.
+ *  @return None.
+ *  @note Handles empty list, null head pointer, and non-existent data. O(n) time complexity.
+ */
+void deleteNode(SNode** head, int data) {
+    if (!head || !*head) {
+        fprintf(stderr, "Empty list or invalid head pointer\n");
+        return;
+    }
+    
     SNode* tmp = *head, *prev = NULL;
-    if (tmp && tmp->data == data)
-    {
+    if (tmp && tmp->data == data) {
         *head = tmp->next;
         free(tmp);
         return;
     }
-    while (tmp && tmp->data != data)
-    {
+    while (tmp && tmp->data != data) {
         prev = tmp;
         tmp = tmp->next;
     }
-    if (!tmp)
-    {
+    if (!tmp) {
+        fprintf(stderr, "Data %d not found\n", data);
         return;
     }
     prev->next = tmp->next;
     free(tmp);
 }
 
-void printList(SNode* head)
-{
+/** @brief Prints all nodes in the list.
+ *  @param head Pointer to the list's head.
+ *  @return None.
+ *  @note Prints "Empty list" if head is NULL. O(n) time complexity.
+ */
+void printList(SNode* head) {
+    if (!head) {
+        printf("Empty list\n");
+        return;
+    }
+    
     SNode* tmp = head;
-    while (tmp)
-    {
+    while (tmp) {
         printf("%d ", tmp->data);
         tmp = tmp->next;
     }
     printf("\n");
 }
 
-void freeList(SNode** head)
-{
+/** @brief Frees all nodes in the list.
+ *  @param head Double pointer to the list's head.
+ *  @return None.
+ *  @note Handles null head pointer. Sets head to NULL after freeing. O(n) time complexity.
+ */
+void freeList(SNode** head) {
+    if (!head) {
+        fprintf(stderr, "Invalid head pointer\n");
+        return;
+    }
+    
     SNode* tmp;
-    while (*head)
-    {
+    while (*head) {
         tmp = *head;
         *head = (*head)->next;
         free(tmp);
