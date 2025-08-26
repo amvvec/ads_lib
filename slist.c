@@ -10,7 +10,14 @@ struct SNode
 
 SNode* createNode(int data)
 {
+    if(data > INT_MAX || data < INT_MIN)
+    {
+        fprintf(stderr, "Data value out of integer range\n");
+        return NULL;
+    }
+
     SNode* node = (SNode*)malloc(sizeof(SNode));
+    
     if (!node)
     {
         fprintf(stderr, "Memory allocation failed\n");
@@ -23,14 +30,38 @@ SNode* createNode(int data)
 
 void insertFront(SNode** head, int data)
 {
+    if(!head)
+    {
+        fprintf(stderr, "Invalid head pointer\n");
+        return;
+    }
+    
     SNode* newNode = createNode(data);
+
+    if(!newNode)
+    {
+        return;
+    }
+    
     newNode->next = *head;
     *head = newNode;
 }
 
 void insertEnd(SNode** head, int data)
 {
+    if(!head)
+    {
+        fprintf(stderr, "Invalid head pointer\n");
+        return;
+    }
+    
     SNode* newNode = createNode(data);
+
+    if(!newNode)
+    {
+        return;
+    }
+    
     if (!*head)
     {
         *head = newNode;
@@ -46,6 +77,11 @@ void insertEnd(SNode** head, int data)
 
 void deleteNode(SNode** head, int data)
 {
+    if(!head || !*head)
+    {
+        fprintf(stderr, "Empty list or invalid head pointer\n");
+    }
+    
     SNode* tmp = *head, *prev = NULL;
     if (tmp && tmp->data == data)
     {
@@ -60,6 +96,7 @@ void deleteNode(SNode** head, int data)
     }
     if (!tmp)
     {
+        fprintf("Data %d not found\n", data);
         return;
     }
     prev->next = tmp->next;
@@ -68,6 +105,12 @@ void deleteNode(SNode** head, int data)
 
 void printList(SNode* head)
 {
+    if(!head)
+    {
+        printf("Empty list\n");
+        return;
+    }
+    
     SNode* tmp = head;
     while (tmp)
     {
@@ -79,6 +122,12 @@ void printList(SNode* head)
 
 void freeList(SNode** head)
 {
+    if(!head)
+    {
+        fprintf(stderr, "Invalid head pointer\n");
+        return;
+    }
+    
     SNode* tmp;
     while (*head)
     {
