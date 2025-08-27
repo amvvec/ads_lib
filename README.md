@@ -19,7 +19,13 @@ The library is a companion to a testing framework project, highlighting skills i
 - **Safety**: Null pointer checks, memory leak prevention, integer overflow handling.
 - **Build System**: Universal Makefile compiles all `*.c` files.
 - **Code Style**: Enforced via `.clang-format` (LLVM, 4-space indent, 80-column limit).
-- **Version Control**: Git with clear commits (`main` branch).
+- **Version Control**: Git with branches:
+  - `main`: Stable code.
+  - `feature`: New containers/algorithms.
+  - `refactor`: Safety and performance improvements.
+  - `docs`: Documentation updates.
+  - `clang`: Clang-Format changes.
+  - `tests`: Test additions/changes.
 
 ## Skills Demonstrated
 - **C Programming**: Pointers, memory management, modular design.
