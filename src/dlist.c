@@ -3,22 +3,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/** @struct DNode
+ *  @brief Represents a node in a doubly linked list.
+ *  @var DNode::data Integer data stored in the node.
+ *  @var DNode::prev Pointer to the previous node in the list.
+ *  @var DNode::next Pointer to the next node in the list.
+ */
 struct DNode
 {
-    int data;
-    struct DNode* prev;
-    struct DNode* next;
+    int data;           /**< Integer data stored in the node. */
+    struct DNode* prev; /**< Pointer to the previous node in the list. */
+    struct DNode* next; /**< Pointer to the next node in the list. */
 };
 
+/** @brief Creates a new node with the given data.
+ *  @param data The integer value to store in the node.
+ *  @return Pointer to the new node, or NULL if memory allocation fails or data
+ * is out of range.
+ *  @note Checks for integer overflow and memory allocation errors. O(1) time
+ * complexity.
+ */
 DNode* createDNode(int data)
 {
-    if (data > INT_MAX || data < INT_MIN)
+    if(data > INT_MAX || data < INT_MIN)
     {
         fprintf(stderr, "Data value out of integer range\n");
         return NULL;
     }
     DNode* node = (DNode*)malloc(sizeof(DNode));
-    if (!node)
+    if(!node)
     {
         fprintf(stderr, "Memory allocation failed\n");
         return NULL;
@@ -29,15 +42,22 @@ DNode* createDNode(int data)
     return node;
 }
 
+/** @brief Inserts a new node with the given data at the front of the list.
+ *  @param head Double pointer to the list's head.
+ *  @param data The integer value to insert.
+ *  @note Handles null head pointer and failed node creation. O(1) time
+ * complexity.
+ */
+
 void insertDFront(DNode** head, int data)
 {
-    if (!head)
+    if(!head)
     {
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
     DNode* newNode = createDNode(data);
-    if (!newNode)
+    if(!newNode)
     {
         return;
     }
@@ -49,15 +69,21 @@ void insertDFront(DNode** head, int data)
     *head = newNode;
 }
 
+/** @brief Inserts a new node with the given data at the end of the list.
+ *  @param head Double pointer to the list's head.
+ *  @param data The integer value to insert.
+ *  @note Handles null head pointer, empty list, and failed node creation. O(n)
+ * time complexity.
+ */
 void insertDEnd(DNode** head, int data)
 {
-    if (!head)
+    if(!head)
     {
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
     DNode* newNode = createDNode(data);
-    if (!head)
+    if(!head)
     {
         fprintf(stderr, "Invalid head pointer\n");
         return;
@@ -76,53 +102,63 @@ void insertDEnd(DNode** head, int data)
     newNode->prev = tmp;
 }
 
+/** @brief Deletes the first node with the given data from the list.
+ *  @param head Double pointer to the list's head.
+ *  @param data The integer value to delete.
+ *  @note Handles empty list, null head pointer, and non-existent data. O(n)
+ * time complexity.
+ */
 void deleteDNode(DNode** head, int data)
 {
-    if (!head || !*head)
+    if(!head || !*head)
     {
         fprintf(stderr, "Empty list or invalid head pointer\n");
         return;
     }
     DNode* tmp = *head;
-    if (tmp->data == data)
+    if(tmp->data == data)
     {
         *head = tmp->next;
-        if (*head)
+        if(*head)
         {
             (*head)->prev = NULL;
         }
         free(tmp);
         return;
     }
-    while (tmp && tmp->data != data)
+    while(tmp && tmp->data != data)
     {
         tmp = tmp->next;
     }
-    if (!tmp)
+    if(!tmp)
     {
         fprintf(stderr, "Data %d not found\n", data);
         return;
     }
-    if (tmp->prev)
+    if(tmp->prev)
     {
         tmp->prev->next = tmp->next;
     }
-    if (tmp->next)
+    if(tmp->next)
     {
         tmp->next->prev = tmp->prev;
     }
     free(tmp);
 }
 
+/** @brief Prints all nodes in the list.
+ *  @param head Pointer to the list's head.
+ *  @note Prints "Empty list" if head is NULL. O(n) time complexity.
+ */
 void printDList(DNode* head)
 {
-    if (!head)
+    if(!head)
     {
         printf("Empty list\n");
         return;
     }
     DNode* tmp = head;
-    while (tmp)
+    while(tmp)
     {
         printf("%d ", tmp->data);
         tmp = tmp->next;
@@ -130,15 +166,20 @@ void printDList(DNode* head)
     printf("\n");
 }
 
+/** @brief Frees all nodes in the list.
+ *  @param head Double pointer to the list's head.
+ *  @note Handles null head pointer. Sets head to NULL after freeing. O(n) time
+ * complexity.
+ */
 void freeDList(DNode** head)
 {
-    if (!head)
+    if(!head)
     {
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
     DNode* tmp;
-    while (*head)
+    while(*head)
     {
         tmp = *head;
         *head = (*head)->next;
