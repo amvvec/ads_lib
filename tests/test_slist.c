@@ -1,6 +1,6 @@
 #include "../src/slist.h"
-#include <stdio.h>
 #include <limits.h>
+#include <stdio.h>
 
 void runSinglyLinkedListTests()
 {
@@ -41,4 +41,5 @@ void runSinglyLinkedListTests()
 
     // Cleanup
     freeList(&head);
+    printf("\n");
 }

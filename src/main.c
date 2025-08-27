@@ -1,9 +1,7 @@
-#include "../tests/test_slist.c"
-#include <stdio.h>
-#include <stdlib.h>
+#include "test_runner.h"
 
 int main()
 {
-    runSinglyLinkedListTests();
+    test_runner();
     return 0;
 }

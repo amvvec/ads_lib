@@ -32,4 +32,4 @@ The library is a companion to a testing framework project, highlighting skills i
 ## Build and Run
 ```bash
 make
-./list
+./launcher
