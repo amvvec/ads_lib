@@ -1,6 +1,7 @@
 CC = gcc
-CFLAGS = -std=c17 -Wall -Wextra -O2
-SOURCES = $(wildcard *.c)
+CFLAGS = -std=c17 -Wall -Wextra -Werror -pedantic -g
+SRC_DIR = src
+SOURCES = $(wildcard $(SRC_DIR)/*.c)
 OBJECTS = $(SOURCES:.c=.o)
 EXEC = launcher
 
@@ -9,8 +10,8 @@ all: $(EXEC)
 $(EXEC): $(OBJECTS)
 	$(CC) $(CFLAGS) -o $@ $^
 
-%.o: %.c %.h
-	$(CC) $(CFLAGS) -c $<
+$(SRC_DIR)/%.o: $(SRC_DIR)/%.c $(SRC_DIR)/slist.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(EXEC)
+	rm -f $(SRC_DIR)/*.o $(EXEC)
