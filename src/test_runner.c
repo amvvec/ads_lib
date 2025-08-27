@@ -3,6 +3,10 @@
 
 #include <stdio.h>
 
+/** @brief Runs all test suites for the data structures.
+ *  @note Executes tests for singly and doubly linked lists, printing results
+ * with [RUN] and [PASS].
+ */
 void test_runner(void)
 {
     printf("\n[RUN] Singly Linked List Tests\n\n");
