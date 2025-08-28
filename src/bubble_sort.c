@@ -14,7 +14,7 @@ void bubble_sort(int arr[], int size)
         fprintf(stderr, "Invalid array size\n");
         return;
     }
-    
+
     for(int i = 0; i < size; i++)
     {
         for(int j = 0; j < size - 1; j++)
