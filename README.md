@@ -15,10 +15,10 @@ The library is a companion to a testing framework project, highlighting skills i
 
 ## Key Features
 - **Data Structures**:
-  - Singly linked list: (insert, delete, print, free);
-  - Doubly linked list: (Insert, delete, print, free).
+  - Singly linked list: (insert, delete, print, free, with safety checks and documentation);
+  - Doubly linked list: (Insert, delete, print, free, with safety checks and documentation).
 - **Algorithms**:
-  - Bubble sort: Implementation for integer arrays with null and size checks (no tests or documentation yet).
+  - Bubble sort: Implementation for integer arrays (with safety checks and documentation).
 - **Safety**: Null pointer checks, memory leak prevention, integer overflow handling.
 - **Build System**: Universal Makefile compiles all `*.c` files.
 - **Code Style**: Enforced via `.clang-format` (LLVM, 4-space indent, 80-column limit).

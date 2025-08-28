@@ -2,6 +2,12 @@
 
 #include <stdio.h>
 
+/** @brief Sorts an array of integers in ascending order using bubble sort.
+ *  @param arr Pointer to the array to sort.
+ *  @param size Number of elements in the array.
+ *  @note Handles null array pointer and invalid size by printing error to
+ * stderr and returning. O(n^2) time complexity.
+ */
 void bubble_sort(int arr[], int size)
 {
     if(!arr)
