@@ -1,4 +1,4 @@
-#include "bubble_sort.h"
+#include "algorithm/bubble_sort.h"
 #include "test_runner.h"
 
 #include <stdio.h>

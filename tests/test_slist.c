@@ -1,4 +1,4 @@
-#include "../src/slist.h"
+#include "../src/data_structure/slist.h"
 #include <stdio.h>
 
 void runSinglyLinkedListTests()

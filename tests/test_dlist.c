@@ -1,4 +1,4 @@
-#include "../src/dlist.h"
+#include "../src/data_structure/dlist.h"
 #include <stdio.h>
 
 void runDoublyLinkedListTests()
