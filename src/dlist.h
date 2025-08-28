@@ -3,8 +3,8 @@
 
 typedef struct DNode DNode;
 
-DNode* createNode(int data);
-DNode* deleteNode(DNode** head, int data);
+DNode* createDNode(int data);
+void deleteDNode(DNode** head, int data);
 void insertDFront(DNode** head, int data);
 void insertDEnd(DNode** head, int data);
 void printDList(DNode* head);

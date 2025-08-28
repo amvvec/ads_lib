@@ -20,7 +20,7 @@ struct SNode
  * allocation fails.
  *  @note Checks for integer overflow and memory allocation errors.
  */
-SNode* createNode(int data)
+SNode* createSNode(int data)
 {
     if(data > INT_MAX || data < INT_MIN)
     {
@@ -46,7 +46,7 @@ SNode* createNode(int data)
  *  @note Handles null head pointer and failed node creation. O(1) time
  * complexity.
  */
-void insertFront(SNode** head, int data)
+void insertSFront(SNode** head, int data)
 {
     if(!head)
     {
@@ -54,7 +54,7 @@ void insertFront(SNode** head, int data)
         return;
     }
 
-    SNode* newNode = createNode(data);
+    SNode* newNode = createSNode(data);
     if(!newNode)
     {
         return;
@@ -71,7 +71,7 @@ void insertFront(SNode** head, int data)
  *  @note Handles null head pointer, empty list, and failed node creation. O(n)
  * time complexity.
  */
-void insertEnd(SNode** head, int data)
+void insertSEnd(SNode** head, int data)
 {
     if(!head)
     {
@@ -79,7 +79,7 @@ void insertEnd(SNode** head, int data)
         return;
     }
 
-    SNode* newNode = createNode(data);
+    SNode* newNode = createSNode(data);
     if(!newNode)
     {
         return;
@@ -105,7 +105,7 @@ void insertEnd(SNode** head, int data)
  *  @note Handles empty list, null head pointer, and non-existent data. O(n)
  * time complexity.
  */
-void deleteNode(SNode** head, int data)
+void deleteSNode(SNode** head, int data)
 {
     if(!head || !*head)
     {
@@ -139,7 +139,7 @@ void deleteNode(SNode** head, int data)
  *  @return None.
  *  @note Prints "Empty list" if head is NULL. O(n) time complexity.
  */
-void printList(SNode* head)
+void printSList(SNode* head)
 {
     if(!head)
     {
@@ -162,7 +162,7 @@ void printList(SNode* head)
  *  @note Handles null head pointer. Sets head to NULL after freeing. O(n) time
  * complexity.
  */
-void freeList(SNode** head)
+void freeSList(SNode** head)
 {
     if(!head)
     {

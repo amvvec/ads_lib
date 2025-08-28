@@ -5,13 +5,13 @@
 
 typedef struct SNode SNode;
 
-SNode* createNode(int data);
-void deleteNode(SNode** head, int data);
+SNode* createSNode(int data);
+void deleteSNode(SNode** head, int data);
 
-void insertFront(SNode** head, int data);
-void insertEnd(SNode** head, int data);
+void insertSFront(SNode** head, int data);
+void insertSEnd(SNode** head, int data);
 
-void printList(SNode* head);
-void freeList(SNode** head);
+void printSList(SNode* head);
+void freeSList(SNode** head);
 
 #endif // !SLIST_H
