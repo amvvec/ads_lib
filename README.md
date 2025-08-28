@@ -17,7 +17,8 @@ The library is a companion to a testing framework project, highlighting skills i
 - **Data Structures**:
   - Singly linked list: (insert, delete, print, free);
   - Doubly linked list: (Insert, delete, print, free).
-- **Algorithms**: Planned sorting (quicksort, mergesort) and graph traversal (DFS, BFS).
+- **Algorithms**:
+  - Bubble sort: Implementation for integer arrays with null and size checks (no tests or documentation yet).
 - **Safety**: Null pointer checks, memory leak prevention, integer overflow handling.
 - **Build System**: Universal Makefile compiles all `*.c` files.
 - **Code Style**: Enforced via `.clang-format` (LLVM, 4-space indent, 80-column limit).
