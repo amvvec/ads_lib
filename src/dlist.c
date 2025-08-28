@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 
 /** @struct DNode
  *  @brief Represents a node in a doubly linked list.
