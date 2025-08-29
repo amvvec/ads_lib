@@ -1,8 +1,8 @@
 #include "slist.h"
 #include <limits.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 
 /** @struct SNode
  *  @brief Represents a node in a singly linked list.
@@ -28,7 +28,7 @@ SNode* createSNode(int data)
         fprintf(stderr, "Data value out of integer range\n");
         return NULL;
     }
-    if (sizeof(SNode) > SIZE_MAX / 2)
+    if(sizeof(SNode) > SIZE_MAX / 2)
     {
         fprintf(stderr, "Memory allocation size too large\n");
         return NULL;
@@ -59,7 +59,7 @@ void insertSFront(SNode** head, int data)
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
-    if (data > INT_MAX / 2 || data < INT_MIN / 2)
+    if(data > INT_MAX / 2 || data < INT_MIN / 2)
     {
         fprintf(stderr, "Data out of safe range, potential injection\n");
         return;
@@ -189,5 +189,5 @@ void freeSList(SNode** head)
         *head = (*head)->next;
         free(tmp);
     }
-    * head = NULL; // Use-after-free safety
+    *head = NULL; // Use-after-free safety
 }

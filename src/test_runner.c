@@ -6,6 +6,8 @@
 
 void test_runner(void)
 {
+    printf("\n");
+
     printf("[RUN] Singly Linked List Tests\n");
     runSinglyLinkedListTests();
     printf("[PASS] Singly Linked List Tests\n");
@@ -16,4 +18,6 @@ void test_runner(void)
     runBubbleSortTests();
     printf("[PASS] Bubble Sort Tests\n");
     printf("\n[PASS] All tests completed\n");
+
+    printf("\n");
 }

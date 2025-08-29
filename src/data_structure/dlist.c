@@ -1,9 +1,9 @@
 #include "dlist.h"
 
 #include <limits.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 
 /** @struct DNode
  *  @brief Represents a node in a doubly linked list.
@@ -37,7 +37,7 @@ DNode* createDNode(int data)
         fprintf(stderr, "Memory allocation size too large\n");
         return NULL;
     }
-    
+
     DNode* node = (DNode*)calloc(1, sizeof(DNode));
     if(!node)
     {
@@ -69,7 +69,7 @@ void insertDFront(DNode** head, int data)
         fprintf(stderr, "Data out of range, potential injection\n");
         return;
     }
-    
+
     DNode* newNode = createDNode(data);
     if(!newNode)
     {
@@ -107,7 +107,7 @@ void insertDEnd(DNode** head, int data)
         *head = newNode;
         return;
     }
-    
+
     DNode* tmp = *head;
     while(tmp->next)
     {
@@ -199,7 +199,7 @@ void freeDList(DNode** head)
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
-    
+
     DNode* tmp;
     while(*head)
     {
@@ -208,5 +208,5 @@ void freeDList(DNode** head)
         free(tmp);
     }
 
-    * head = NULL;
+    *head = NULL;
 }

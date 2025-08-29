@@ -19,7 +19,7 @@ The library is a companion to a testing framework project, highlighting skills i
   - Doubly linked list: (Insert, delete, print, free, with safety checks and documentation).
 - **Algorithms**:
   - Bubble sort: Implementation for integer arrays (with safety checks and documentation).
-- **Safety**: Null pointer checks, memory leak prevention, integer overflow handling.
+- **Safety**: Null checks, integer overflow handling, memory safety, ASan, injection prevention.
 - **Build System**: Universal Makefile compiles all `*.c` files.
 - **Code Style**: Enforced via `.clang-format` (LLVM, 4-space indent, 80-column limit).
 - **Version Control**: Git with branches:

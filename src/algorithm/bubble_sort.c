@@ -1,7 +1,7 @@
 #include "bubble_sort.h"
 
-#include <stdio.h>
 #include <limits.h>
+#include <stdio.h>
 
 /** @brief Sorts an array of integers in ascending order using bubble sort.
  *  @param arr Pointer to the array to sort.
@@ -26,17 +26,18 @@ void bubble_sort(int arr[], int size)
     {
         for(int j = 0; j < size - 1; j++)
         {
-            if ((arr + j + 1) >= (arr + size))
+            if((arr + j + 1) >= (arr + size))
             {
                 fprintf(stderr, "Buffer overflow detected at index %d\n", j);
                 return;
             }
-            if (arr[j] > INT_MAX / 2 || arr[j + 1] > INT_MAX / 2)
+            if(arr[j] > INT_MAX / 2 || arr[j + 1] > INT_MAX / 2)
             {
-                fprintf(stderr, "Potential injection detected at index %d\n", j);
+                fprintf(stderr, "Potential injection detected at index %d\n",
+                        j);
                 return;
             }
-            
+
             if(arr[j] > arr[j + 1])
             {
                 int tmp = arr[j];
