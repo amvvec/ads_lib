@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 /** @struct DNode
  *  @brief Represents a node in a doubly linked list.
@@ -31,7 +32,13 @@ DNode* createDNode(int data)
         fprintf(stderr, "Data value out of integer range\n");
         return NULL;
     }
-    DNode* node = (DNode*)malloc(sizeof(DNode));
+    if(sizeof(DNode) > SIZE_MAX / 2)
+    {
+        fprintf(stderr, "Memory allocation size too large\n");
+        return NULL;
+    }
+    
+    DNode* node = (DNode*)calloc(1, sizeof(DNode));
     if(!node)
     {
         fprintf(stderr, "Memory allocation failed\n");
@@ -57,6 +64,12 @@ void insertDFront(DNode** head, int data)
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
+    if(data > INT_MAX / 2 || data < INT_MIN / 2)
+    {
+        fprintf(stderr, "Data out of range, potential injection\n");
+        return;
+    }
+    
     DNode* newNode = createDNode(data);
     if(!newNode)
     {
@@ -94,6 +107,7 @@ void insertDEnd(DNode** head, int data)
         *head = newNode;
         return;
     }
+    
     DNode* tmp = *head;
     while(tmp->next)
     {
@@ -116,6 +130,7 @@ void deleteDNode(DNode** head, int data)
         fprintf(stderr, "Empty list or invalid head pointer\n");
         return;
     }
+
     DNode* tmp = *head;
     if(tmp->data == data)
     {
@@ -125,12 +140,15 @@ void deleteDNode(DNode** head, int data)
             (*head)->prev = NULL;
         }
         free(tmp);
+        tmp = NULL;
         return;
     }
+
     while(tmp && tmp->data != data)
     {
         tmp = tmp->next;
     }
+
     if(!tmp)
     {
         fprintf(stderr, "Data %d not found\n", data);
@@ -145,6 +163,7 @@ void deleteDNode(DNode** head, int data)
         tmp->next->prev = tmp->prev;
     }
     free(tmp);
+    tmp = NULL;
 }
 
 /** @brief Prints all nodes in the list.
@@ -158,6 +177,7 @@ void printDList(DNode* head)
         printf("Empty list\n");
         return;
     }
+
     DNode* tmp = head;
     while(tmp)
     {
@@ -179,6 +199,7 @@ void freeDList(DNode** head)
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
+    
     DNode* tmp;
     while(*head)
     {
@@ -186,4 +207,6 @@ void freeDList(DNode** head)
         *head = (*head)->next;
         free(tmp);
     }
+
+    * head = NULL;
 }
