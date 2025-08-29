@@ -2,6 +2,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 /** @struct SNode
  *  @brief Represents a node in a singly linked list.
@@ -27,8 +28,13 @@ SNode* createSNode(int data)
         fprintf(stderr, "Data value out of integer range\n");
         return NULL;
     }
+    if (sizeof(SNode) > SIZE_MAX / 2)
+    {
+        fprintf(stderr, "Memory allocation size too large\n");
+        return NULL;
+    }
 
-    SNode* node = (SNode*)malloc(sizeof(SNode));
+    SNode* node = (SNode*)calloc(1, sizeof(SNode));
     if(!node)
     {
         fprintf(stderr, "Memory allocation failed\n");
@@ -51,6 +57,11 @@ void insertSFront(SNode** head, int data)
     if(!head)
     {
         fprintf(stderr, "Invalid head pointer\n");
+        return;
+    }
+    if (data > INT_MAX / 2 || data < INT_MIN / 2)
+    {
+        fprintf(stderr, "Data out of safe range, potential injection\n");
         return;
     }
 
@@ -118,6 +129,7 @@ void deleteSNode(SNode** head, int data)
     {
         *head = tmp->next;
         free(tmp);
+        tmp = NULL; // Use-after-free safety
         return;
     }
     while(tmp && tmp->data != data)
@@ -177,4 +189,5 @@ void freeSList(SNode** head)
         *head = (*head)->next;
         free(tmp);
     }
+    * head = NULL; // Use-after-free safety
 }
