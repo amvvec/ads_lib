@@ -38,6 +38,9 @@ The library is a companion to a testing framework project, highlighting skills i
 - **Tools**: Git, Makefile, Clang-Format, Linux environment.
 - **Documentation**: Doxygen-style comments in code; clear README for project overview.
 
+## License
+This project is licensed under the [MIT License](LICENSE).
+
 ## Build and Run
 ```bash
 make
