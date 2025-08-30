@@ -1,4 +1,6 @@
 #include "test_runner.h"
+#include "algorithm/bubble_sort.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
