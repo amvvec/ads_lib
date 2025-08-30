@@ -10,6 +10,7 @@ A modular library implementing fundamental data structures (e.g., singly linked 
 - Comprehensive testing to ensure functionality.
 - Git for version control with clear commit history.
 - Universal Makefile for automated builds.
+- Makefile with AddressSanitizer (ASan) support.
 
 The library is a companion to a testing framework project, highlighting skills in systems programming, memory management, and algorithm design.
 
@@ -17,6 +18,7 @@ The library is a companion to a testing framework project, highlighting skills i
 - **Data Structures**:
   - Singly linked list: (insert, delete, print, free, with safety checks and documentation);
   - Doubly linked list: (Insert, delete, print, free, with safety checks and documentation).
+  - Dynamic vector: with resize capability (with safety checks and documentation).
 - **Algorithms**:
   - Bubble sort: Implementation for integer arrays (with safety checks and documentation).
 - **Safety**: Null checks, integer overflow handling, memory safety, ASan, injection prevention.
@@ -44,4 +46,5 @@ This project is licensed under the [MIT License](LICENSE).
 ## Build and Run
 ```bash
 make
-./launcher
+ASAN_OPTIONS=detect_leaks=1 ./launcher
+make clean
