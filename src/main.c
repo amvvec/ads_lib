@@ -11,7 +11,7 @@ int main(void)
     int size;
     char buffer[32];
 
-    printf("Enter array size (max 10): ");
+    printf("\nEnter array size (max 10): ");
     if (!fgets(buffer, sizeof(buffer), stdin))
     {
         fprintf(stderr, "Error reading input\n");
@@ -38,8 +38,6 @@ int main(void)
         }
     }
 
-    printf("\n");
-
     // WARNING: Will occure error (-Werror -pedantic)
     bubble_sort(arr, size);
     printf("Sorted array: ");
@@ -47,7 +45,6 @@ int main(void)
     {
         printf("%d ", arr[i]);
     }
-    printf("\n");
     printf("\n");
 
     test_runner();
