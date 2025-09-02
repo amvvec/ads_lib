@@ -36,9 +36,8 @@ int main(void)
             fprintf(stderr, "Invalid integer at position %d\n", i);
             return 1;
         }
-    }
+    }    
 
-    // WARNING: Will occure error (-Werror -pedantic)
     bubble_sort(arr, size);
     printf("Sorted array: ");
     for (int i = 0; i < size; i++)
