@@ -2,18 +2,10 @@
 
 #include <stdlib.h>
 
-typedef struct Node
+unsigned hash_function(int key, int value)
 {
-    int key;
-    int value;
-    struct Node* next;
-} Node;
-
-struct HashTable
-{
-    Node** buckets;
-    int size;
-};
+    return key % value;
+}
 
 HashTable* hash_table_init(int size)
 {
@@ -27,11 +19,6 @@ HashTable* hash_table_init(int size)
     }
 
     return ht;
-}
-
-unsigned hash_function(int key, int value)
-{
-    return key % value;
 }
 
 void hash_table_put(HashTable* ht, int key, int value)

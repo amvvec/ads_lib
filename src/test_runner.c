@@ -3,6 +3,7 @@
 #include "../tests/test_slist.c"
 #include "../tests/test_dlist.c"
 #include "../tests/test_vector.c"
+#include "../tests/test_hash_table.c"
 #include <stdio.h>
 
 void test_runner(void)
@@ -21,6 +22,9 @@ void test_runner(void)
     printf("\n[ RUN ] Vector Tests\n");
     runVectorTests();
     printf("[ PASS ] Vector Tests\n");
+    printf("\n[ RUN ] Hash Table Tests\n");
+    runHashTableTests();
+    printf("[ PASS ] Hash Table Tests\n");
     printf("\n[ PASS ] All tests completed\n");
 
     printf("\n");
