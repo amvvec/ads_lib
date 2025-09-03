@@ -3,7 +3,7 @@
 
 void runHashTableTests()
 {
-    printf("[RUN] Hash Table Tests\n");
+    printf("\n");
 
     // Test 1: Initialization
     printf("Test 1: Initialize Hash Table with size 5\n");
@@ -48,5 +48,5 @@ void runHashTableTests()
     hash_table_free(ht);
     printf("Result: Freed\n");
 
-    printf("[PASS] Hash Table Tests\n\n");
+    printf("\n");
 }
