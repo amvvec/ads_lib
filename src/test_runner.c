@@ -10,23 +10,23 @@ void test_runner(void)
 {
     printf("\n");
 
-    // printf("[ RUN ] Singly Linked List Tests\n");
-    // runSinglyLinkedListTests();
-    // printf("[ PASS ] Singly Linked List Tests\n");
+    printf("[ RUN ] Singly Linked List Tests\n");
+    runSinglyLinkedListTests();
+    printf("[ PASS ] Singly Linked List Tests\n");
 
-    // printf("\n[ RUN ] Doubly Linked List Tests\n");
-    // runDoublyLinkedListTests();
-    // printf("[ PASS ] Doubly Linked List Tests\n");
+    printf("\n[ RUN ] Doubly Linked List Tests\n");
+    runDoublyLinkedListTests();
+    printf("[ PASS ] Doubly Linked List Tests\n");
 
-    // printf("\n[ RUN ] Bubble Sort Tests\n");
-    // runBubbleSortTests();
-    // printf("[ PASS ] Bubble Sort Tests\n");
+    printf("\n[ RUN ] Bubble Sort Tests\n");
+    runBubbleSortTests();
+    printf("[ PASS ] Bubble Sort Tests\n");
 
-    // printf("\n[ RUN ] Vector Tests\n");
-    // runVectorTests();
-    // printf("\n[ PASS ] Vector Tests\n");
+    printf("\n[ RUN ] Vector Tests\n");
+    runVectorTests();
+    printf("\n[ PASS ] Vector Tests\n");
 
-    printf("[ RUN ] Hash Table Tests\n");
+    printf("\n[ RUN ] Hash Table Tests\n");
     runHashTableTests();
     printf("[ PASS ] Hash Table Tests\n");
 

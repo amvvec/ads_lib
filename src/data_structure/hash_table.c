@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "hash_table.h"
+#include <stdlib.h>
 
 unsigned int hash_function(int key, int size)
 {
@@ -11,7 +12,8 @@ HashTable* hash_table_init(int size)
     HashTable* ht = (HashTable*)malloc(sizeof(HashTable));
     ht->buckets = (Node**)malloc(size * sizeof(Node*));
     ht->size = size;
-    for (int i = 0; i < size; i++) {
+    for(int i = 0; i < size; i++)
+    {
         ht->buckets[i] = NULL;
     }
     return ht;
@@ -31,22 +33,29 @@ int hash_table_get(HashTable* ht, int key)
 {
     unsigned int index = hash_function(key, ht->size);
     Node* current = ht->buckets[index];
-    while (current) {
-        if (current->key == key) {
+    while(current)
+    {
+        if(current->key == key)
+        {
             return current->value;
         }
         current = current->next;
     }
-    return -1; // Значение по умолчанию для отсутствующего ключа
+    return -1; // Default return if there is no key
 }
 
 void hash_table_free(HashTable* ht)
 {
-    if (!ht) return; // Добавлена базовая проверка NULL
-    int size = ht->size; // Сохраняем размер перед освобождением
-    for (int i = 0; i < size; i++) {
+    if(!ht)
+    {
+        return;
+    }
+    int size = ht->size;
+    for(int i = 0; i < size; i++)
+    {
         Node* current = ht->buckets[i];
-        while (current) {
+        while(current)
+        {
             Node* temp = current;
             current = current->next;
             free(temp);
