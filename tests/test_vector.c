@@ -55,7 +55,7 @@ void runVectorTests()
     }
 
     // Test 5: Free
-    printf("Test 5: Free Vector\n");
+    printf("Test 5: Free Vector");
     vector_free(vec);
-    printf("Result: Freed\n");
+    printf("Result: Freed");
 }
