@@ -1,7 +1,13 @@
 #include "hash_table.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
+/** @brief Computes the hash value for a given key.
+ *  @param key The integer key to hash.
+ *  @param size The number of buckets in the hash table.
+ *  @return The hash index (0 to size-1), or 0 if size is invalid.
+ *  @note Uses a simple modulo operation. O(1) time complexity.
+ */
 unsigned int hash_function(int key, int size)
 {
     if(size <= 0)
@@ -12,6 +18,12 @@ unsigned int hash_function(int key, int size)
     return key % size;
 }
 
+/** @brief Initializes a new hash table with the specified number of buckets.
+ *  @param size The initial number of buckets in the hash table.
+ *  @return Pointer to the new HashTable, or NULL if initialization fails
+ * (invalid size or memory allocation error).
+ *  @note Sets all buckets to NULL. O(n) time complexity, where n is the size.
+ */
 HashTable* hash_table_init(int size)
 {
     if(size <= 0)
@@ -20,7 +32,7 @@ HashTable* hash_table_init(int size)
         return NULL;
     }
     HashTable* ht = (HashTable*)malloc(sizeof(HashTable));
-    if(!ht)    
+    if(!ht)
     {
         fprintf(stderr, "Memory allocation failed for HashTable\n");
         return NULL;
@@ -40,6 +52,13 @@ HashTable* hash_table_init(int size)
     return ht;
 }
 
+/** @brief Inserts or updates a key-value pair in the hash table.
+ *  @param ht Pointer to the HashTable.
+ *  @param key The integer key to insert or update.
+ *  @param value The integer value to associate with the key.
+ *  @note Updates the value if the key already exists; otherwise, adds a new
+ * node. O(1) average time complexity.
+ */
 void hash_table_put(HashTable* ht, int key, int value)
 {
     if(!ht)
@@ -53,7 +72,7 @@ void hash_table_put(HashTable* ht, int key, int value)
         return;
     }
     unsigned int index = hash_function(key, ht->size);
-    Node * current = ht->buckets[index];
+    Node* current = ht->buckets[index];
     while(current)
     {
         if(current->key == key)
@@ -74,6 +93,12 @@ void hash_table_put(HashTable* ht, int key, int value)
     ht->buckets[index] = new_node;
 }
 
+/** @brief Retrieves the value associated with the specified key.
+ *  @param ht Pointer to the HashTable.
+ *  @param key The integer key to look up.
+ *  @return The value associated with the key, or -1 if the key is not found.
+ *  @note O(1) average time complexity, O(n) in worst case due to collisions.
+ */
 int hash_table_get(HashTable* ht, int key)
 {
     if(!ht)
@@ -99,6 +124,11 @@ int hash_table_get(HashTable* ht, int key)
     return -1; // Default return if there is no key
 }
 
+/** @brief Frees the memory allocated for the hash table.
+ *  @param ht Pointer to the HashTable.
+ *  @note Frees all nodes in each bucket and the hash table itself. O(n) time
+ * complexity, where n is the total number of nodes.
+ */
 void hash_table_free(HashTable* ht)
 {
     if(!ht)
