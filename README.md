@@ -19,6 +19,7 @@ The library is a companion to a testing framework project, highlighting skills i
   - Singly linked list: (insert, delete, print, free, with safety checks and documentation);
   - Doubly linked list: (Insert, delete, print, free, with safety checks and documentation).
   - Dynamic vector: with resize capability (with safety checks and documentation).
+  - Hash table with chaining for collision resolution.
 - **Algorithms**:
   - Bubble sort: Implementation for integer arrays (with safety checks and documentation).
 - **Safety**: Null checks, integer overflow handling, memory safety, ASan, injection prevention.
