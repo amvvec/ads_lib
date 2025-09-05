@@ -1,5 +1,5 @@
 #include "test_runner.h"
-#include "algorithm/bubble_sort.h"
+#include "src/algorithm/quick_sort.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,7 +11,7 @@ int main(void)
     int size;
     char buffer[32];
 
-    printf("\nEnter array size (max 10): ");
+    printf("Enter array size (max 10): ");
     if (!fgets(buffer, sizeof(buffer), stdin))
     {
         fprintf(stderr, "Error reading input\n");
@@ -36,9 +36,9 @@ int main(void)
             fprintf(stderr, "Invalid integer at position %d\n", i);
             return 1;
         }
-    }    
+    }
 
-    bubble_sort(arr, size);
+    quicksort(arr, 0, size - 1);
     printf("Sorted array: ");
     for (int i = 0; i < size; i++)
     {
