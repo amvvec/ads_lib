@@ -1,5 +1,5 @@
 #include "test_runner.h"
-#include "src/algorithm/quick_sort.h"
+#include "algorithm/quick_sort.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,7 +38,7 @@ int main(void)
         }
     }
 
-    quicksort(arr, 0, size - 1);
+    quick_sort(arr, 0, size - 1);
     printf("Sorted array: ");
     for (int i = 0; i < size; i++)
     {
