@@ -1,5 +1,6 @@
 #include "test_runner.h"
 #include "../tests/test_bubble_sort.c"
+#include "../tests/test_quick_sort.c"
 #include "../tests/test_slist.c"
 #include "../tests/test_dlist.c"
 #include "../tests/test_vector.c"
@@ -29,6 +30,10 @@ void test_runner(void)
     printf("\n[ RUN ] Hash Table Tests\n");
     runHashTableTests();
     printf("[ PASS ] Hash Table Tests\n");
+
+    printf("\n[ RUN ] Quicksort Tests\n");
+    runQuicksortTests();
+    printf("\n[ PASS ] Quicksort Tests\n");
 
     printf("\n[ PASS ] All tests completed\n");
     printf("\n");
