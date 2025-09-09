@@ -1,4 +1,4 @@
-#include "../src/data_structure/hash_table.h"
+#include "../src/hash_table.h"
 #include <stdio.h>
 
 void runHashTableTests()

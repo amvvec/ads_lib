@@ -1,4 +1,4 @@
-#include "../src/algorithm/bubble_sort.h"
+#include "../src/bubble_sort.h"
 #include <stdio.h>
 
 /** @brief Runs test suite for the bubble sort algorithm.

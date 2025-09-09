@@ -1,5 +1,5 @@
 #include "test_runner.h"
-#include "algorithm/quick_sort.h"
+#include "quick_sort.h"
 
 #include <stdio.h>
 #include <stdlib.h>

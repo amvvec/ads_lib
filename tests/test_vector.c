@@ -1,4 +1,4 @@
-#include "../src/data_structure/vector.h"
+#include "../src/vector.h"
 #include <stdio.h>
 
 void runVectorTests()
