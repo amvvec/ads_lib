@@ -7,6 +7,8 @@
 
 int main(void)
 {
+    printf("\n");
+    
     int arr[10];
     int size;
     char buffer[32];
