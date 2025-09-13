@@ -1,7 +1,15 @@
 #include "quick_sort.h"
 
+#include <stdio.h>
+
 void swap(int *a, int *b)
 {
+    if(!a || !b)
+    {
+        fprintf(stderr, "Null pointer in swap\n");
+        return;
+    }
+    
     int tmp = *a;
     *a = *b;
     *b = tmp;
@@ -9,6 +17,12 @@ void swap(int *a, int *b)
 
 int partition(int arr[], int low, int high)
 {
+    if(!arr || low < 0 || high < 0 || low > high)
+    {
+        fprintf(stderr, "Invalid partition parameters: arr=%p, low=%d, high=%d\n", (void *)arr, low, high);
+        return -1;
+    }
+    
     int pivot = arr[high];
 
     int i = low - 1;
@@ -26,10 +40,19 @@ int partition(int arr[], int low, int high)
 
 void quick_sort(int arr[], int low, int high)
 {
+    if (!arr || low < 0 || high < 0 || low > high)
+    {
+        fprintf(stderr, "Invalid quicksort parameters: arr=%p, low=%d, high=%d\n", (void*)arr, low, high);
+        return;
+    }
+    
     if(low < high)
     {
         int pi = partition(arr, low, high);
-        quick_sort(arr, low, pi - 1);
-        quick_sort(arr, pi + 1, high);
+        if(pi != -1)
+        {
+            quick_sort(arr, low, pi - 1);
+            quick_sort(arr, pi + 1, high);
+        }
     }
 }
