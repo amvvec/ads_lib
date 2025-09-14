@@ -22,6 +22,7 @@ The library is a companion to a testing framework project, highlighting skills i
   - Hash table with chaining for collision resolution.
 - **Algorithms**:
   - Bubble sort: Implementation for integer arrays (with safety checks and documentation).
+  - Quick sort: Implementation for integer arrays (with safety).
 - **Safety**: Null checks, integer overflow handling, memory safety, ASan, injection prevention.
 - **Build System**: Universal Makefile compiles all `*.c` files.
 - **Code Style**: Enforced via `.clang-format` (LLVM, 4-space indent, 80-column limit).
