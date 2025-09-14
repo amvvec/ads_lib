@@ -5,36 +5,41 @@
 #include "../tests/test_dlist.c"
 #include "../tests/test_vector.c"
 #include "../tests/test_hash_table.c"
+#include "../tests/test_merge_sort.c"
 #include <stdio.h>
 
 void test_runner(void)
 {
-    printf("\n");
-
-    printf("[ RUN ] Singly Linked List Tests\n");
+    printf("\n[ RUN ] All tests are launched\n");
+    
+    printf("\n[ RUN ] Singly Linked List Tests\n\n");
     runSinglyLinkedListTests();
-    printf("[ PASS ] Singly Linked List Tests\n");
+    printf("\n[ PASS ] Singly Linked List Tests\n");
 
-    printf("\n[ RUN ] Doubly Linked List Tests\n");
+    printf("\n[ RUN ] Doubly Linked List Tests\n\n");
     runDoublyLinkedListTests();
-    printf("[ PASS ] Doubly Linked List Tests\n");
+    printf("\n[ PASS ] Doubly Linked List Tests\n");
 
-    printf("\n[ RUN ] Bubble Sort Tests\n");
+    printf("\n[ RUN ] Bubble Sort Tests\n\n");
     runBubbleSortTests();
-    printf("[ PASS ] Bubble Sort Tests\n");
+    printf("\n[ PASS ] Bubble Sort Tests\n");
 
-    printf("\n[ RUN ] Vector Tests\n");
+    printf("\n[ RUN ] Vector Tests\n\n");
     runVectorTests();
     printf("\n[ PASS ] Vector Tests\n");
 
-    printf("\n[ RUN ] Hash Table Tests\n");
+    printf("\n[ RUN ] Hash Table Tests\n\n");
     runHashTableTests();
-    printf("[ PASS ] Hash Table Tests\n");
+    printf("\n[ PASS ] Hash Table Tests\n");
 
-    printf("\n[ RUN ] Quicksort Tests\n");
+    printf("\n[ RUN ] Quicksort Tests\n\n");
     runQuicksortTests();
     printf("\n[ PASS ] Quicksort Tests\n");
 
-    printf("\n[ PASS ] All tests completed\n");
-    printf("\n");
+    printf("\n[ RUN ] Mergesort Tests\n\n");
+    runMergesortTests();
+    printf("\n[ PASS ] Mergesort Tests\n");
+
+    printf("\n[ PASS ] All tests completed\n\n");
 }
+

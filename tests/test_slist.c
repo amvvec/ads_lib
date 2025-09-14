@@ -6,7 +6,7 @@ void runSinglyLinkedListTests()
     SNode* head = NULL;
 
     // Test 1: InsertFront
-    printf("\nTest 1: InsertFront 3, 2, 1\n");
+    printf("Test 1: InsertFront 3, 2, 1\n");
     insertSFront(&head, 3);
     insertSFront(&head, 2);
     insertSFront(&head, 1);
@@ -40,5 +40,4 @@ void runSinglyLinkedListTests()
 
     // Cleanup
     freeSList(&head);
-    printf("\n");
 }

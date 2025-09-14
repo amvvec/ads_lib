@@ -4,9 +4,8 @@
 void runDoublyLinkedListTests()
 {
     DNode* head = NULL;
-
     // Test 1: InsertDFront
-    printf("\nTest 1: InsertDFront 3, 2, 1\n");
+    printf("Test 1: InsertDFront 3, 2, 1\n");
     insertDFront(&head, 3);
     insertDFront(&head, 2);
     insertDFront(&head, 1);
@@ -40,5 +39,4 @@ void runDoublyLinkedListTests()
 
     // Cleanup
     freeDList(&head);
-    printf("\n");
 }

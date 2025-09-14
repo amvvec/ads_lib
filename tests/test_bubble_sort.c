@@ -7,7 +7,7 @@
 void runBubbleSortTests()
 {
     // Test 1: Basic sorting
-    printf("\nTest 1: Basic sorting [5, 3, 8, 1, 2]\n");
+    printf("Test 1: Basic sorting [5, 3, 8, 1, 2]\n");
     int arr1[] = {5, 3, 8, 1, 2};
     int size1 = 5;
     bubble_sort(arr1, size1);
@@ -39,6 +39,4 @@ void runBubbleSortTests()
         printf("%d ", arr4[i]);
     }
     printf("\n"); // Expected: 1 2 3 4 5
-
-    printf("\n");
 }

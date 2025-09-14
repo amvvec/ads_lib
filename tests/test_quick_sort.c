@@ -9,8 +9,6 @@
  */
 void runQuicksortTests()
 {
-    printf("\n");
-
     // Test 1: Basic sorting
     printf("Test 1: Sort array [5, 3, 8, 1, 2]\n");
     int arr1[] = {5, 3, 8, 1, 2};

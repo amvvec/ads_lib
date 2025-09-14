@@ -4,7 +4,7 @@
 void runVectorTests()
 {
     // Test 1: Initialization
-    printf("\nTest 1: Initialize Vector with capacity 2\n");
+    printf("Test 1: Initialize Vector with capacity 2\n");
     Vector* vec = vector_init(2);
     if(vec && vec->capacity == 2 && vec->size == 0)
     {
@@ -57,5 +57,5 @@ void runVectorTests()
     // Test 5: Free
     printf("Test 5: Free Vector");
     vector_free(vec);
-    printf("Result: Freed");
+    printf("Result: Freed\n");
 }
