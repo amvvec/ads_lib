@@ -2,6 +2,14 @@
 
 #include <stdio.h>
 
+/** @brief Merges two sorted subarrays into a single sorted array.
+ *  @param arr Pointer to the integer array.
+ *  @param low The starting index of the first subarray.
+ *  @param mid The ending index of the first subarray.
+ *  @param high The ending index of the second subarray.
+ *  @note Combines two sorted segments. Time complexity is O(n).
+ *  @warning Validates input parameters; invalid cases (NULL array, negative indices, invalid mid) trigger an error message and exit early.
+ */
 void merge(int arr[], int low, int mid, int high)
 {
     if(!arr || low < 0 || mid < 0 || high < 0 || low > mid || mid > high)
@@ -51,6 +59,13 @@ void merge(int arr[], int low, int mid, int high)
     }
 }
 
+/** @brief Sorts an array of integers using the mergesort algorithm.
+ *  @param arr Pointer to the integer array to be sorted.
+ *  @param low The starting index of the subarray to sort.
+ *  @param high The ending index of the subarray to sort.
+ *  @note Uses a divide-and-conquer approach with merging. Time complexity is O(n log n) in all cases.
+ *  @warning Function performs basic validation; invalid inputs (NULL array, negative indices) will trigger an error message and exit early.
+ */
 void merge_sort(int arr[], int low, int high)
 {
     if(!arr || low < 0 || high < 0)
