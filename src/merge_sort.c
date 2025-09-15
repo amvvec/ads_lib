@@ -1,7 +1,15 @@
 #include "merge_sort.h"
 
+#include <stdio.h>
+
 void merge(int arr[], int low, int mid, int high)
 {
+    if(!arr || low < 0 || mid < 0 || high < 0 || low > mid || mid > high)
+    {
+        fprintf(stderr, "Invalid merge parameters: arr:%p\n low:%d\n mid=%d\n high=%d\n", (void*)arr, low, mid, high);
+        return;
+    }
+
     int n1 = mid - low + 1;
     int n2 = high - mid;
     int L[n1], R[n2];
@@ -14,7 +22,6 @@ void merge(int arr[], int low, int mid, int high)
     {
         R[j] = arr[mid + 1 + j];
     }
-
     int i = 0, j = 0, k = low;
     while(i < n1 && j < n2)
     {
@@ -30,14 +37,12 @@ void merge(int arr[], int low, int mid, int high)
         }
         k++;
     }
-
     while(i < n1)
     {
         arr[k] = L[i];
         i++;
         k++;
     }
-
     while(j < n2)
     {
         arr[k] = R[j];
@@ -48,6 +53,15 @@ void merge(int arr[], int low, int mid, int high)
 
 void merge_sort(int arr[], int low, int high)
 {
+    if(!arr || low < 0 || high < 0)
+    {
+        fprintf(stderr, "Invalid merge sort parameters: arr:%p\n low:%d\n high=%d\n", (void*)arr, low, high);
+        return;
+    }
+    if(low > high)
+    {
+        return;
+    }
     if(low < high)
     {
         int mid = low + (high - low) / 2;

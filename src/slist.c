@@ -33,7 +33,6 @@ SNode* createSNode(int data)
         fprintf(stderr, "Memory allocation size too large\n");
         return NULL;
     }
-
     SNode* node = (SNode*)calloc(1, sizeof(SNode));
     if(!node)
     {
@@ -64,13 +63,11 @@ void insertSFront(SNode** head, int data)
         fprintf(stderr, "Data out of safe range, potential injection\n");
         return;
     }
-
     SNode* newNode = createSNode(data);
     if(!newNode)
     {
         return;
     }
-
     newNode->next = *head;
     *head = newNode;
 }
@@ -89,13 +86,11 @@ void insertSEnd(SNode** head, int data)
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
-
     SNode* newNode = createSNode(data);
     if(!newNode)
     {
         return;
     }
-
     if(!*head)
     {
         *head = newNode;
@@ -123,7 +118,6 @@ void deleteSNode(SNode** head, int data)
         fprintf(stderr, "Empty list or invalid head pointer\n");
         return;
     }
-
     SNode *tmp = *head, *prev = NULL;
     if(tmp && tmp->data == data)
     {
@@ -158,7 +152,6 @@ void printSList(SNode* head)
         printf("Empty list\n");
         return;
     }
-
     SNode* tmp = head;
     while(tmp)
     {
@@ -181,7 +174,6 @@ void freeSList(SNode** head)
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
-
     SNode* tmp;
     while(*head)
     {
