@@ -7,32 +7,32 @@ int max(int a, int b)
     return a > b ? a : b;
 }
 
-int get_height(AVLNode * node)
+int get_height(AVLNode* node)
 {
     return node ? node->height : 0;
 }
 
-int get_balance(AVLNode * node)
+int get_balance(AVLNode* node)
 {
     return node ? get_height(node->left) - get_height(node->right) : 0;
-} 
+}
 
-AVLNode * create_node(int data)
+AVLNode* create_node(int data)
 {
-    AVLNode * node = (AVLNode *)malloc(sizeof(AVLNode));
+    AVLNode* node = (AVLNode*)malloc(sizeof(AVLNode));
 
     node->data = data;
     node->left = NULL;
     node->right = NULL;
-    node->height = 0;
+    node->height = 1;
 
     return node;
 }
 
-AVLNode * left_rotate(AVLNode * x)
+AVLNode* left_rotate(AVLNode* x)
 {
-    AVLNode * y = x->right;
-    AVLNode * tmp = y->left;
+    AVLNode* y = x->right;
+    AVLNode* tmp = y->left;
 
     y->left = x;
     x->right = tmp;
@@ -43,10 +43,10 @@ AVLNode * left_rotate(AVLNode * x)
     return y;
 }
 
-AVLNode * right_rotate(AVLNode * y)
+AVLNode* right_rotate(AVLNode* y)
 {
-    AVLNode * x = y->left;
-    AVLNode * tmp = x->right;
+    AVLNode* x = y->left;
+    AVLNode* tmp = x->right;
 
     x->right = y;
     y->left = tmp;
@@ -57,7 +57,7 @@ AVLNode * right_rotate(AVLNode * y)
     return x;
 }
 
-AVLNode * insert(AVLNode * node, int data)
+AVLNode* insert(AVLNode* node, int data)
 {
     if(!node)
     {
@@ -68,7 +68,7 @@ AVLNode * insert(AVLNode * node, int data)
     {
         node->left = insert(node->left, data);
     }
-    else if (data > node->data)
+    else if(data > node->data)
     {
         node->right = insert(node->right, data);
     }
@@ -110,7 +110,8 @@ AVLNode * insert(AVLNode * node, int data)
     return node;
 }
 
-AVLTree* avl_tree_init() {
+AVLTree* avl_tree_init()
+{
     AVLTree* tree = (AVLTree*)malloc(sizeof(AVLTree));
 
     tree->root = NULL;
@@ -118,13 +119,23 @@ AVLTree* avl_tree_init() {
     return tree;
 }
 
-void avl_tree_free(AVLNode * node)
+void avl_tree_insert(AVLTree* tree, int data)
+{
+    if(!tree)
+    {
+        return;
+    }
+
+    tree->root = insert(tree->root, data);
+}
+
+void avl_tree_free(AVLNode* node)
 {
     if(node)
     {
         avl_tree_free(node->left);
         avl_tree_free(node->right);
-    
+
         free(node);
     }
 }

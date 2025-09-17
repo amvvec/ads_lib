@@ -15,6 +15,6 @@ $(EXEC): $(OBJECTS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(SRC_DIR)/algorithm/*.o $(SRC_DIR)/data_structure/*.o $(SRC_DIR)/*.o $(EXEC)
+	rm -f $(SRC_DIR)/*.o $(SRC_DIR)/*.o $(SRC_DIR)/*.o $(EXEC)
 
 .PHONY: all clean
