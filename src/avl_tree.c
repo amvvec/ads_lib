@@ -1,5 +1,6 @@
 #include "avl_tree.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 int max(int a, int b)
@@ -19,18 +20,30 @@ int get_balance(AVLNode* node)
 
 AVLNode* create_node(int data)
 {
-    AVLNode* node = (AVLNode*)malloc(sizeof(AVLNode));
+    AVLNode* node = (AVLNode*)calloc(1, sizeof(AVLNode));
+
+    if(!node)
+    {
+        fprintf(stderr, "Memory allocation failed for avl node\n");
+        return NULL;
+    }
 
     node->data = data;
+    node->height = 1;
     node->left = NULL;
     node->right = NULL;
-    node->height = 1;
 
     return node;
 }
 
 AVLNode* left_rotate(AVLNode* x)
 {
+    if(!x || !x->right)
+    {
+        fprintf(stderr, "Invalid rotation: NULL node or right child\n");
+        return x;
+    }
+    
     AVLNode* y = x->right;
     AVLNode* tmp = y->left;
 
@@ -45,6 +58,12 @@ AVLNode* left_rotate(AVLNode* x)
 
 AVLNode* right_rotate(AVLNode* y)
 {
+    if(!y || !y->left)
+    {
+        fprintf(stderr, "Invalid rotation: NULL node or left child\n");
+        return y;
+    }
+    
     AVLNode* x = y->left;
     AVLNode* tmp = x->right;
 
@@ -96,6 +115,12 @@ AVLNode* insert(AVLNode* node, int data)
     // LR case
     if(balance > 1 && data > node->left->data)
     {
+        if(!node->left)
+        {
+            fprintf(stderr, "Invalid LR rotation: NULL left child\n");
+            return node;
+        }
+        
         node->left = left_rotate(node->left);
         return right_rotate(node);
     }
@@ -103,6 +128,12 @@ AVLNode* insert(AVLNode* node, int data)
     // RL case
     if(balance < -1 && data < node->right->data)
     {
+        if(!node->right)
+        {
+            fprintf(stderr, "Invalid RL rotation: NULL right child\n");
+            return node;
+        }
+        
         node->right = right_rotate(node->right);
         return left_rotate(node);
     }
@@ -114,6 +145,12 @@ AVLTree* avl_tree_init()
 {
     AVLTree* tree = (AVLTree*)malloc(sizeof(AVLTree));
 
+    if(!tree)
+    {
+        fprintf(stderr, "Memory allocation failed for AVL tree\n");
+        return NULL;
+    }
+
     tree->root = NULL;
 
     return tree;
@@ -123,6 +160,7 @@ void avl_tree_insert(AVLTree* tree, int data)
 {
     if(!tree)
     {
+        fprintf(stderr, "Invalid tree: NULL\n");
         return;
     }
 
