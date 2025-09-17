@@ -10,7 +10,8 @@ int max(int a, int b)
 
 /** @brief Gets the height of a node.
  *  @param node Pointer to the AVLNode.
- *  @return The height of the node, or 0 if node is NULL. Time complexity is O(1).
+ *  @return The height of the node, or 0 if node is NULL. Time complexity is
+ * O(1).
  */
 int get_height(AVLNode* node)
 {
@@ -19,7 +20,8 @@ int get_height(AVLNode* node)
 
 /** @brief Calculates the balance factor of a node.
  *  @param node Pointer to the AVLNode.
- *  @return The balance factor (height of left - height of right), or 0 if node is NULL. Time complexity is O(1).
+ *  @return The balance factor (height of left - height of right), or 0 if node
+ * is NULL. Time complexity is O(1).
  */
 int get_balance(AVLNode* node)
 {
@@ -29,7 +31,8 @@ int get_balance(AVLNode* node)
 /** @brief Creates a new AVL node.
  *  @param data The integer data to store in the node.
  *  @return Pointer to the new AVLNode, or NULL if memory allocation fails.
- *  @note Initializes height to 1, left and right to NULL. Time complexity is O(1).
+ *  @note Initializes height to 1, left and right to NULL. Time complexity is
+ * O(1).
  *  @warning Returns NULL and prints an error if memory allocation fails.
  */
 AVLNode* create_node(int data)
@@ -52,7 +55,8 @@ AVLNode* create_node(int data)
 
 /** @brief Performs a left rotation on the given node.
  *  @param x Pointer to the node to rotate.
- *  @return Pointer to the new root of the rotated subtree, or x if rotation is invalid.
+ *  @return Pointer to the new root of the rotated subtree, or x if rotation is
+ * invalid.
  *  @note Updates heights after rotation. Time complexity is O(1).
  *  @warning Returns x and prints an error if x or x->right is NULL.
  */
@@ -63,7 +67,7 @@ AVLNode* left_rotate(AVLNode* x)
         fprintf(stderr, "Invalid rotation: NULL node or right child\n");
         return x;
     }
-    
+
     AVLNode* y = x->right;
     AVLNode* tmp = y->left;
 
@@ -78,7 +82,8 @@ AVLNode* left_rotate(AVLNode* x)
 
 /** @brief Performs a right rotation on the given node.
  *  @param y Pointer to the node to rotate.
- *  @return Pointer to the new root of the rotated subtree, or y if rotation is invalid.
+ *  @return Pointer to the new root of the rotated subtree, or y if rotation is
+ * invalid.
  *  @note Updates heights after rotation. Time complexity is O(1).
  *  @warning Returns y and prints an error if y or y->left is NULL.
  */
@@ -89,7 +94,7 @@ AVLNode* right_rotate(AVLNode* y)
         fprintf(stderr, "Invalid rotation: NULL node or left child\n");
         return y;
     }
-    
+
     AVLNode* x = y->left;
     AVLNode* tmp = x->right;
 
@@ -106,8 +111,10 @@ AVLNode* right_rotate(AVLNode* y)
  *  @param node Pointer to the current node.
  *  @param data The integer value to insert.
  *  @return Pointer to the root of the modified subtree.
- *  @note Performs rotations to maintain AVL balance. Average and worst time complexity is O(log n).
- *  @warning Returns node and prints an error if rotation conditions are invalid.
+ *  @note Performs rotations to maintain AVL balance. Average and worst time
+ * complexity is O(log n).
+ *  @warning Returns node and prints an error if rotation conditions are
+ * invalid.
  */
 AVLNode* insert(AVLNode* node, int data)
 {
@@ -153,7 +160,7 @@ AVLNode* insert(AVLNode* node, int data)
             fprintf(stderr, "Invalid LR rotation: NULL left child\n");
             return node;
         }
-        
+
         node->left = left_rotate(node->left);
         return right_rotate(node);
     }
@@ -166,7 +173,7 @@ AVLNode* insert(AVLNode* node, int data)
             fprintf(stderr, "Invalid RL rotation: NULL right child\n");
             return node;
         }
-        
+
         node->right = right_rotate(node->right);
         return left_rotate(node);
     }
@@ -197,8 +204,10 @@ AVLTree* avl_tree_init()
 /** @brief Inserts a new value into the AVL tree.
  *  @param tree Pointer to the AVLTree.
  *  @param data The integer value to insert.
- *  @note Maintains AVL tree balance using rotations. Average and worst time complexity is O(log n).
- *  @warning Does nothing if tree is NULL, with an error message to stderr. Ignores duplicates.
+ *  @note Maintains AVL tree balance using rotations. Average and worst time
+ * complexity is O(log n).
+ *  @warning Does nothing if tree is NULL, with an error message to stderr.
+ * Ignores duplicates.
  */
 void avl_tree_insert(AVLTree* tree, int data)
 {

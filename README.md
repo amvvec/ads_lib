@@ -16,13 +16,13 @@ The library is a companion to a testing framework project, highlighting skills i
 
 ## Key Features
 - **Data Structures**:
-  - Singly linked list: (insert, delete, print, free, with safety checks and documentation);
-  - Doubly linked list: (Insert, delete, print, free, with safety checks and documentation).
-  - Dynamic vector: with resize capability (with safety checks and documentation).
+  - Singly and doubly linked lists with safety checks.
+  - Dynamic Vector with resize capability.
   - Hash table with chaining for collision resolution.
+  - AVL tree with basic balancing.
 - **Algorithms**:
-  - Bubble sort: Implementation for integer arrays (with safety checks and documentation).
-  - Quick sort: Implementation for integer arrays (with safety).
+  - Bubble sort: Implementation for integer arrayswith safety checks.
+  - Quick sort: Implementation for integer arrays with safety checls.
 - **Safety**: Null checks, integer overflow handling, memory safety, ASan, injection prevention.
 - **Build System**: Universal Makefile compiles all `*.c` files.
 - **Code Style**: Enforced via `.clang-format` (LLVM, 4-space indent, 80-column limit).
