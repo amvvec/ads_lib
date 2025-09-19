@@ -7,6 +7,7 @@
 #include "../tests/test_quick_sort.c"
 #include "../tests/test_slist.c"
 #include "../tests/test_vector.c"
+#include "../tests/test_graph.c"
 #include <stdio.h>
 
 void test_runner(void)
@@ -44,6 +45,10 @@ void test_runner(void)
     printf("\n[ RUN ] AVL Tree Tests\n\n");
     runAVLTreeTests();
     printf("\n[ PASS ] AVL Tree Tests\n");
+
+    printf("\n[ RUN ] Graph Tests\n\n");
+    runGraphTests();
+    printf("\n[ PASS ] Graph Tests\n");
 
     printf("\n[ PASS ] All tests completed\n\n");
 }
