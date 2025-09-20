@@ -1,5 +1,6 @@
 #include "test_runner.h"
 #include "../tests/test_avl_tree.c"
+#include "../tests/test_binary_search.c"
 #include "../tests/test_bubble_sort.c"
 #include "../tests/test_dlist.c"
 #include "../tests/test_graph.c"
@@ -49,6 +50,10 @@ void test_runner(void)
     printf("\n[ RUN ] Graph Tests\n\n");
     runGraphTests();
     printf("\n[ PASS ] Graph Tests\n");
+
+    printf("\n[ RUN ] Binary Search Tests\n\n");
+    runGraphTests();
+    printf("\n[ PASS ] Binary Search Tests\n");
 
     printf("\n[ PASS ] All tests completed\n\n");
 }

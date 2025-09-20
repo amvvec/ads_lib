@@ -2,7 +2,7 @@
 
 #include "binary_search.h"
 
-int binary_search(int * arr, int size, int target)
+int binary_search(int* arr, int size, int target)
 {
     int left = 0;
     int right = size - 1;
