@@ -3,6 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+ * @brief Initializes a graph with a given number of vertices.
+ * @param g Pointer to the graph structure.
+ * @param vertices Number of vertices (must be > 0 and <= MAX_VERTICES).
+ * @note Exits program on invalid vertex count.
+ * @complexity O(V²) where V is the number of vertices.
+ */
 void init_graph(Graph* g, int vertices)
 {
     if(vertices <= 0 || vertices > MAX_VERTICES)
@@ -20,6 +27,14 @@ void init_graph(Graph* g, int vertices)
     }
 }
 
+/**
+ * @brief Adds a directed edge to the graph.
+ * @param g Pointer to the graph structure.
+ * @param src Source vertex index.
+ * @param dest Destination vertex index.
+ * @return 0 on success, -1 on error (invalid graph or indices).
+ * @complexity O(1).
+ */
 int add_edge(Graph* g, int src, int dst)
 {
     if(!g)
@@ -36,6 +51,12 @@ int add_edge(Graph* g, int src, int dst)
     return 0;
 }
 
+/**
+ * @brief Prints the graph's adjacency list representation.
+ * @param g Pointer to the graph structure.
+ * @note Prints to stdout; does nothing if graph is NULL.
+ * @complexity O(V²) where V is the number of vertices.
+ */
 void print_graph(Graph* g)
 {
     if(!g)
