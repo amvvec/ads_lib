@@ -4,6 +4,12 @@
 
 int binary_search(int* arr, int size, int target)
 {
+    if(!arr || size <= 0)
+    {
+        fprintf(stderr, "Invalid array or size\n");
+        return -1;
+    }
+    
     int left = 0;
     int right = size - 1;
     while(left <= right)
