@@ -3,6 +3,9 @@
 
 #include "bfs.h"
 
+/**
+ * @brief Simple queue for BFS.
+ */
 Queue* create_queue(int capacity)
 {
     Queue* q = malloc(sizeof(Queue));
@@ -48,6 +51,13 @@ void free_queue(Queue* q)
     free(q);
 }
 
+/**
+ * @brief Performs BFS on a graph starting from a given vertex.
+ * @param g Pointer to the graph structure.
+ * @param start Starting vertex index.
+ * @note Prints visited vertices to stdout.
+ * @complexity O(V + E) where V is vertices, E is edges.
+ */
 void bfs(Graph* g, int start)
 {
     if(!g)
