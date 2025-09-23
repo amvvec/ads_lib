@@ -10,6 +10,7 @@
 #include "../tests/test_quick_sort.c"
 #include "../tests/test_slist.c"
 #include "../tests/test_vector.c"
+#include "../tests/test_dfs.c"
 #include <stdio.h>
 
 void test_runner(void)
@@ -59,6 +60,10 @@ void test_runner(void)
     printf("\n[ RUN ] BFS Tests\n\n");
     runBFSTests();
     printf("\n[ PASS ] BFS Tests\n");
+
+    printf("\n[ RUN ] DFS Tests\n\n");
+    runDFSTests();
+    printf("\n[ PASS ] DFS Tests\n");
 
     printf("\n[ PASS ] All tests completed\n\n");
 }
