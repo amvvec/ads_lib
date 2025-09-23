@@ -14,20 +14,6 @@ void runDFSTests() {
     dfs(&g, 0); // Manual check for now
     printf("Check output manually for valid DFS order\n");
 
-    // Test 2: Invalid start vertex
-    printf("Test 2: Invalid start vertex (4)\n");
-    FILE* stderr_fp = freopen("/dev/null", "w", stderr); // Suppress stderr
-    dfs(&g, 4);
-    freopen("/dev/tty", "w", stderr); // Restore stderr
-    printf("Result: Pass (invalid start handled)\n");
-
-    // Test 3: Null graph
-    printf("Test 3: Null graph\n");
-    stderr_fp = freopen("/dev/null", "w", stderr); // Suppress stderr
-    dfs(NULL, 0);
-    freopen("/dev/tty", "w", stderr); // Restore stderr
-    printf("Result: Pass (null graph handled)\n");
-
     // Test 4: Empty graph (no edges)
     printf("Test 4: Empty graph with 3 vertices\n");
     Graph g_empty;

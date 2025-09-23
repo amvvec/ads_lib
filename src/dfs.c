@@ -3,7 +3,7 @@
 
 #include "dfs.h"
 
-static void dfs_recursive(Graph * g, int vertex, int * visited)
+static void dfs_recursive(Graph* g, int vertex, int* visited)
 {
     visited[vertex] = 1;
     printf("%d ", vertex);
@@ -16,9 +16,24 @@ static void dfs_recursive(Graph * g, int vertex, int * visited)
     }
 }
 
-void dfs(Graph * g, int start)
+void dfs(Graph* g, int start)
 {
-    int * visited = calloc(g->vertices, sizeof(int));
+    if(!g)
+    {
+        fprintf(stderr, "Null graph pointer\n");
+        return;
+    }
+    if(start < 0 || start >= g->vertices)
+    {
+        fprintf(stderr, "Invalid start vertext: %d\n", start);
+        return;
+    }
+    int* visited = calloc(g->vertices, sizeof(int));
+    if(!visited)
+    {
+        fprintf(stderr, "Visited array allocation failed\n");
+        return;
+    }
     dfs_recursive(g, start, visited);
     printf("\n");
     free(visited);

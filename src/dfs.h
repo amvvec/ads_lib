@@ -3,6 +3,6 @@
 
 #include "graph.h"
 
-void dfs(Graph * g, int start);
+void dfs(Graph* g, int start);
 
 #endif // !DFS_H
