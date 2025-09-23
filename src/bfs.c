@@ -3,9 +3,6 @@
 
 #include "bfs.h"
 
-/**
- * @brief Simple queue for BFS.
- */
 Queue* create_queue(int capacity)
 {
     Queue* q = malloc(sizeof(Queue));
