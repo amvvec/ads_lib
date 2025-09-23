@@ -3,6 +3,13 @@
 
 #include "dfs.h"
 
+/**
+ * @brief Helper function for recursive DFS traversal.
+ * @param g Pointer to the graph structure.
+ * @param vertex Current vertex to explore.
+ * @param visited Array to track visited vertices.
+ * @complexity O(V + E) where V is vertices, E is edges.
+ */
 static void dfs_recursive(Graph* g, int vertex, int* visited)
 {
     visited[vertex] = 1;
@@ -16,6 +23,13 @@ static void dfs_recursive(Graph* g, int vertex, int* visited)
     }
 }
 
+/**
+ * @brief Performs DFS on a graph starting from a given vertex.
+ * @param g Pointer to the graph structure.
+ * @param start Starting vertex index.
+ * @note Prints visited vertices to stdout.
+ * @complexity O(V + E) where V is vertices, E is edges.
+ */
 void dfs(Graph* g, int start)
 {
     if(!g)

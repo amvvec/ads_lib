@@ -3,6 +3,7 @@
 #include "../tests/test_bfs.c"
 #include "../tests/test_binary_search.c"
 #include "../tests/test_bubble_sort.c"
+#include "../tests/test_dfs.c"
 #include "../tests/test_dlist.c"
 #include "../tests/test_graph.c"
 #include "../tests/test_hash_table.c"
@@ -10,7 +11,6 @@
 #include "../tests/test_quick_sort.c"
 #include "../tests/test_slist.c"
 #include "../tests/test_vector.c"
-#include "../tests/test_dfs.c"
 #include <stdio.h>
 
 void test_runner(void)

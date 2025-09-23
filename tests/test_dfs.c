@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void runDFSTests() {
+void runDFSTests()
+{
     // Test 1: Simple graph traversal
     printf("Test 1: DFS on graph with edges 0->1, 0->2, 1->3\n");
     Graph g;
