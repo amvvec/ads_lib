@@ -22,8 +22,25 @@ static int min_distance(int* dst, int* visited, int vertices)
 
 void dijkstra(Graph* g, int start)
 {
+    if(!g)
+    {
+        fprintf(stderr, "Null graph pointer\n");
+        return;
+    }
+    if(start < 0 || start > g->vertices)
+    {
+        fprintf(stderr, "Invalid start vertex: %d\n", start);
+        return;
+    }
     int* dst = malloc(g->vertices * sizeof(int));
     int* visited = calloc(g->vertices, sizeof(int));
+    if(!dst || !visited)
+    {
+        fprintf(stderr, "Memory allocation failed\n");
+        free(dst);
+        free(visited);
+        return;
+    }
     for(int i = 0; i < g->vertices; i++)
     {
         dst[i] = INF;
