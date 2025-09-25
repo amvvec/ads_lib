@@ -4,6 +4,7 @@
 #include "../tests/test_binary_search.c"
 #include "../tests/test_bubble_sort.c"
 #include "../tests/test_dfs.c"
+#include "../tests/test_dijkstra.c"
 #include "../tests/test_dlist.c"
 #include "../tests/test_graph.c"
 #include "../tests/test_hash_table.c"
@@ -64,6 +65,10 @@ void test_runner(void)
     printf("\n[ RUN ] DFS Tests\n\n");
     runDFSTests();
     printf("\n[ PASS ] DFS Tests\n");
+
+    printf("\n[ RUN ] Dijkstra Tests\n\n");
+    runDijсkstraTests();
+    printf("\n[ PASS ] Dijkstra Tests\n");
 
     printf("\n[ PASS ] All tests completed\n\n");
 }
