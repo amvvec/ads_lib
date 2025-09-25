@@ -5,6 +5,13 @@
 
 #define INF 999999
 
+/**
+ * @brief Finds the vertex with minimum distance that hasn’t been visited.
+ * @param dist Array of distances.
+ * @param visited Array of visited vertices.
+ * @param vertices Number of vertices.
+ * @return Index of minimum distance vertex.
+ */
 static int min_distance(int* dst, int* visited, int vertices)
 {
     int min = INF;
@@ -20,6 +27,14 @@ static int min_distance(int* dst, int* visited, int vertices)
     return min_index;
 }
 
+/**
+ * @brief Computes shortest paths from a source vertex using Dijkstra’s
+ * algorithm.
+ * @param g Pointer to the graph structure.
+ * @param start Starting vertex index.
+ * @note Prints shortest distances to stdout.
+ * @complexity O(V²) where V is the number of vertices.
+ */
 void dijkstra(Graph* g, int start)
 {
     if(!g)
@@ -41,15 +56,23 @@ void dijkstra(Graph* g, int start)
         free(visited);
         return;
     }
+    // Initialize distances
     for(int i = 0; i < g->vertices; i++)
     {
         dst[i] = INF;
     }
     dst[start] = 0;
+    // Process all vertices
     for(int count = 0; count < g->vertices; count++)
     {
         int u = min_distance(dst, visited, g->vertices);
+        if(u == -1)
+        {
+            break; // No reachable vertices left
+        }
         visited[u] = 1;
+
+        // Update distances for adjacent vertices
         for(int v = 0; v < g->vertices; v++)
         {
             if(!visited[v] && g->adj_matrix[u][v] != INF && dst[u] != INF &&
@@ -59,6 +82,7 @@ void dijkstra(Graph* g, int start)
             }
         }
     }
+    // Print results
     printf("Shortest distances from vertex %d:\n", start);
     for(int i = 0; i < g->vertices; i++)
     {
