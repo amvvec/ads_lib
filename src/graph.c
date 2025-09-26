@@ -10,14 +10,16 @@
  * @note Exits program on invalid vertex count.
  * @complexity O(V²) where V is the number of vertices.
  */
-void init_graph(Graph* g, int vertices) {
-    if (vertices <= 0 || vertices > MAX_VERTICES) {
+void init_graph(Graph* g, int vertices)
+{
+    if(vertices <= 0 || vertices > MAX_VERTICES)
+    {
         fprintf(stderr, "Invalid vertex count: %d\n", vertices);
         exit(1);
     }
     g->vertices = vertices;
-    for (int i = 0; i < vertices; i++)
-        for (int j = 0; j < vertices; j++)
+    for(int i = 0; i < vertices; i++)
+        for(int j = 0; j < vertices; j++)
             g->adj_matrix[i][j] = 0;
 }
 

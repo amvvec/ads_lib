@@ -11,10 +11,13 @@
  * @param vertices Number of vertices.
  * @return Index of minimum distance vertex.
  */
-static int min_distance(int* dst, int* visited, int vertices) {
+static int min_distance(int* dst, int* visited, int vertices)
+{
     int min = INF, min_index = -1;
-    for (int v = 0; v < vertices; v++) {
-        if (!visited[v] && dst[v] <= min) {
+    for(int v = 0; v < vertices; v++)
+    {
+        if(!visited[v] && dst[v] <= min)
+        {
             min = dst[v];
             min_index = v;
         }
@@ -23,25 +26,30 @@ static int min_distance(int* dst, int* visited, int vertices) {
 }
 
 /**
- * @brief Computes shortest paths from a source vertex using Dijkstra’s algorithm.
+ * @brief Computes shortest paths from a source vertex using Dijkstra’s
+ * algorithm.
  * @param g Pointer to the graph structure.
  * @param start Starting vertex index.
  * @note Prints shortest distances to stdout.
  * @complexity O(V²) where V is the number of vertices.
  */
-void dijkstra(Graph* g, int start) {
-    if (!g) {
+void dijkstra(Graph* g, int start)
+{
+    if(!g)
+    {
         fprintf(stderr, "Null graph pointer\n");
         return;
     }
-    if (start < 0 || start >= g->vertices) {
+    if(start < 0 || start >= g->vertices)
+    {
         fprintf(stderr, "Invalid start vertex: %d\n", start);
         return;
     }
 
     int* dst = malloc(g->vertices * sizeof(int));
     int* visited = calloc(g->vertices, sizeof(int));
-    if (!dst || !visited) {
+    if(!dst || !visited)
+    {
         fprintf(stderr, "Memory allocation failed\n");
         free(dst);
         free(visited);
@@ -49,20 +57,24 @@ void dijkstra(Graph* g, int start) {
     }
 
     // Initialize distances
-    for (int i = 0; i < g->vertices; i++)
+    for(int i = 0; i < g->vertices; i++)
         dst[i] = INF;
     dst[start] = 0;
 
     // Process all vertices
-    for (int count = 0; count < g->vertices; count++) {
+    for(int count = 0; count < g->vertices; count++)
+    {
         int u = min_distance(dst, visited, g->vertices);
-        if (u == -1) break; // No reachable vertices left
+        if(u == -1)
+            break; // No reachable vertices left
         visited[u] = 1;
 
         // Update distances for adjacent vertices
-        for (int v = 0; v < g->vertices; v++) {
-            if (!visited[v] && g->adj_matrix[u][v] == 1 && // Edge exists
-                dst[u] != INF && dst[u] + 1 < dst[v]) {
+        for(int v = 0; v < g->vertices; v++)
+        {
+            if(!visited[v] && g->adj_matrix[u][v] == 1 && // Edge exists
+               dst[u] != INF && dst[u] + 1 < dst[v])
+            {
                 dst[v] = dst[u] + 1; // Edge weight = 1
             }
         }
@@ -70,8 +82,9 @@ void dijkstra(Graph* g, int start) {
 
     // Print results
     printf("Shortest distances from vertex %d:\n", start);
-    for (int i = 0; i < g->vertices; i++) {
-        if (dst[i] == INF)
+    for(int i = 0; i < g->vertices; i++)
+    {
+        if(dst[i] == INF)
             printf("Vertex %d: Unreachable\n", i);
         else
             printf("Vertex %d: %d\n", i, dst[i]);
