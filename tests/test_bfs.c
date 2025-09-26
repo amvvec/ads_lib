@@ -15,7 +15,7 @@ void runBFSTests()
     bfs(&g, 0); // Manual check for now; can redirect stdout for automation
     printf("Check output manually for 0 1 2 3\n");
 
-    // Test 4: Empty graph (no edges)
+    // Test 2: Empty graph (no edges)
     printf("Test 2: Empty graph with 3 vertices\n");
     Graph g_empty;
     init_graph(&g_empty, 3);
@@ -23,7 +23,7 @@ void runBFSTests()
     bfs(&g_empty, 0);
     printf("\nCheck output manually for 0\n");
 
-    // Test 5: Disconnected vertices
+    // Test 3: Disconnected vertices
     printf("Test 3: Disconnected vertex (2->3, start at 0)\n");
     Graph g_disconnect;
     init_graph(&g_disconnect, 4);

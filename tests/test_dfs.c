@@ -15,7 +15,7 @@ void runDFSTests()
     dfs(&g, 0); // Manual check for now
     printf("Check output manually for valid DFS order\n");
 
-    // Test 4: Empty graph (no edges)
+    // Test 2: Empty graph (no edges)
     printf("Test 4: Empty graph with 3 vertices\n");
     Graph g_empty;
     init_graph(&g_empty, 3);
@@ -23,7 +23,7 @@ void runDFSTests()
     dfs(&g_empty, 0);
     printf("Check output manually for 0\n");
 
-    // Test 5: Disconnected vertices
+    // Test 3: Disconnected vertices
     printf("Test 5: Disconnected vertex (2->3, start at 0)\n");
     Graph g_disconnect;
     init_graph(&g_disconnect, 4);

@@ -67,7 +67,7 @@ void test_runner(void)
     printf("\n[ PASS ] DFS Tests\n");
 
     printf("\n[ RUN ] Dijkstra Tests\n\n");
-    runDijсkstraTests();
+    runDijkstraTests();
     printf("\n[ PASS ] Dijkstra Tests\n");
 
     printf("\n[ PASS ] All tests completed\n\n");
