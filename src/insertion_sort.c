@@ -7,6 +7,12 @@
 
 int insertion_sort(int* arr, int size)
 {
+    if(!arr)
+    {
+        fprintf(stderr, "Null pointer\n");
+        return -1;
+    }
+    
     for(int i = 0; i < size; i++)
     {
         int key = arr[i];

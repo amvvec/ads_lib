@@ -12,6 +12,7 @@
 #include "../tests/test_quick_sort.c"
 #include "../tests/test_slist.c"
 #include "../tests/test_vector.c"
+#include "../tests/test_insertion_sort.c"
 #include <stdio.h>
 
 void test_runner(void)
@@ -69,6 +70,10 @@ void test_runner(void)
     printf("\n[ RUN ] Dijkstra Tests\n\n");
     runDijkstraTests();
     printf("\n[ PASS ] Dijkstra Tests\n");
+
+    printf("\n[ RUN ] Insertion sort Tests\n\n");
+    runInsertionSortTests();
+    printf("\n[ PASS ] Insertion sort Tests\n");
 
     printf("\n[ PASS ] All tests completed\n\n");
 }
