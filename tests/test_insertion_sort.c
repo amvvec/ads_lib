@@ -2,15 +2,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void runInsertionSortTests() {
+void runInsertionSortTests()
+{
     // Test 1: Random array
     printf("Test 1: Sort [5, 2, 8, 1, 9]\n");
     int arr1[] = {5, 2, 8, 1, 9};
     int expected1[] = {1, 2, 5, 8, 9};
     insertion_sort(arr1, 5);
     int pass1 = 1;
-    for (int i = 0; i < 5; i++)
-        if (arr1[i] != expected1[i]) pass1 = 0;
+    for(int i = 0; i < 5; i++)
+        if(arr1[i] != expected1[i])
+            pass1 = 0;
     printf("Result: %s\n", pass1 ? "Pass" : "Fail");
 
     // Test 2: Already sorted
@@ -19,8 +21,9 @@ void runInsertionSortTests() {
     int expected2[] = {1, 2, 3, 4};
     insertion_sort(arr2, 4);
     int pass2 = 1;
-    for (int i = 0; i < 4; i++)
-        if (arr2[i] != expected2[i]) pass2 = 0;
+    for(int i = 0; i < 4; i++)
+        if(arr2[i] != expected2[i])
+            pass2 = 0;
     printf("Result: %s\n", pass2 ? "Pass" : "Fail");
 
     // Test 3: Invalid input (null)
