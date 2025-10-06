@@ -11,6 +11,7 @@
 #include "../tests/test_insertion_sort.c"
 #include "../tests/test_merge_sort.c"
 #include "../tests/test_quick_sort.c"
+#include "../tests/test_skip_list.c"
 #include "../tests/test_slist.c"
 #include "../tests/test_vector.c"
 #include <stdio.h>
@@ -74,6 +75,10 @@ void test_runner(void)
     printf("\n[ RUN ] Insertion sort Tests\n\n");
     runInsertionSortTests();
     printf("\n[ PASS ] Insertion sort Tests\n");
+
+    printf("\n[ RUN ] Skip List Tests\n\n");
+    runSkipListTests();
+    printf("\n[ PASS ] Skip List Tests\n");
 
     printf("\n[ PASS ] All tests completed\n\n");
 }
