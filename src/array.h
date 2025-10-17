@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdint.h>
 
 struct Node
@@ -11,3 +12,5 @@ typedef struct
     size_t size;
     size_t capacity;
 } NodeArray;
+
+int node_array_init(NodeArray* array);
