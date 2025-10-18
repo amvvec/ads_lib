@@ -6,7 +6,7 @@
 
 #define P 0.5
 
-static int random_level()
+static int random_level(void)
 {
     int level = 0;
     while(rand() / (double)RAND_MAX < P && level < MAX_LEVEL - 1)
@@ -16,7 +16,7 @@ static int random_level()
     return level;
 }
 
-SkipList* create_skip_list()
+SkipList* create_skip_list(void)
 {
     SkipList* list = malloc(sizeof(SkipList));
     if(!list)

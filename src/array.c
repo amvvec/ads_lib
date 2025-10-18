@@ -1,3 +1,6 @@
+#include <errno.h>
+#include <stdlib.h>
+
 #include "array.h"
 
 int node_array_init(NodeArray* array)
@@ -10,4 +13,15 @@ int node_array_init(NodeArray* array)
     array->size = 0;
     array->capacity = 0;
     return 0;
+}
+
+NodeArray* node_array_new(void)
+{
+    NodeArray* array = malloc(sizeof(NodeArray));
+    if(!array)
+    {
+        return NULL;
+    }
+    node_array_init(array);
+    return array;
 }

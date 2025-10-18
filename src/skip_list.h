@@ -15,7 +15,7 @@ typedef struct SkipList
     int level; // Current max level
 } SkipList;
 
-SkipList* create_skip_list();
+SkipList* create_skip_list(void);
 void free_skip_list(SkipList* list);
 void insert_skip_list(SkipList* list, int key);
 int search_skip_list(SkipList* list, int key);

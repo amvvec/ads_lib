@@ -186,7 +186,7 @@ AVLNode* insert(AVLNode* node, int data)
  *  @note Sets the root to NULL. Time complexity is O(1).
  *  @warning Returns NULL and prints an error if memory allocation fails.
  */
-AVLTree* avl_tree_init()
+AVLTree* avl_tree_init(void)
 {
     AVLTree* tree = (AVLTree*)malloc(sizeof(AVLTree));
 

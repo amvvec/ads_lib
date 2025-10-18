@@ -27,9 +27,9 @@ typedef struct
 } AVLTree;
 
 AVLNode* insert(AVLNode* node, int data);
-AVLTree* avl_tree_init();
+AVLTree* avl_tree_init(void);
 void avl_tree_insert(AVLTree* tree, int data);
-void avl_tree_free();
+void avl_tree_free(AVLNode* node);
 int get_height(AVLNode* node);
 int get_balance(AVLNode* node);
 

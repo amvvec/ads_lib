@@ -1,4 +1,6 @@
-#include <errno.h>
+#ifndef ARRAY_H
+#define ARRAY_H
+
 #include <stdint.h>
 
 struct Node
@@ -14,3 +16,6 @@ typedef struct
 } NodeArray;
 
 int node_array_init(NodeArray* array);
+NodeArray* node_array_new(void);
+
+#endif // !ARRAY_H
