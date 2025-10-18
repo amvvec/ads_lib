@@ -17,5 +17,6 @@ typedef struct
 
 int node_array_init(NodeArray* array);
 NodeArray* node_array_new(void);
+static int node_array_grow_to(NodeArray* array, size_t new_capacity);
 
 #endif // !ARRAY_H
