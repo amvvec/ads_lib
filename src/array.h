@@ -15,7 +15,11 @@ typedef struct
     size_t capacity;
 } NodeArray;
 
+// Initialization
 int node_array_init(NodeArray* array);
 NodeArray* node_array_new(void);
+
+// Memory management
+static int node_array_grow_to(NodeArray* array, size_t new_capacity);
 
 #endif // !ARRAY_H

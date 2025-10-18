@@ -3,6 +3,11 @@
 
 #include "array.h"
 
+enum
+{
+    NODE_ARRAY_INIT_CAP = 8
+};
+
 int node_array_init(NodeArray* array)
 {
     if(!array)
@@ -24,4 +29,35 @@ NodeArray* node_array_new(void)
     }
     node_array_init(array);
     return array;
+}
+
+static int node_array_grow_to(NodeArray* array, size_t start_capacity)
+{
+    if(!array)
+    {
+        return EINVAL;
+    }
+    if(start_capacity <= array->capacity)
+    {
+        return 0; // Enough memory
+    }
+    size_t new_capacity = array->capacity ? array->capacity : NODE_ARRAY_INIT_CAP;
+    while(new_capacity < start_capacity)
+    {
+        if(new_capacity > SIZE_MAX / 2)
+        {
+            new_capacity = start_capacity; // No overflow fallback
+            break;
+        }
+        new_capacity *= 2;
+    }
+    size_t new_bytes;
+    struct Node* new_data = realloc(array->data, new_bytes);
+    if(!new_data)
+    {
+        return ENOMEM;
+    }
+    array->data = new_data;
+    array->capacity = start_capacity;
+    return 0;
 }
