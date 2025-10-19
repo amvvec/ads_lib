@@ -16,13 +16,13 @@ typedef struct
 } Array;
 
 // Initialization
-int node_array_init(Array* array);
-Array* node_array_new(void);
+int array_init(Array* a);
+Array* array_new(void);
 
 // Memory management
-// static int node_array_grow_to(Array* array, size_t new_capacity);
+// static int node_array_grow_to(Array* a, size_t new_capacity);
 
-void node_array_free(Array* a);
-void node_array_delete();
+void array_free(Array* a);
+void array_delete(Array* a);
 
 #endif // !ARRAY_H

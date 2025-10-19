@@ -32,7 +32,7 @@ void test_runner(void)
     runGraphTests();
     runGraphTests();
     runBFSTests();
-    runDFSTests;
+    runDFSTests();
     runDijkstraTests();
     runInsertionSortTests();
     runSkipListTests();

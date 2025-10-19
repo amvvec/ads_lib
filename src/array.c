@@ -9,70 +9,80 @@ enum
     NODE_ARRAY_INIT_CAP = 8
 };
 
-int node_array_init(Array* array)
+int array_init(Array* a)
 {
-    if(!array)
+    if(!a)
     {
         return EINVAL;
     }
-    array->data = NULL;
-    array->size = 0;
-    array->capacity = 0;
+    a->data = NULL;
+    a->size = 0;
+    a->capacity = 0;
     return 0;
 }
 
-Array* node_array_new(void)
+Array* array_new(void)
 {
-    Array* array = malloc(sizeof(Array));
-    if(!array)
+    Array* a = malloc(sizeof(Array));
+    if(!a)
     {
         return NULL;
     }
-    node_array_init(array);
-    return array;
+    array_init(a);
+    return a;
 }
 
-static int node_array_grow_to(Array* array, size_t start_capacity)
-{
-    if(!array)
-    {
-        return EINVAL;
-    }
-    if(start_capacity <= array->capacity)
-    {
-        return 0; // Enough memory
-    }
-    size_t new_capacity =
-        array->capacity ? array->capacity : NODE_ARRAY_INIT_CAP;
-    while(new_capacity < start_capacity)
-    {
-        if(new_capacity > SIZE_MAX / 2)
-        {
-            new_capacity = start_capacity; // No overflow fallback
-            break;
-        }
-        new_capacity *= 2;
-    }
-    size_t new_bytes;
-    struct Node* new_data = realloc(array->data, new_bytes);
-    if(!new_data)
-    {
-        return ENOMEM; // TODO: EOVERFLOW
-    }
-    array->data = new_data;
-    array->capacity = start_capacity;
-    return 0;
-}
+// static int array_grow_to(Array* a, size_t start_capacity)
+// {
+//     if(!a)
+//     {
+//         return EINVAL;
+//     }
+//     if(start_capacity <= a->capacity)
+//     {
+//         return 0; // Enough memory
+//     }
+//     size_t new_capacity = a->capacity ? a->capacity : NODE_ARRAY_INIT_CAP;
+//     while(new_capacity < start_capacity)
+//     {
+//         if(new_capacity > SIZE_MAX / 2)
+//         {
+//             new_capacity = start_capacity; // No overflow fallback
+//             break;
+//         }
+//         new_capacity *= 2;
+//     }
+//     size_t new_bytes;
+//     struct Node* new_data = realloc(a->data, &new_bytes);
+//     if(!new_data)
+//     {
+//         return ENOMEM; // TODO: EOVERFLOW
+//     }
+//     a->data = new_data;
+//     a->capacity = start_capacity;
+//     return 0;
+// }
 
-void node_array_free(Array* array)
+void array_free(Array* a)
 {
-    if(!array)
+    if(!a)
     {
         printf("Error: NULL pointer\n");
         return;
     }
-    free(array->data);
-    array->data = NULL;
-    array->size = 0;
-    array->capacity = 0;
+    free(a->data);
+    a->data = NULL;
+    a->size = 0;
+    a->capacity = 0;
+}
+
+void array_delete(Array* a)
+{
+    if(!a)
+    {
+        printf("Error: NULL pointer\n");
+        return;
+    }
+    array_free(a);
+    free(a);
 }
