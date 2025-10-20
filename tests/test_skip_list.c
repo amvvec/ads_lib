@@ -3,8 +3,9 @@
 
 #include "../src/skip_list.h"
 
-void runSkipListTests()
+void runSkipListTests(void)
 {
+    printf("\n[ RUN ] Skip List Tests\n\n");
     // Test 1: Insert and search
     printf("Test 1: Insert [5, 2, 8] and search\n");
     SkipList* list = create_skip_list();
@@ -50,4 +51,5 @@ void runSkipListTests()
     printf("Result: %s\n", pass5 ? "Pass" : "Fail");
 
     free_skip_list(list);
+    printf("\n[ PASS ] Skip List Tests\n");
 }

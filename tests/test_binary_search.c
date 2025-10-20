@@ -1,8 +1,10 @@
-#include "../src/binary_search.h"
 #include <stdio.h>
 
-void runBinarySearchTests()
+#include "../src/binary_search.h"
+
+void runBinarySearchTests(void)
 {
+    printf("\n[ RUN ] Binary Search Tests\n\n");
     // Test 1: Target in middle
     printf("Test 1: Target in middle (7 in [1,3,5,7,9])\n");
     int arr1[] = {1, 3, 5, 7, 9};
@@ -64,4 +66,5 @@ void runBinarySearchTests()
     {
         printf("Result: Fail (expected 0, got %d)\n", result5);
     }
+    printf("\n[ PASS ] Binary Search Tests\n");
 }

@@ -1,8 +1,10 @@
-#include "../src/vector.h"
 #include <stdio.h>
 
-void runVectorTests()
+#include "../src/vector.h"
+
+void runVectorTests(void)
 {
+    printf("\n[ RUN ] Vector Tests\n\n");
     // Test 1: Initialization
     printf("Test 1: Initialize Vector with capacity 2\n");
     Vector* vec = vector_init(2);
@@ -58,4 +60,5 @@ void runVectorTests()
     printf("Test 5: Free Vector");
     vector_free(vec);
     printf("Result: Freed\n");
+    printf("\n[ PASS ] Vector Tests\n");
 }

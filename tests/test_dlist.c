@@ -1,8 +1,10 @@
-#include "../src/dlist.h"
 #include <stdio.h>
 
-void runDoublyLinkedListTests()
+#include "../src/dlist.h"
+
+void runDListTests(void)
 {
+    printf("\n[ RUN ] Doubly Linked List Tests\n\n");
     DNode* head = NULL;
     // Test 1: InsertDFront
     printf("Test 1: InsertDFront 3, 2, 1\n");
@@ -39,4 +41,5 @@ void runDoublyLinkedListTests()
 
     // Cleanup
     freeDList(&head);
+    printf("\n[ PASS ] Doubly Linked List Tests\n");
 }

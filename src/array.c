@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "array.h"
@@ -8,7 +9,7 @@ enum
     NODE_ARRAY_INIT_CAP = 8
 };
 
-int node_array_init(NodeArray* array)
+int node_array_init(Array* array)
 {
     if(!array)
     {
@@ -20,9 +21,9 @@ int node_array_init(NodeArray* array)
     return 0;
 }
 
-NodeArray* node_array_new(void)
+Array* node_array_new(void)
 {
-    NodeArray* array = malloc(sizeof(NodeArray));
+    Array* array = malloc(sizeof(Array));
     if(!array)
     {
         return NULL;
@@ -31,7 +32,7 @@ NodeArray* node_array_new(void)
     return array;
 }
 
-static int node_array_grow_to(NodeArray* array, size_t start_capacity)
+static int node_array_grow_to(Array* array, size_t start_capacity)
 {
     if(!array)
     {
@@ -41,7 +42,8 @@ static int node_array_grow_to(NodeArray* array, size_t start_capacity)
     {
         return 0; // Enough memory
     }
-    size_t new_capacity = array->capacity ? array->capacity : NODE_ARRAY_INIT_CAP;
+    size_t new_capacity =
+        array->capacity ? array->capacity : NODE_ARRAY_INIT_CAP;
     while(new_capacity < start_capacity)
     {
         if(new_capacity > SIZE_MAX / 2)
@@ -55,9 +57,22 @@ static int node_array_grow_to(NodeArray* array, size_t start_capacity)
     struct Node* new_data = realloc(array->data, new_bytes);
     if(!new_data)
     {
-        return ENOMEM;
+        return ENOMEM; // TODO: EOVERFLOW
     }
     array->data = new_data;
     array->capacity = start_capacity;
     return 0;
+}
+
+void node_array_free(Array* array)
+{
+    if(!array)
+    {
+        printf("Error: NULL pointer\n");
+        return;
+    }
+    free(array->data);
+    array->data = NULL;
+    array->size = 0;
+    array->capacity = 0;
 }

@@ -1,11 +1,10 @@
-#include "../src/bubble_sort.h"
 #include <stdio.h>
 
-/** @brief Runs test suite for the bubble sort algorithm.
- *  @note Tests sorting, empty array, single-element array, and sorted array.
- */
-void runBubbleSortTests()
+#include "../src/bubble_sort.h"
+
+void runBubbleSortTests(void)
 {
+    printf("\n[ RUN ] Bubble Sort Tests\n\n");
     // Test 1: Basic sorting
     printf("Test 1: Basic sorting [5, 3, 8, 1, 2]\n");
     int arr1[] = {5, 3, 8, 1, 2};
@@ -39,4 +38,5 @@ void runBubbleSortTests()
         printf("%d ", arr4[i]);
     }
     printf("\n"); // Expected: 1 2 3 4 5
+    printf("\n[ PASS ] Bubble Sort Tests\n");
 }
