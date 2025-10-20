@@ -1,9 +1,11 @@
-#include "../src/bfs.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-void runBFSTests()
+#include "../src/bfs.h"
+
+void runBFSTests(void)
 {
+    printf("\n[ RUN ] BFS Tests\n\n");
     // Test 1: Simple graph traversal
     printf("Test 1: BFS on graph with edges 0->1, 0->2, 1->3\n");
     Graph g;
@@ -31,4 +33,5 @@ void runBFSTests()
     printf("Expected: 0\nResult: ");
     bfs(&g_disconnect, 0);
     printf("\nCheck output manually for 0\n");
+    printf("\n[ PASS ] BFS Tests\n");
 }

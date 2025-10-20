@@ -1,10 +1,11 @@
-#include "../src/merge_sort.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 
-void runMergesortTests()
+#include "../src/merge_sort.h"
+
+void runMergesortTests(void)
 {
+    printf("\n[ RUN ] Mergesort Tests\n\n");
     // Test 1: Basic sorting
     printf("Test 1: Sort array [5, 3, 8, 1, 2]\n");
     int arr1[] = {5, 3, 8, 1, 2};
@@ -50,4 +51,5 @@ void runMergesortTests()
     {
         printf("Result: Sorting failed\n");
     }
+    printf("\n[ PASS ] Mergesort Tests\n");
 }

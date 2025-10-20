@@ -1,14 +1,12 @@
-#include "../src/quick_sort.h"
-#include "test_runner.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 
-/** @brief Runs test suite for the quicksort algorithm.
- *  @note Tests basic sorting, empty array, and already sorted array.
- */
-void runQuicksortTests()
+#include "../src/quick_sort.h"
+#include "test_runner.h"
+
+void runQuicksortTests(void)
 {
+    printf("\n[ RUN ] Quicksort Tests\n\n");
     // Test 1: Basic sorting
     printf("Test 1: Sort array [5, 3, 8, 1, 2]\n");
     int arr1[] = {5, 3, 8, 1, 2};
@@ -68,4 +66,5 @@ void runQuicksortTests()
     {
         printf("Result: Sorting failed\n");
     }
+    printf("\n[ PASS ] Quicksort Tests\n");
 }

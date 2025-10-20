@@ -3,20 +3,26 @@
 
 #include <stdint.h>
 
-struct Node
+struct ArrayNode
 {
     int data;
 };
 
 typedef struct
 {
-    struct Node* data;
+    struct ArrayNode* data;
     size_t size;
     size_t capacity;
-} NodeArray;
+} Array;
 
-int node_array_init(NodeArray* array);
-NodeArray* node_array_new(void);
-static int node_array_grow_to(NodeArray* array, size_t new_capacity);
+// Initialization
+int array_init(Array* a);
+Array* array_new(void);
+
+// Memory management
+// static int node_array_grow_to(Array* a, size_t new_capacity);
+
+void array_free(Array* a);
+void array_delete(Array* a);
 
 #endif // !ARRAY_H

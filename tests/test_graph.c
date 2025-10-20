@@ -3,8 +3,9 @@
 
 #include "../src/graph.h"
 
-void runGraphTests()
+void runGraphTests(void)
 {
+    printf("\n[ RUN ] Graph Tests\n\n");
     // Test 1: Initialization
     printf("Test 1: Initialize Graph with 5 vertices\n");
     Graph g;
@@ -61,4 +62,5 @@ void runGraphTests()
     {
         printf("Result: Max vertices initialization failed\n");
     }
+    printf("\n[ PASS ] Graph Tests\n");
 }

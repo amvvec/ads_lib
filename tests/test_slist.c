@@ -1,10 +1,11 @@
-#include "../src/slist.h"
 #include <stdio.h>
 
-void runSinglyLinkedListTests()
-{
-    SNode* head = NULL;
+#include "../src/slist.h"
 
+void runSListTests(void)
+{
+    printf("\n[ RUN ] Singly Linked List Tests\n\n");
+    SNode* head = NULL;
     // Test 1: InsertFront
     printf("Test 1: InsertFront 3, 2, 1\n");
     insertSFront(&head, 3);
@@ -40,4 +41,5 @@ void runSinglyLinkedListTests()
 
     // Cleanup
     freeSList(&head);
+    printf("\n[ PASS ] Singly Linked List Tests\n");
 }

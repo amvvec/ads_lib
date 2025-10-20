@@ -1,9 +1,11 @@
-#include "../src/insertion_sort.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-void runInsertionSortTests()
+#include "../src/insertion_sort.h"
+
+void runInsertionSortTests(void)
 {
+    printf("\n[ RUN ] Insertion sort Tests\n\n");
     // Test 1: Random array
     printf("Test 1: Sort [5, 2, 8, 1, 9]\n");
     int arr1[] = {5, 2, 8, 1, 9};
@@ -43,4 +45,5 @@ void runInsertionSortTests()
     insertion_sort(arr5, 1);
     int pass5 = arr5[0] == expected5[0];
     printf("Result: %s\n", pass5 ? "Pass" : "Fail");
+    printf("\n[ PASS ] Insertion sort Tests\n");
 }

@@ -1,9 +1,11 @@
-#include "../src/dfs.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-void runDFSTests()
+#include "../src/dfs.h"
+
+void runDFSTests(void)
 {
+    printf("\n[ RUN ] DFS Tests\n\n");
     // Test 1: Simple graph traversal
     printf("Test 1: DFS on graph with edges 0->1, 0->2, 1->3\n");
     Graph g;
@@ -31,4 +33,5 @@ void runDFSTests()
     printf("Expected: 0\nResult: ");
     dfs(&g_disconnect, 0);
     printf("Check output manually for 0\n");
+    printf("\n[ PASS ] DFS Tests\n");
 }

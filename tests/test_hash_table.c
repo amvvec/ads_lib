@@ -1,8 +1,10 @@
-#include "../src/hash_table.h"
 #include <stdio.h>
 
-void runHashTableTests()
+#include "../src/hash_table.h"
+
+void runHashTableTests(void)
 {
+    printf("\n[ RUN ] Hash Table Tests\n\n");
     // Test 1: Initialization
     printf("Test 1: Initialize Hash Table with size 5\n");
     HashTable* ht = hash_table_init(5);
@@ -45,4 +47,5 @@ void runHashTableTests()
     printf("Test 4: Free Hash Table\n");
     hash_table_free(ht);
     printf("Result: Freed\n");
+    printf("\n[ PASS ] Hash Table Tests\n");
 }
