@@ -1,6 +1,7 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 struct ArrayNode
@@ -20,7 +21,7 @@ int array_init(Array* a);
 Array* array_new(void);
 
 // Memory management
-// static int node_array_grow_to(Array* a, size_t new_capacity);
+int array_grow_to(Array* a, size_t new_capacity);
 
 void array_free(Array* a);
 void array_delete(Array* a);

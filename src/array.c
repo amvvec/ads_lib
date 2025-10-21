@@ -32,36 +32,53 @@ Array* array_new(void)
     return a;
 }
 
-// static int array_grow_to(Array* a, size_t start_capacity)
-// {
-//     if(!a)
-//     {
-//         return EINVAL;
-//     }
-//     if(start_capacity <= a->capacity)
-//     {
-//         return 0; // Enough memory
-//     }
-//     size_t new_capacity = a->capacity ? a->capacity : NODE_ARRAY_INIT_CAP;
-//     while(new_capacity < start_capacity)
-//     {
-//         if(new_capacity > SIZE_MAX / 2)
-//         {
-//             new_capacity = start_capacity; // No overflow fallback
-//             break;
-//         }
-//         new_capacity *= 2;
-//     }
-//     size_t new_bytes;
-//     struct Node* new_data = realloc(a->data, &new_bytes);
-//     if(!new_data)
-//     {
-//         return ENOMEM; // TODO: EOVERFLOW
-//     }
-//     a->data = new_data;
-//     a->capacity = start_capacity;
-//     return 0;
-// }
+int multiply_overflow_size_t(size_t count, size_t element_size,
+                             size_t* out_bytes)
+{
+    if(count > SIZE_MAX / element_size && element_size != 0)
+    {
+        return -1;
+    }
+    *out_bytes = count * element_size;
+    return 0;
+}
+
+int array_grow_to(Array* a, size_t min_capacity)
+{
+    if(!a)
+    {
+        return EINVAL;
+    }
+    if(min_capacity <= a->capacity)
+    {
+        return 0; // Enough memory
+    }
+    size_t new_capacity = a->capacity ? a->capacity : NODE_ARRAY_INIT_CAP;
+    while(new_capacity < min_capacity)
+    {
+        if(new_capacity > SIZE_MAX / 2)
+        {
+            new_capacity = min_capacity; // No overflow fallback
+            break;
+        }
+        new_capacity *= 2;
+    }
+    size_t new_bytes;
+    if(multiply_overflow_size_t(min_capacity, sizeof(struct ArrayNode),
+                                &new_bytes))
+    {
+        return EOVERFLOW;
+    }
+    struct ArrayNode* new_data = realloc(a->data, new_bytes);
+    if(!new_bytes)
+    {
+        return ENOMEM;
+    }
+
+    a->data = new_data;
+    a->capacity = new_capacity;
+    return 0;
+}
 
 void array_free(Array* a)
 {
