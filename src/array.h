@@ -4,24 +4,15 @@
 #include <stddef.h>
 #include <stdint.h>
 
-struct ArrayNode
-{
-    int data;
-};
+typedef struct ArrayNode ArrayNode;
+typedef struct Array Array;
 
-typedef struct
-{
-    struct ArrayNode* data;
-    size_t size;
-    size_t capacity;
-} Array;
-
-// Initialization
 int array_init(Array* a);
 Array* array_new(void);
 
-// Memory management
 int array_grow_to(Array* a, size_t new_capacity);
+int array_reserve(void* array_struct, size_t* capacity_field, void** data_field,
+                  size_t elem_size, size_t n);
 
 void array_free(Array* a);
 void array_delete(Array* a);

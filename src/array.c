@@ -4,9 +4,22 @@
 
 #include "array.h"
 
+typedef struct ArrayNode
+{
+    int data;
+} ArrayNode;
+
+typedef struct Array
+{
+    ArrayNode* data;
+    size_t size;
+    size_t capacity;
+    size_t element_size;
+} Array;
+
 enum
 {
-    NODE_ARRAY_INIT_CAP = 8
+    ARRAY_INIT_CAP = 8
 };
 
 int array_init(Array* a)
@@ -53,7 +66,7 @@ int array_grow_to(Array* a, size_t min_capacity)
     {
         return 0; // Enough memory
     }
-    size_t new_capacity = a->capacity ? a->capacity : NODE_ARRAY_INIT_CAP;
+    size_t new_capacity = a->capacity ? a->capacity : ARRAY_INIT_CAP;
     while(new_capacity < min_capacity)
     {
         if(new_capacity > SIZE_MAX / 2)
