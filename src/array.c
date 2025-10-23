@@ -22,9 +22,9 @@ enum
     ARRAY_INIT_CAP = 8
 };
 
-int array_init(Array* a)
+int array_init(Array* a, size_t element_size)
 {
-    if(!a)
+    if(!a && element_size == 0)
     {
         return EINVAL;
     }
@@ -34,14 +34,18 @@ int array_init(Array* a)
     return 0;
 }
 
-Array* array_new(void)
+Array* array_new(size_t element_size)
 {
     Array* a = malloc(sizeof(Array));
     if(!a)
     {
         return NULL;
     }
-    array_init(a);
+    if(array_init(a, element_size) != 0)
+    {
+        free(a);
+        return NULL;
+    }
     return a;
 }
 
