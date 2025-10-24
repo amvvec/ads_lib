@@ -49,12 +49,16 @@ Array* array_new(size_t element_size)
     return a;
 }
 
-int multiply_overflow_size_t(size_t count, size_t element_size,
+static int multiply_overflow_size_t(size_t count, size_t element_size,
                              size_t* out_bytes)
 {
-    if(count > SIZE_MAX / element_size && element_size != 0)
+    if(out_bytes == NULL || element_size == 0)
     {
-        return -1;
+        return EINVAL;
+    }
+    if(count > SIZE_MAX / element_size)
+    {
+        return EOVERFLOW;
     }
     *out_bytes = count * element_size;
     return 0;
