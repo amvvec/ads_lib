@@ -90,11 +90,10 @@ int array_grow_to(Array * a, size_t start_capacity)
         return EOVERFLOW;
     }
     struct ArrayNode * new_data = realloc(a->data, new_bytes);
-    if(!new_bytes)
+    if(!new_data)
     {
         return ENOMEM;
     }
-
     a->data = new_data;
     a->capacity = new_capacity;
     return 0;
