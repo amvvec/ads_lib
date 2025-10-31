@@ -8,7 +8,7 @@
  *  @note Does nothing if either pointer is NULL. Time complexity is O(1).
  *  @warning Null pointer check is performed to prevent undefined behavior.
  */
-void swap(int* a, int* b)
+void swap(int * a, int * b)
 {
     if(!a || !b)
     {
@@ -33,7 +33,7 @@ int partition(int arr[], int low, int high)
     {
         fprintf(stderr,
                 "Invalid partition parameters: arr=%p, low=%d, high=%d\n",
-                (void*)arr, low, high);
+                (void *)arr, low, high);
         return -1;
     }
 
@@ -67,7 +67,7 @@ void quick_sort(int arr[], int low, int high)
     {
         fprintf(stderr,
                 "Invalid quicksort parameters: arr=%p, low=%d, high=%d\n",
-                (void*)arr, low, high);
+                (void *)arr, low, high);
         return;
     }
     if(low >= high)

@@ -12,7 +12,7 @@
 struct SNode
 {
     int data;
-    struct SNode* next;
+    struct SNode * next;
 };
 
 /** @brief Creates a new node with the given data.
@@ -21,7 +21,7 @@ struct SNode
  * allocation fails.
  *  @note Checks for integer overflow and memory allocation errors.
  */
-SNode* createSNode(int data)
+SNode * createSNode(int data)
 {
     if(data > INT_MAX || data < INT_MIN)
     {
@@ -33,7 +33,7 @@ SNode* createSNode(int data)
         fprintf(stderr, "Memory allocation size too large\n");
         return NULL;
     }
-    SNode* node = (SNode*)calloc(1, sizeof(SNode));
+    SNode * node = (SNode *)calloc(1, sizeof(SNode));
     if(!node)
     {
         fprintf(stderr, "Memory allocation failed\n");
@@ -51,7 +51,7 @@ SNode* createSNode(int data)
  *  @note Handles null head pointer and failed node creation. O(1) time
  * complexity.
  */
-void insertSFront(SNode** head, int data)
+void insertSFront(SNode ** head, int data)
 {
     if(!head)
     {
@@ -63,7 +63,7 @@ void insertSFront(SNode** head, int data)
         fprintf(stderr, "Data out of safe range, potential injection\n");
         return;
     }
-    SNode* newNode = createSNode(data);
+    SNode * newNode = createSNode(data);
     if(!newNode)
     {
         return;
@@ -79,14 +79,14 @@ void insertSFront(SNode** head, int data)
  *  @note Handles null head pointer, empty list, and failed node creation. O(n)
  * time complexity.
  */
-void insertSEnd(SNode** head, int data)
+void insertSEnd(SNode ** head, int data)
 {
     if(!head)
     {
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
-    SNode* newNode = createSNode(data);
+    SNode * newNode = createSNode(data);
     if(!newNode)
     {
         return;
@@ -96,7 +96,7 @@ void insertSEnd(SNode** head, int data)
         *head = newNode;
         return;
     }
-    SNode* tmp = *head;
+    SNode * tmp = *head;
     while(tmp->next)
     {
         tmp = tmp->next;
@@ -111,7 +111,7 @@ void insertSEnd(SNode** head, int data)
  *  @note Handles empty list, null head pointer, and non-existent data. O(n)
  * time complexity.
  */
-void deleteSNode(SNode** head, int data)
+void deleteSNode(SNode ** head, int data)
 {
     if(!head || !*head)
     {
@@ -145,14 +145,14 @@ void deleteSNode(SNode** head, int data)
  *  @return None.
  *  @note Prints "Empty list" if head is NULL. O(n) time complexity.
  */
-void printSList(SNode* head)
+void printSList(SNode * head)
 {
     if(!head)
     {
         printf("Empty list\n");
         return;
     }
-    SNode* tmp = head;
+    SNode * tmp = head;
     while(tmp)
     {
         printf("%d ", tmp->data);
@@ -167,14 +167,14 @@ void printSList(SNode* head)
  *  @note Handles null head pointer. Sets head to NULL after freeing. O(n) time
  * complexity.
  */
-void freeSList(SNode** head)
+void freeSList(SNode ** head)
 {
     if(!head)
     {
         fprintf(stderr, "Invalid head pointer\n");
         return;
     }
-    SNode* tmp;
+    SNode * tmp;
     while(*head)
     {
         tmp = *head;

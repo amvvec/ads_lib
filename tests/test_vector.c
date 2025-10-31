@@ -7,7 +7,7 @@ void runVectorTests(void)
     printf("\n[ RUN ] Vector Tests\n\n");
     // Test 1: Initialization
     printf("Test 1: Initialize Vector with capacity 2\n");
-    Vector* vec = vector_init(2);
+    Vector * vec = vector_init(2);
     if(vec && vec->capacity == 2 && vec->size == 0)
     {
         printf("Result: Initialized successfully\n");

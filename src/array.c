@@ -11,7 +11,7 @@ typedef struct ArrayNode
 
 typedef struct Array
 {
-    ArrayNode* data;
+    ArrayNode * data;
     size_t size;
     size_t capacity;
     size_t element_size;
@@ -22,7 +22,7 @@ enum
     ARRAY_INIT_CAP = 8
 };
 
-int array_init(Array* a, size_t element_size)
+int array_init(Array * a, size_t element_size)
 {
     if(!a && element_size == 0)
     {
@@ -34,9 +34,9 @@ int array_init(Array* a, size_t element_size)
     return 0;
 }
 
-Array* array_new(size_t element_size)
+Array * array_new(size_t element_size)
 {
-    Array* a = malloc(sizeof(Array));
+    Array * a = malloc(sizeof(Array));
     if(!a)
     {
         return NULL;
@@ -50,7 +50,7 @@ Array* array_new(size_t element_size)
 }
 
 static int multiply_overflow_size_t(size_t count, size_t element_size,
-                             size_t* out_bytes)
+                                    size_t * out_bytes)
 {
     if(out_bytes == NULL || element_size == 0)
     {
@@ -64,33 +64,33 @@ static int multiply_overflow_size_t(size_t count, size_t element_size,
     return 0;
 }
 
-int array_grow_to(Array* a, size_t min_capacity)
+int array_grow_to(Array * a, size_t start_capacity)
 {
     if(!a)
     {
         return EINVAL;
     }
-    if(min_capacity <= a->capacity)
+    if(start_capacity <= a->capacity)
     {
         return 0; // Enough memory
     }
     size_t new_capacity = a->capacity ? a->capacity : ARRAY_INIT_CAP;
-    while(new_capacity < min_capacity)
+    while(new_capacity < start_capacity)
     {
         if(new_capacity > SIZE_MAX / 2)
         {
-            new_capacity = min_capacity; // No overflow fallback
+            new_capacity = start_capacity; // No overflow fallback
             break;
         }
         new_capacity *= 2;
     }
     size_t new_bytes;
-    if(multiply_overflow_size_t(min_capacity, sizeof(struct ArrayNode),
+    if(multiply_overflow_size_t(start_capacity, sizeof(struct ArrayNode),
                                 &new_bytes))
     {
         return EOVERFLOW;
     }
-    struct ArrayNode* new_data = realloc(a->data, new_bytes);
+    struct ArrayNode * new_data = realloc(a->data, new_bytes);
     if(!new_bytes)
     {
         return ENOMEM;
@@ -101,7 +101,7 @@ int array_grow_to(Array* a, size_t min_capacity)
     return 0;
 }
 
-void array_free(Array* a)
+void array_free(Array * a)
 {
     if(!a)
     {
@@ -114,7 +114,7 @@ void array_free(Array* a)
     a->capacity = 0;
 }
 
-void array_delete(Array* a)
+void array_delete(Array * a)
 {
     if(!a)
     {

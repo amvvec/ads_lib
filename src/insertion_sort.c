@@ -10,7 +10,7 @@
  * @return 0 on success, -1 on error (null array or invalid size).
  * @complexity O(n²) worst/average case, O(n) best case.
  */
-int insertion_sort(int* arr, int size)
+int insertion_sort(int * arr, int size)
 {
     if(!arr)
     {

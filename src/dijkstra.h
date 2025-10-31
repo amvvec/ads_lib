@@ -3,6 +3,6 @@
 
 #include "graph.h"
 
-void dijkstra(Graph* g, int start);
+void dijkstra(Graph * g, int start);
 
 #endif // !DIJKSTRA_H

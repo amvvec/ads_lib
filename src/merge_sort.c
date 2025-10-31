@@ -18,7 +18,7 @@ void merge(int arr[], int low, int mid, int high)
         fprintf(
             stderr,
             "Invalid merge parameters: arr:%p\n low:%d\n mid=%d\n high=%d\n",
-            (void*)arr, low, mid, high);
+            (void *)arr, low, mid, high);
         return;
     }
 
@@ -78,7 +78,7 @@ void merge_sort(int arr[], int low, int high)
     {
         fprintf(stderr,
                 "Invalid merge sort parameters: arr:%p\n low:%d\n high=%d\n",
-                (void*)arr, low, high);
+                (void *)arr, low, high);
         return;
     }
     if(low > high)

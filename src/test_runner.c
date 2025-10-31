@@ -36,7 +36,7 @@ void test_runner(void)
     runDijkstraTests();
     runInsertionSortTests();
     runSkipListTests();
-    // runArrayTests();
+    runArrayTests();
 
     printf("\n[ PASS ] All tests completed\n\n");
 }

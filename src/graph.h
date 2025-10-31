@@ -9,8 +9,8 @@ typedef struct
     int vertices;
 } Graph;
 
-void init_graph(Graph* g, int vertices);
-int add_edge(Graph* g, int src, int dst);
-void print_graph(Graph* g);
+void init_graph(Graph * g, int vertices);
+int add_edge(Graph * g, int src, int dst);
+void print_graph(Graph * g);
 
 #endif // !GRAPH_H

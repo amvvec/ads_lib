@@ -11,10 +11,10 @@
  */
 typedef struct AVLNode
 {
-    int data;             /**< The integer data stored in the node. */
-    int height;           /**< The height of the subtree rooted at this node. */
-    struct AVLNode* left; /**< Pointer to the left child node. */
-    struct AVLNode* right; /**< Pointer to the right child node. */
+    int data;   /**< The integer data stored in the node. */
+    int height; /**< The height of the subtree rooted at this node. */
+    struct AVLNode * left;  /**< Pointer to the left child node. */
+    struct AVLNode * right; /**< Pointer to the right child node. */
 } AVLNode;
 
 /** @struct AVLTree
@@ -23,14 +23,14 @@ typedef struct AVLNode
  */
 typedef struct
 {
-    AVLNode* root;
+    AVLNode * root;
 } AVLTree;
 
-AVLNode* insert(AVLNode* node, int data);
-AVLTree* avl_tree_init(void);
-void avl_tree_insert(AVLTree* tree, int data);
-void avl_tree_free(AVLNode* node);
-int get_height(AVLNode* node);
-int get_balance(AVLNode* node);
+AVLNode * insert(AVLNode * node, int data);
+AVLTree * avl_tree_init(void);
+void avl_tree_insert(AVLTree * tree, int data);
+void avl_tree_free(AVLNode * node);
+int get_height(AVLNode * node);
+int get_balance(AVLNode * node);
 
 #endif // !AVL_TREE_H
