@@ -31,11 +31,16 @@ int array_init(Array * a, size_t element_size)
     a->data = NULL;
     a->size = 0;
     a->capacity = 0;
+    a->element_size = element_size;
     return 0;
 }
 
 Array * array_new(size_t element_size)
 {
+    if(element_size == 0)
+    {
+        return NULL;
+    }
     Array * a = malloc(sizeof(Array));
     if(!a)
     {
