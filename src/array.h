@@ -7,12 +7,14 @@
 typedef struct ArrayNode ArrayNode;
 typedef struct Array Array;
 
-int array_init(Array * a, size_t element_size);
+int array_init(Array * array, size_t element_size);
 Array * array_new(size_t element_size);
 
-int array_grow_to(Array * a, size_t start_capacity);
+int array_grow_to(Array * array, size_t start_capacity);
 
-void array_free(Array * a);
-void array_delete(Array * a);
+void array_free(Array * array);
+void array_delete(Array * array);
+
+int array_push_back(Array * array, struct ArrayNode value);
 
 #endif // !ARRAY_H

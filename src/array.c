@@ -22,16 +22,16 @@ enum
     ARRAY_INIT_CAP = 8
 };
 
-int array_init(Array * a, size_t element_size)
+int array_init(Array * array, size_t element_size)
 {
-    if(!a && element_size == 0)
+    if(!array && element_size == 0)
     {
         return EINVAL;
     }
-    a->data = NULL;
-    a->size = 0;
-    a->capacity = 0;
-    a->element_size = element_size;
+    array->data = NULL;
+    array->size = 0;
+    array->capacity = 0;
+    array->element_size = element_size;
     return 0;
 }
 
@@ -41,17 +41,17 @@ Array * array_new(size_t element_size)
     {
         return NULL;
     }
-    Array * a = malloc(sizeof(Array));
-    if(!a)
+    Array * array = malloc(sizeof(Array));
+    if(!array)
     {
         return NULL;
     }
-    if(array_init(a, element_size) != 0)
+    if(array_init(array, element_size) != 0)
     {
-        free(a);
+        free(array);
         return NULL;
     }
-    return a;
+    return array;
 }
 
 static int multiply_overflow_size_t(size_t count, size_t element_size,
@@ -69,17 +69,17 @@ static int multiply_overflow_size_t(size_t count, size_t element_size,
     return 0;
 }
 
-int array_grow_to(Array * a, size_t start_capacity)
+int array_grow_to(Array * array, size_t start_capacity)
 {
-    if(!a)
+    if(!array)
     {
         return EINVAL;
     }
-    if(start_capacity <= a->capacity)
+    if(start_capacity <= array->capacity)
     {
         return 0; // Enough memory
     }
-    size_t new_capacity = a->capacity ? a->capacity : ARRAY_INIT_CAP;
+    size_t new_capacity = array->capacity ? array->capacity : ARRAY_INIT_CAP;
     while(new_capacity < start_capacity)
     {
         if(new_capacity > SIZE_MAX / 2)
@@ -94,36 +94,52 @@ int array_grow_to(Array * a, size_t start_capacity)
     {
         return EOVERFLOW;
     }
-    struct ArrayNode * new_data = realloc(a->data, new_bytes);
+    struct ArrayNode * new_data = realloc(array->data, new_bytes);
     if(!new_data)
     {
         return ENOMEM;
     }
-    a->data = new_data;
-    a->capacity = new_capacity;
+    array->data = new_data;
+    array->capacity = new_capacity;
     return 0;
 }
 
-void array_free(Array * a)
+void array_free(Array * array)
 {
-    if(!a)
+    if(!array)
     {
         printf("Error: NULL pointer\n");
         return;
     }
-    free(a->data);
-    a->data = NULL;
-    a->size = 0;
-    a->capacity = 0;
+    free(array->data);
+    array->data = NULL;
+    array->size = 0;
+    array->capacity = 0;
 }
 
-void array_delete(Array * a)
+void array_delete(Array * array)
 {
-    if(!a)
+    if(!array)
     {
         printf("Error: NULL pointer\n");
         return;
     }
-    array_free(a);
-    free(a);
+    array_free(array);
+    free(array);
+}
+
+int array_push_back(Array * array, struct ArrayNode value)
+{
+    if(!array)
+    {
+        return EINVAL;
+    }
+    if(array->size >= array->capacity)
+    {
+        int error = array_grow_to(array, array->capacity ? array->capacity * 2
+                                                         : ARRAY_INIT_CAP);
+        return error;
+    }
+    array->data[array->size++] = value;
+    return 0;
 }
