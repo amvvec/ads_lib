@@ -8,7 +8,7 @@ void runArrayTests(void)
     printf("\n[ RUN ] Array Tests\n\n");
     // Test 1: Initialization
     printf("Test 1: Initialize array\n");
-    Array *array = array_new(sizeof(int));
+    Array * array = array_new(sizeof(int));
     if(!array)
     {
         fprintf(stderr, "Result: Initialization failed\n");

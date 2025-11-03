@@ -143,3 +143,13 @@ int array_push_back(Array * array, struct ArrayNode value)
     array->data[array->size++] = value;
     return 0;
 }
+
+int array_get(const Array * array, size_t index, int * out_value)
+{
+    if(!array || !out_value || index >= array->size)
+    {
+        return EINVAL;
+    }
+    *out_value = array->data[index].data;
+    return 0;
+}

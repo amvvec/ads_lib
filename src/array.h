@@ -17,4 +17,7 @@ void array_delete(Array * array);
 
 int array_push_back(Array * array, struct ArrayNode value);
 
+int array_get(const Array * array, size_t index, int * out_value);
+int array_set(Array * array, size_t index, int value);
+
 #endif // !ARRAY_H
