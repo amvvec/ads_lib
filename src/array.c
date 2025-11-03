@@ -153,3 +153,13 @@ int array_get(const Array * array, size_t index, int * out_value)
     *out_value = array->data[index].data;
     return 0;
 }
+
+int array_set(Array * array, size_t index, int value)
+{
+    if(!array || index >= array->size)
+    {
+        return EINVAL;
+    }
+    array->data[index].data = value;
+    return 0;
+}
