@@ -168,3 +168,8 @@ size_t array_size(const Array * array)
 {
     return array ? array->size : 0;
 }
+
+size_t array_capacity(const Array * array)
+{
+    return array ? array->capacity : 0;
+}
