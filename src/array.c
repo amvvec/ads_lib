@@ -163,3 +163,8 @@ int array_set(Array * array, size_t index, int value)
     array->data[index].data = value;
     return 0;
 }
+
+size_t array_size(const Array * array)
+{
+    return array ? array->size : 0;
+}
