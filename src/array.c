@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <memory.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -57,7 +58,7 @@ Array * array_new(size_t element_size)
 static int multiply_overflow_size_t(size_t count, size_t element_size,
                                     size_t * out_bytes)
 {
-    if(out_bytes == NULL || element_size == 0)
+    if(!out_bytes || element_size == 0)
     {
         return EINVAL;
     }
@@ -128,9 +129,9 @@ void array_delete(Array * array)
     free(array);
 }
 
-int array_push_back(Array * array, struct ArrayNode value)
+int array_push_back(Array * array, const void * value)
 {
-    if(!array)
+    if(!array && !value)
     {
         return EINVAL;
     }
@@ -138,9 +139,14 @@ int array_push_back(Array * array, struct ArrayNode value)
     {
         int error = array_grow_to(array, array->capacity ? array->capacity * 2
                                                          : ARRAY_INIT_CAP);
-        return error;
+        if(error)
+        {
+            return error;
+        }
     }
-    array->data[array->size++] = value;
+    void * dest = (char *)array->data + array->size * array->element_size;
+    memcpy(dest, value, array->element_size);
+    array->size++;
     return 0;
 }
 
