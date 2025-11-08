@@ -16,8 +16,11 @@ void array_free(Array * array);
 void array_delete(Array * array);
 
 int array_push_back(Array * array, const void * value);
+void array_pop_back(Array * array);
 
 int array_get(const Array * array, size_t index, int * out_value);
 int array_set(Array * array, size_t index, int value);
+size_t array_size(const Array * array);
+size_t array_capacity(const Array * array);
 
 #endif // !ARRAY_H

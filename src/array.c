@@ -150,6 +150,21 @@ int array_push_back(Array * array, const void * value)
     return 0;
 }
 
+void array_pop_back(Array * array)
+{
+    if(!array)
+    {
+        return;
+    }
+    if(array->size == 0)
+    {
+        return;
+    }
+    array->size--;
+    void * dest = (char *)array->data + array->size * array->element_size;
+    memset(dest, 0, array->element_size);
+}
+
 int array_get(const Array * array, size_t index, int * out_value)
 {
     if(!array || !out_value || index >= array->size)
