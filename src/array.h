@@ -15,6 +15,7 @@ int array_grow_to(Array * array, size_t start_capacity);
 void array_free(Array * array);
 void array_delete(Array * array);
 
+int array_push_front(Array * array, const void * value);
 int array_push_back(Array * array, const void * value);
 void array_pop_back(Array * array);
 

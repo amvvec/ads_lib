@@ -129,6 +129,30 @@ void array_delete(Array * array)
     free(array);
 }
 
+int array_push_front(Array * array, const void * value)
+{
+    if(!array || !value)
+    {
+        return EINVAL;
+    }
+    if(array->size >= array->capacity)
+    {
+        int error = array_grow_to(array, array->capacity ? array->capacity * 2
+                                                         : ARRAY_INIT_CAP);
+        if(error)
+        {
+            return error;
+        }
+    }
+    void * dest = (char *)array->data + 1 * array->element_size;
+    void * src = (char *)array->data;
+    size_t bytes_to_move = array->size * array->element_size;
+    memmove(dest, src, bytes_to_move);
+    memcpy(array->data, value, array->element_size);
+    array->size++;
+    return 0;
+}
+
 int array_push_back(Array * array, const void * value)
 {
     if(!array && !value)
