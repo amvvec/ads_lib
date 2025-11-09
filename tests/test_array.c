@@ -102,6 +102,41 @@ static void test_array_pop_back(void)
     printf("[ PASS ] test_array_pop_back\n\n");
 }
 
+static void test_array_push_front(void)
+{
+    printf("[ RUN ] push_front\n");
+    Array * array = array_new(sizeof(int));
+    if(!array)
+    {
+        fprintf(stderr, "Result: Allocation failed\n");
+        return;
+    }
+    for(int i = 1; i <= 3; ++i)
+    {
+        array_push_back(array, &i);
+    }
+    printf("Before push_front: ");
+    for(size_t i = 0; i < array_size(array); ++i)
+    {
+        int value;
+        array_get(array, i, &value);
+        printf("%d ", value);
+    }
+    printf("\n");
+    int x = 0;
+    array_push_front(array, &x);
+    printf("After push_front:  ");
+    for(size_t i = 0; i < array_size(array); ++i)
+    {
+        int value;
+        array_get(array, i, &value);
+        printf("%d ", value);
+    }
+    printf("\n");
+    array_delete(array);
+    printf("[ PASS ] Push front test completed\n\n");
+}
+
 void runArrayTests(void)
 {
     printf("\n========== Running Array Tests ==========\n\n");
@@ -109,5 +144,6 @@ void runArrayTests(void)
     test_array_push_and_get();
     test_array_set();
     test_array_pop_back();
+    test_array_push_front();
     printf("========== All Array Tests Passed ==========\n");
 }
