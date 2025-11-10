@@ -18,6 +18,7 @@ void array_delete(Array * array);
 int array_push_front(Array * array, const void * value);
 int array_push_back(Array * array, const void * value);
 void array_pop_back(Array * array);
+void array_pop_front(Array * array);
 
 int array_get(const Array * array, size_t index, int * out_value);
 int array_set(Array * array, size_t index, int value);

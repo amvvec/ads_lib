@@ -174,6 +174,18 @@ int array_push_back(Array * array, const void * value)
     return 0;
 }
 
+void array_pop_front(Array * array)
+{
+    if(!array || array->size == 0)
+    {
+        return;
+    }
+    size_t bytes_to_move = (array->size - 1) * array->capacity;
+    memmove(array->data, (char *)array->data + array->element_size,
+            bytes_to_move);
+    array->size--;
+}
+
 void array_pop_back(Array * array)
 {
     if(!array)

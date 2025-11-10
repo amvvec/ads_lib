@@ -9,11 +9,11 @@
  *  @var SNode::data Integer data stored in the node.
  *  @var SNode::next Pointer to the next node in the list.
  */
-struct SNode
+typedef struct SNode
 {
     int data;
     struct SNode * next;
-};
+} SNode;
 
 /** @brief Creates a new node with the given data.
  *  @param data The integer value to store in the node.
