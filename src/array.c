@@ -70,7 +70,7 @@ static int multiply_overflow_size_t(size_t count, size_t element_size,
     return 0;
 }
 
-int array_grow_to(Array * array, size_t start_capacity)
+static int array_grow_to(Array * array, size_t start_capacity)
 {
     if(!array)
     {
@@ -127,6 +127,39 @@ void array_delete(Array * array)
     }
     array_free(array);
     free(array);
+}
+
+int array_insert(Array * array, size_t index, const void * value)
+{
+    if(!array || !value)
+    {
+        return EINVAL;
+    }
+    if(index > array->size)
+    {
+        return EINVAL;
+    }
+    if(array->size >= array->capacity)
+    {
+        int error = array_grow_to(array, array->capacity ? array->capacity * 2
+                                                         : ARRAY_INIT_CAP);
+        if(error)
+        {
+            return error;
+        }
+    }
+    char * base = (char *)array->data;
+    if(index < array->size)
+    {
+        void * dest = base + (index + 1) * array->element_size;
+        void * src = base + index * array->element_size;
+        size_t bytes_to_move = (array->size - index) * array->element_size;
+        memmove(dest, src, bytes_to_move);
+    }
+    void * insert = base + index * array->element_size;
+    memcpy(insert, value, array->element_size);
+    array->size++;
+    return 0;
 }
 
 int array_push_front(Array * array, const void * value)

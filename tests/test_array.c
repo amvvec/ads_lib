@@ -11,10 +11,10 @@ static void test_array_init_new(void)
         printf("Result: Initialization failed\n");
         exit(EXIT_FAILURE);
     }
-    printf("[ OK ] Initialized successfully\n");
+    printf("[ PASS ] Initialized successfully\n");
 
     array_delete(array);
-    printf("[ OK ] Deleted successfully\n\n");
+    printf("[ PASS ] Deleted successfully\n\n");
 }
 
 static void test_array_push_pop_front(void)
