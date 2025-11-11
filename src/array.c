@@ -213,7 +213,8 @@ void array_pop_front(Array * array)
     {
         return;
     }
-    size_t bytes_to_move = (array->size - 1) * array->capacity;
+    size_t bytes_to_move =
+        (array->size - 1) * array->capacity; // WARNING: smth is wrong here
     memmove(array->data, (char *)array->data + array->element_size,
             bytes_to_move);
     array->size--;

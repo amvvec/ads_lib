@@ -70,7 +70,7 @@ static void test_array_push_pop_front(void)
     }
     else
     {
-        printf("[ OK ] Error — expected empty array\n");
+        printf("[ FAIL ] expected empty array\n");
     }
 
     array_delete(array);
@@ -120,7 +120,7 @@ static void test_array_push_and_get(void)
         array_delete(array);
         exit(EXIT_FAILURE);
     }
-    printf("Result: push_back/get passed (value=%d)\n", result);
+    printf("[ OK ] push_back/get passed (value=%d)\n", result);
     array_delete(array);
     printf("[ PASS ] test_array_push_and_get passed\n\n");
 }
@@ -212,6 +212,95 @@ static void test_array_push_front(void)
     printf("[ PASS ] Push front test completed\n\n");
 }
 
+static void test_array_insert(void)
+{
+    printf("[ RUN ] test_array_insert\n");
+
+    Array * array = array_new(sizeof(int));
+    if(!array)
+    {
+        fprintf(stderr, "[ FAIL ] array_new() failed\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Заполним массив начальными значениями: 10, 20, 30
+    int initial[] = {10, 20, 30};
+    for(int i = 0; i < 3; ++i)
+    {
+        if(array_push_back(array, &initial[i]) != 0)
+        {
+            fprintf(stderr, "[ FAIL ] array_push_back failed at index %d\n", i);
+            array_delete(array);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    printf("Initial array (size = %zu): ", array_size(array));
+    for(size_t i = 0; i < array_size(array); ++i)
+    {
+        int v = 0;
+        array_get(array, i, &v);
+        printf("%d ", v);
+    }
+    printf("\n");
+
+    // Вставим 5 в начало
+    int v_front = 5;
+    if(array_insert(array, 0, &v_front) != 0)
+    {
+        fprintf(stderr, "[ FAIL ] array_insert at front failed\n");
+        array_delete(array);
+        exit(EXIT_FAILURE);
+    }
+
+    // Вставим 25 в середину (между 20 и 30)
+    int v_mid = 25;
+    if(array_insert(array, 3, &v_mid) != 0)
+    {
+        fprintf(stderr, "[ FAIL ] array_insert in middle failed\n");
+        array_delete(array);
+        exit(EXIT_FAILURE);
+    }
+
+    // Вставим 40 в конец
+    int v_back = 40;
+    if(array_insert(array, array_size(array), &v_back) != 0)
+    {
+        fprintf(stderr, "[ FAIL ] array_insert at back failed\n");
+        array_delete(array);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("After insertions (size = %zu): ", array_size(array));
+    for(size_t i = 0; i < array_size(array); ++i)
+    {
+        int v = 0;
+        array_get(array, i, &v);
+        printf("%d ", v);
+    }
+    printf("\nExpected: 5 10 20 25 30 40\n");
+
+    // Проверим правильность значений
+    int expected[] = {5, 10, 20, 25, 30, 40};
+    size_t n = sizeof(expected) / sizeof(expected[0]);
+    for(size_t i = 0; i < n; ++i)
+    {
+        int out = 0;
+        array_get(array, i, &out);
+        if(out != expected[i])
+        {
+            fprintf(stderr, "[ FAIL ] array[%zu] = %d, expected %d\n", i, out,
+                    expected[i]);
+            array_delete(array);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    printf("[ OK ] array_insert passed all checks\n");
+    array_delete(array);
+    printf("[ PASS ] test_array_insert completed\n\n");
+}
+
 void runArrayTests(void)
 {
     printf("\n========== Running Array Tests ==========\n\n");
@@ -222,5 +311,6 @@ void runArrayTests(void)
     test_array_push_front();
     test_array_push_pop_front();
     test_array_init_new();
+    test_array_insert();
     printf("========== All Array Tests Passed ==========\n");
 }
