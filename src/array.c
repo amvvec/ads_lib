@@ -162,6 +162,30 @@ int array_insert(Array * array, size_t index, const void * value)
     return 0;
 }
 
+int array_erase(Array * array, size_t index)
+{
+    if(!array)
+    {
+        return EINVAL;
+    }
+    if(index >= array->size)
+    {
+        return EINVAL;
+    }
+    if(index < array->size - 1)
+    {
+        char * base = (char *)array->data;
+        void * dest = base + index * array->element_size;
+        void * src = base + (index + 1) * array->element_size;
+        size_t bytes_to_move = (array->size - index - 1) * array->element_size;
+        memmove(dest, src, bytes_to_move);
+    }
+    array->size--;
+    void * last = (char *)array->data + array->size * array->element_size;
+    memset(last, 0, array->element_size);
+    return 0;
+}
+
 int array_push_front(Array * array, const void * value)
 {
     if(!array || !value)

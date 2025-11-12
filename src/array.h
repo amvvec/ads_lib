@@ -11,6 +11,7 @@ int array_init(Array * array, size_t element_size);
 Array * array_new(size_t element_size);
 
 int array_insert(Array * array, size_t index, const void * value);
+int array_erase(Array * array, size_t index);
 int array_push_front(Array * array, const void * value);
 int array_push_back(Array * array, const void * value);
 void array_pop_back(Array * array);
