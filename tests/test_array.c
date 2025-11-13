@@ -2,6 +2,109 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+static void test_array_erase(void)
+{
+    printf("[ RUN ] test_array_erase\n");
+
+    Array * array = array_new(sizeof(int));
+    if(!array)
+    {
+        fprintf(stderr, "[ FAIL ] array_new() failed\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Инициализация массива: 10 20 30 40 50
+    int values[] = {10, 20, 30, 40, 50};
+    for(int i = 0; i < 5; ++i)
+    {
+        if(array_push_back(array, &values[i]) != 0)
+        {
+            fprintf(stderr, "[ FAIL ] push_back failed at index %d\n", i);
+            array_delete(array);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    printf("Initial array: ");
+    for(size_t i = 0; i < array_size(array); ++i)
+    {
+        int v = 0;
+        array_get(array, i, &v);
+        printf("%d ", v);
+    }
+    printf("\n");
+
+    // 1. Удалим элемент в середине (index = 2 → 30)
+    if(array_erase(array, 2) != 0)
+    {
+        fprintf(stderr, "[ FAIL ] erase middle failed\n");
+        array_delete(array);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("After erase(2): ");
+    for(size_t i = 0; i < array_size(array); ++i)
+    {
+        int v = 0;
+        array_get(array, i, &v);
+        printf("%d ", v);
+    }
+    printf("\nExpected: 10 20 40 50\n");
+
+    // 2. Удалим первый элемент (index = 0 → 10)
+    if(array_erase(array, 0) != 0)
+    {
+        fprintf(stderr, "[ FAIL ] erase front failed\n");
+        array_delete(array);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("After erase(0): ");
+    for(size_t i = 0; i < array_size(array); ++i)
+    {
+        int v = 0;
+        array_get(array, i, &v);
+        printf("%d ", v);
+    }
+    printf("\nExpected: 20 40 50\n");
+
+    // 3. Удалим последний элемент (index = size-1 → 50)
+    if(array_erase(array, array_size(array) - 1) != 0)
+    {
+        fprintf(stderr, "[ FAIL ] erase back failed\n");
+        array_delete(array);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("After erase(last): ");
+    for(size_t i = 0; i < array_size(array); ++i)
+    {
+        int v = 0;
+        array_get(array, i, &v);
+        printf("%d ", v);
+    }
+    printf("\nExpected: 20 40\n");
+
+    // Проверим соответствие ожидаемым значениям
+    int expected[] = {20, 40};
+    size_t n = sizeof(expected) / sizeof(expected[0]);
+    for(size_t i = 0; i < n; ++i)
+    {
+        int out = 0;
+        array_get(array, i, &out);
+        if(out != expected[i])
+        {
+            fprintf(stderr, "[ FAIL ] array[%zu] = %d, expected %d\n", i, out, expected[i]);
+            array_delete(array);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    printf("[ OK ] array_erase passed all checks\n");
+    array_delete(array);
+    printf("[ PASS ] test_array_erase completed\n\n");
+}
+
 static void test_array_init_new(void)
 {
     printf("[ RUN ] Initialize array\n");
@@ -312,5 +415,6 @@ void runArrayTests(void)
     test_array_push_pop_front();
     test_array_init_new();
     test_array_insert();
+    test_array_erase();
     printf("========== All Array Tests Passed ==========\n");
 }
