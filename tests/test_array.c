@@ -94,7 +94,8 @@ static void test_array_erase(void)
         array_get(array, i, &out);
         if(out != expected[i])
         {
-            fprintf(stderr, "[ FAIL ] array[%zu] = %d, expected %d\n", i, out, expected[i]);
+            fprintf(stderr, "[ FAIL ] array[%zu] = %d, expected %d\n", i, out,
+                    expected[i]);
             array_delete(array);
             exit(EXIT_FAILURE);
         }

@@ -5,6 +5,15 @@
 
 #include "array.h"
 
+typedef enum
+{
+    ERR_OK = 0,
+    ERR_NULL,
+    ERR_OOB,    // error Out Of Bounds
+    ERR_ALLOC,
+    ERR_EMPTY
+} ArrayStatus;
+
 typedef struct ArrayNode
 {
     int data;
