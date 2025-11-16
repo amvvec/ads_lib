@@ -1,6 +1,57 @@
-#include "../src/array.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "../src/array.h"
+
+static void test_array_shrink_to_fit(void)
+{
+    printf("[ RUN ] test_array_shrink_to_fit\n");
+
+    Array * array = array_new(sizeof(int));
+    if(!array)
+    {
+        fprintf(stderr, "[ FAIL ] array_new failed\n");
+        exit(EXIT_FAILURE);
+    }
+
+    /* fill with 10 elements so capacity grows */
+    for(int i = 0; i < 10; ++i)
+    {
+        if(array_push_back(array, &i) != 0)
+        {
+            fprintf(stderr, "[ FAIL ] push_back failed at %d\n", i);
+            array_delete(array);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    printf("Before shrink: size=%zu capacity=%zu\n", array_size(array),
+           array_capacity(array));
+
+    /* remove some elements so size < capacity */
+    for(int i = 0; i < 8; ++i)
+    {
+        array_pop_back(array);
+    }
+
+    /* verify data integrity (remaining elements are 0..1) */
+    for(size_t i = 0; i < array_size(array); ++i)
+    {
+        int v = 0;
+        array_get(array, i, &v);
+        if((int)i != v)
+        {
+            fprintf(stderr,
+                    "[ FAIL ] data mismatch at %zu: got %d expected %d\n", i, v,
+                    (int)i);
+            array_delete(array);
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    array_delete(array);
+    printf("[ PASS ] test_array_shrink_to_fit\n\n");
+}
 
 static void test_array_erase(void)
 {
@@ -417,5 +468,6 @@ void runArrayTests(void)
     test_array_init_new();
     test_array_insert();
     test_array_erase();
+    test_array_shrink_to_fit();
     printf("========== All Array Tests Passed ==========\n");
 }

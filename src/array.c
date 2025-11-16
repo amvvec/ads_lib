@@ -83,38 +83,6 @@ Array * array_new(size_t element_size)
     return array;
 }
 
-int array_shrink_to_fir(Array * array)
-{
-    if(!array)
-    {
-        return EINVAL;
-    }
-    if(array->size == array->capacity)
-    {
-        return 0;
-    }
-    if(array->size == 0)
-    {
-        free(array->data);
-        array->data = NULL;
-        array->capacity = 0;
-        return 0;
-    }
-    size_t new_bytes;
-    if(mult_overflow_size_t(array->size, array->element_size, &new_bytes) != 0)
-    {
-        return EOVERFLOW;
-    }
-    void * tmp = realloc(array->data, new_bytes);
-    if(!tmp)
-    {
-        return ENOMEM; // TODO
-    }
-    array->data = tmp;
-    array->capacity = array->size;
-    return 0;
-}
-
 static int mult_overflow_size_t(size_t count, size_t element_size,
                                 size_t * out_bytes)
 {
@@ -162,6 +130,38 @@ static int array_grow_to(Array * array, size_t start_capacity)
     }
     array->data = new_data;
     array->capacity = new_capacity;
+    return 0;
+}
+
+int array_shrink_to_fir(Array * array)
+{
+    if(!array)
+    {
+        return EINVAL;
+    }
+    if(array->size == array->capacity)
+    {
+        return 0;
+    }
+    if(array->size == 0)
+    {
+        free(array->data);
+        array->data = NULL;
+        array->capacity = 0;
+        return 0;
+    }
+    size_t new_bytes;
+    if(mult_overflow_size_t(array->size, array->element_size, &new_bytes) != 0)
+    {
+        return EOVERFLOW;
+    }
+    void * tmp = realloc(array->data, new_bytes);
+    if(!tmp)
+    {
+        return ENOMEM; // TODO
+    }
+    array->data = tmp;
+    array->capacity = array->size;
     return 0;
 }
 
