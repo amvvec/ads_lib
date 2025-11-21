@@ -133,7 +133,7 @@ static int array_grow_to(Array * array, size_t start_capacity)
     return 0;
 }
 
-int array_shrink_to_fir(Array * array)
+int array_shrink_to_fit(Array * array)
 {
     if(!array)
     {
