@@ -1,5 +1,5 @@
 CC		:= gcc
-CFLAGS 	:= -std=c17 -Wall -Wextra -Werror -pedantic -g -fsanitize=address
+CFLAGS 	:= -std=c17 -Wall -Wextra -Werror -pedantic -g
 
 SRC_DIR 	:= src
 BUILD_DIR 	:= build
