@@ -1,20 +1,28 @@
-CC = gcc
-CFLAGS = -std=c17 -Wall -Wextra -Werror -pedantic -g -fsanitize=address -I$(SRC_DIR)
-SRC_DIR = src
-SOURCES = $(shell find $(SRC_DIR) -name '*.c')
-HEADERS = $(shell find $(SRC_DIR) -name '*.h')
-OBJECTS = $(patsubst %.c,%.o,$(SOURCES))
-EXEC = launcher
+CC		:= gcc
+CFLAGS 	:= -std=c17 -Wall -Wextra -Werror -pedantic -g -fsanitize=address
 
-all: $(EXEC)
+SRC_DIR 	:= src
+BUILD_DIR 	:= build
+
+EXEC 		:= launcher
+
+SOURCES := $(shell find $(SRC_DIR) -name '*.c')
+HEADERS := $(shell find $(SRC_DIR) -name '*.h')
+OBJECTS := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
+
+all: $(BUILD_DIR) $(EXEC)
+
+$(BUILD_DIR):
+	@mkdir -p $@
 
 $(EXEC): $(OBJECTS)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) $^ -o $@
 
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -I$(SRC_DIR) -c $< -o $@
 
 clean:
-	rm -f $(SRC_DIR)/*.o $(SRC_DIR)/*.o $(SRC_DIR)/*.o $(EXEC)
+	rm -rf $(BUILD_DIR) $(EXEC)
 
 .PHONY: all clean
