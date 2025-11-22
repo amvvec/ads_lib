@@ -19,24 +19,5 @@
 
 void test_runner(void)
 {
-    printf("\n[ RUN ] All tests are launched\n");
-
-    runSListTests();
-    runDListTests();
-    runBubbleSortTests();
-    runVectorTests();
-    runHashTableTests();
-    runQuicksortTests();
-    runMergesortTests();
-    runAVLTreeTests();
-    runGraphTests();
-    runGraphTests();
-    runBFSTests();
-    runDFSTests();
-    runDijkstraTests();
-    runInsertionSortTests();
-    runSkipListTests();
-    runArrayTests();
-
-    printf("\n[ PASS ] All tests completed\n\n");
+    run_array_tests();
 }
