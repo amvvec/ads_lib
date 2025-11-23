@@ -5,42 +5,9 @@
 
 #include "array.h"
 
-typedef enum
-{
-    ERR_OK = 0,
-    ERR_NULL,
-    ERR_OOB, // error Out Of Bounds
-    ERR_ALLOC,
-    ERR_EMPTY
-} ArrayStatus;
-
-const char * array_strerror(ArrayStatus status)
-{
-    switch(status)
-    {
-    case ERR_OK:
-        return "OK";
-    case ERR_NULL:
-        return "NULL pointer";
-    case ERR_OOB:
-        return "index out of bounds";
-    case ERR_ALLOC:
-        return "allocation failed";
-    case ERR_EMPTY:
-        return "array is empty";
-    default:
-        return "unknown error";
-    }
-}
-
-typedef struct ArrayNode
-{
-    int data;
-} ArrayNode;
-
 typedef struct Array
 {
-    ArrayNode * data;
+    void * data;
     size_t size;
     size_t capacity;
     size_t element_size;

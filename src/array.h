@@ -4,7 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-typedef struct ArrayNode ArrayNode;
 typedef struct Array Array;
 
 int array_init(Array * array, size_t element_size);
