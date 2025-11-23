@@ -85,8 +85,7 @@ static int array_grow_to(Array * array, size_t start_capacity)
         new_capacity *= 2;
     }
     size_t new_bytes;
-    if(mult_overflow_size_t(start_capacity, sizeof(struct ArrayNode),
-                            &new_bytes))
+    if(mult_overflow_size_t(start_capacity, array->element_size, &new_bytes))
     {
         return EOVERFLOW;
     }
@@ -286,23 +285,23 @@ void array_pop_back(Array * array)
     memset(dest, 0, array->element_size);
 }
 
-int array_get(const Array * array, size_t index, int * out_value)
+int array_get(const Array *array, size_t index, void *out_value)
 {
-    if(!array || !out_value || index >= array->size)
-    {
+    if (!array || !out_value || index >= array->size)
         return EINVAL;
-    }
-    *out_value = array->data[index].data;
+
+    const char *base = array->data;
+    memcpy(out_value, base + index * array->element_size, array->element_size);
     return 0;
 }
 
-int array_set(Array * array, size_t index, int value)
+int array_set(Array *array, size_t index, const void *value)
 {
-    if(!array || index >= array->size)
-    {
+    if (!array || !value || index >= array->size)
         return EINVAL;
-    }
-    array->data[index].data = value;
+
+    char *base = array->data;
+    memcpy(base + index * array->element_size, value, array->element_size);
     return 0;
 }
 

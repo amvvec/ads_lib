@@ -18,8 +18,9 @@ int array_push_back(Array * array, const void * value);
 void array_pop_back(Array * array);
 void array_pop_front(Array * array);
 
-int array_get(const Array * array, size_t index, int * out_value);
-int array_set(Array * array, size_t index, int value);
+int array_get(const Array * array, size_t index, void * out_value);
+int array_set(Array *array, size_t index, const void *value);
+
 size_t array_size(const Array * array);
 size_t array_capacity(const Array * array);
 
