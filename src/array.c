@@ -24,6 +24,10 @@ int array_init(Array * array, size_t element_size)
     {
         return EINVAL;
     }
+    if(element_size > SIZE_MAX / 16)
+    {
+        return EOVERFLOW;
+    }
     array->data = NULL;
     array->size = 0;
     array->capacity = 0;
