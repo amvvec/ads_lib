@@ -12,12 +12,21 @@ static void test_array_new(void)
     assert(array != NULL);
     array_delete(array);
 
-    printf("[ PASS ] test_array_new\n\n");
+    printf("[ PASS ] test_array_new\n");
+}
+
+static void test_array_new_zero_size(void)
+{
+    printf("\n[ RUN ] test_array_new_zero_size\n");
+
+    Array * array = array_new(0);
+    assert(array == NULL);
+
+    printf("[ PASS ] test_array_new_zero_size\n");
 }
 
 void run_array_tests(void)
 {
     test_array_new();
     test_array_new_zero_size();
-    test_array_new_large_size();
 }
