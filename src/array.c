@@ -285,23 +285,25 @@ void array_pop_back(Array * array)
     memset(dest, 0, array->element_size);
 }
 
-int array_get(const Array *array, size_t index, void *out_value)
+int array_get(const Array * array, size_t index, void * out_value)
 {
-    if (!array || !out_value || index >= array->size)
+    if(!array || !out_value || index >= array->size)
         return EINVAL;
 
-    const char *base = array->data;
-    memcpy(out_value, base + index * array->element_size, array->element_size);
+    const char * base = array->data;
+    const void * src = base + index * array->element_size;
+    memcpy(out_value, src, array->element_size);
     return 0;
 }
 
-int array_set(Array *array, size_t index, const void *value)
+int array_set(Array * array, size_t index, const void * value)
 {
-    if (!array || !value || index >= array->size)
+    if(!array || !value || index >= array->size)
         return EINVAL;
 
-    char *base = array->data;
-    memcpy(base + index * array->element_size, value, array->element_size);
+    char * base = array->data;
+    void * dest = base + index * array->element_size;
+    memcpy(dest, value, array->element_size);
     return 0;
 }
 
