@@ -1,5 +1,5 @@
 #include "test_runner.h"
-#include "../tests/test_array.c"
+#include "../tests/test_array/test_array.c"
 #include "../tests/test_avl_tree.c"
 #include "../tests/test_bfs.c"
 #include "../tests/test_binary_search.c"

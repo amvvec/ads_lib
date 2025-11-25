@@ -49,13 +49,22 @@ static void test_array_delete_null(void)
 static void test_array_delete_nonempty(void)
 {
     printf("[ RUN ] test_array_delete_nonempty\n");
-    
-    Array * a = array_new(sizeof(int));
-    assert(a != NULL);
 
-    array_delete(a);
+    Array * array = array_new(sizeof(int));
+    assert(array != NULL);
+
+    array_delete(array);
 
     printf("[ PASS ] test_array_delete_nonempty\n\n");
+}
+
+static void test_array_free_null(void)
+{
+    printf("[ RUN ] test_array_free_null\n");
+
+    array_free(NULL);
+
+    printf("[ PASS ] test_array_free_null\n\n");
 }
 
 void run_array_tests(void)
@@ -65,4 +74,5 @@ void run_array_tests(void)
     test_array_new_large_size();
     test_array_delete_null();
     test_array_delete_nonempty();
+    test_array_free_null();
 }

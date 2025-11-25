@@ -84,7 +84,7 @@ static int array_grow_to(Array * array, size_t start_capacity)
     {
         if(new_capacity > SIZE_MAX / 2)
         {
-            return EOVERFLOW; // No overflow fallback
+            return EOVERFLOW;
         }
         new_capacity *= 2;
     }
