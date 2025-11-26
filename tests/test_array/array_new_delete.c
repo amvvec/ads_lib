@@ -75,7 +75,7 @@ static void test_array_free_nonempty(void)
     assert(array != NULL);
     array_free(array);
 
-    printf("[ PASS ] test_array_free_nonempty\n\n");
+    printf("[ PASS ] test_array_free_nonempty\n");
 }
 
 void run_array_tests_new_delete(void)

@@ -28,10 +28,10 @@ int array_init(Array * array, size_t element_size)
     {
         return EOVERFLOW;
     }
-    array->data = NULL;
-    array->size = 0;
     array->capacity = 0;
+    array->data = NULL;
     array->element_size = element_size;
+    array->size = 0;
     return 0;
 }
 
@@ -292,8 +292,9 @@ void array_pop_back(Array * array)
 int array_get(const Array * array, size_t index, void * out_value)
 {
     if(!array || !out_value || index >= array->size)
+    {
         return EINVAL;
-
+    }
     const char * base = array->data;
     const void * src = base + index * array->element_size;
     memcpy(out_value, src, array->element_size);
@@ -303,8 +304,9 @@ int array_get(const Array * array, size_t index, void * out_value)
 int array_set(Array * array, size_t index, const void * value)
 {
     if(!array || !value || index >= array->size)
+    {
         return EINVAL;
-
+    }
     char * base = array->data;
     void * dest = base + index * array->element_size;
     memcpy(dest, value, array->element_size);
