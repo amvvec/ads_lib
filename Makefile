@@ -1,5 +1,43 @@
 CC		:= gcc
-CFLAGS 	:= -std=c17 -Wall -Wextra -Werror -Wshadow -Wconversion -pedantic -g
+CFLAGS +=	-fsanitize=address,undefined,leak \
+			-fsanitize-address-use-after-scope \
+			-Wcast-qual \
+			-Wcast-align=strict \
+			-Wstrict-aliasing=2 \
+			-Wdouble-promotion \
+			-Wduplicated-cond \
+			-Wduplicated-branches \
+			-Wlogical-op \
+			-Wjump-misses-init \
+			-Wpacked \
+			-Wredundant-decls \
+			--param=ssp-buffer-size=4 \
+			-std=c17 \
+			-Wall \
+			-Wextra \
+			-Wpedantic \
+			-Werror \
+			-Wshadow \
+			-Wconversion \
+			-Wsign-conversion \
+			-Wformat=2 \
+			-Wformat-signedness \
+			-Wformat-security \
+			-Wnull-dereference \
+			-Wswitch-enum \
+			-Wswitch-default \
+			-Wfloat-equal \
+			-Wundef \
+			-Wimplicit-fallthrough \
+			-Wunused-parameter \
+			-Wunused-variable \
+			-Wparentheses \
+			-Wmisleading-indentation \
+			-Wstrict-prototypes \
+			-Wold-style-definition \
+			-fno-common \
+			-fstack-protector-strong \
+			-D_FORTIFY_SOURCE=2
 
 SRC_DIR 	:= src
 BUILD_DIR 	:= build
