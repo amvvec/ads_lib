@@ -6,8 +6,7 @@
 
 typedef struct Array Array;
 
-int array_init(Array *array, size_t element_size);
-Array *array_new(size_t element_size);
+Array *array_init(size_t element_size);
 
 int array_shrink_to_fit(Array *array);
 

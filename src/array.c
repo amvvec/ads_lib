@@ -18,9 +18,9 @@ enum
     ARRAY_INIT_CAP = 8
 };
 
-Array *array_new(size_t element_size)
+Array *array_init(size_t element_size)
 {
-    if(element_size)
+    if(element_size == 0 || element_size > SIZE_MAX / 8)
     {
         return NULL;
     }
@@ -30,10 +30,10 @@ Array *array_new(size_t element_size)
         return NULL;
     }
     a->data = NULL;
-    a->size = 0;
     a->capacity = 0;
+    a->size = 0;
     a->element_size = element_size;
-    return 0;
+    return a;
 }
 
 static int mult_overflow_size_t(size_t count, size_t element_size,
