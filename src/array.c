@@ -7,7 +7,7 @@
 
 typedef struct Array
 {
-    void * data;
+    void *data;
     size_t size;
     size_t capacity;
     size_t element_size;
@@ -18,44 +18,26 @@ enum
     ARRAY_INIT_CAP = 8
 };
 
-int array_init(Array * array, size_t element_size)
+Array *array_new(size_t element_size)
 {
-    if(!array && element_size == 0)
+    if(element_size)
     {
-        return EINVAL;
+        return NULL;
     }
-    if(element_size > SIZE_MAX / 16)
+    Array *a = malloc(sizeof *a);
+    if(!a)
     {
-        return EOVERFLOW;
+        return NULL;
     }
-    array->capacity = 0;
-    array->data = NULL;
-    array->element_size = element_size;
-    array->size = 0;
+    a->data = NULL;
+    a->size = 0;
+    a->capacity = 0;
+    a->element_size = element_size;
     return 0;
 }
 
-Array * array_new(size_t element_size)
-{
-    if(element_size == 0)
-    {
-        return NULL;
-    }
-    Array * array = malloc(sizeof(Array));
-    if(!array)
-    {
-        return NULL;
-    }
-    if(array_init(array, element_size) != 0)
-    {
-        free(array);
-        return NULL;
-    }
-    return array;
-}
-
 static int mult_overflow_size_t(size_t count, size_t element_size,
-                                size_t * out_bytes)
+                                size_t *out_bytes)
 {
     if(!out_bytes || element_size == 0)
     {
@@ -69,7 +51,7 @@ static int mult_overflow_size_t(size_t count, size_t element_size,
     return 0;
 }
 
-static int array_grow_to(Array * array, size_t start_capacity)
+static int array_grow_to(Array *array, size_t start_capacity)
 {
     if(!array)
     {
@@ -93,7 +75,7 @@ static int array_grow_to(Array * array, size_t start_capacity)
     {
         return EOVERFLOW;
     }
-    struct ArrayNode * new_data = realloc(array->data, new_bytes);
+    struct ArrayNode *new_data = realloc(array->data, new_bytes);
     if(!new_data)
     {
         return ENOMEM;
@@ -103,7 +85,7 @@ static int array_grow_to(Array * array, size_t start_capacity)
     return 0;
 }
 
-int array_shrink_to_fit(Array * array)
+int array_shrink_to_fit(Array *array)
 {
     if(!array)
     {
@@ -125,7 +107,7 @@ int array_shrink_to_fit(Array * array)
     {
         return EOVERFLOW;
     }
-    void * tmp = realloc(array->data, new_bytes);
+    void *tmp = realloc(array->data, new_bytes);
     if(!tmp)
     {
         return ENOMEM; // TODO
@@ -135,7 +117,7 @@ int array_shrink_to_fit(Array * array)
     return 0;
 }
 
-void array_free(Array * array)
+void array_free(Array *array)
 {
     if(!array)
     {
@@ -148,7 +130,7 @@ void array_free(Array * array)
     array->capacity = 0;
 }
 
-void array_delete(Array * array)
+void array_delete(Array *array)
 {
     if(!array)
     {
@@ -159,7 +141,7 @@ void array_delete(Array * array)
     free(array);
 }
 
-int array_insert(Array * array, size_t index, const void * value)
+int array_insert(Array *array, size_t index, const void *value)
 {
     if(!array || !value)
     {
@@ -178,21 +160,21 @@ int array_insert(Array * array, size_t index, const void * value)
             return error;
         }
     }
-    char * base = (char *)array->data;
+    char *base = (char *)array->data;
     if(index < array->size)
     {
-        void * dest = base + (index + 1) * array->element_size;
-        void * src = base + index * array->element_size;
+        void *dest = base + (index + 1) * array->element_size;
+        void *src = base + index * array->element_size;
         size_t bytes_to_move = (array->size - index) * array->element_size;
         memmove(dest, src, bytes_to_move);
     }
-    void * insert = base + index * array->element_size;
+    void *insert = base + index * array->element_size;
     memcpy(insert, value, array->element_size);
     array->size++;
     return 0;
 }
 
-int array_erase(Array * array, size_t index)
+int array_erase(Array *array, size_t index)
 {
     if(!array)
     {
@@ -204,19 +186,19 @@ int array_erase(Array * array, size_t index)
     }
     if(index < array->size - 1)
     {
-        char * base = (char *)array->data;
-        void * dest = base + index * array->element_size;
-        void * src = base + (index + 1) * array->element_size;
+        char *base = (char *)array->data;
+        void *dest = base + index * array->element_size;
+        void *src = base + (index + 1) * array->element_size;
         size_t bytes_to_move = (array->size - index - 1) * array->element_size;
         memmove(dest, src, bytes_to_move);
     }
     array->size--;
-    void * last = (char *)array->data + array->size * array->element_size;
+    void *last = (char *)array->data + array->size * array->element_size;
     memset(last, 0, array->element_size);
     return 0;
 }
 
-int array_push_front(Array * array, const void * value)
+int array_push_front(Array *array, const void *value)
 {
     if(!array || !value)
     {
@@ -231,8 +213,8 @@ int array_push_front(Array * array, const void * value)
             return error;
         }
     }
-    void * dest = (char *)array->data + 1 * array->element_size;
-    void * src = (char *)array->data;
+    void *dest = (char *)array->data + 1 * array->element_size;
+    void *src = (char *)array->data;
     size_t bytes_to_move = array->size * array->element_size;
     memmove(dest, src, bytes_to_move);
     memcpy(array->data, value, array->element_size);
@@ -240,7 +222,7 @@ int array_push_front(Array * array, const void * value)
     return 0;
 }
 
-int array_push_back(Array * array, const void * value)
+int array_push_back(Array *array, const void *value)
 {
     if(!array && !value)
     {
@@ -255,13 +237,13 @@ int array_push_back(Array * array, const void * value)
             return error;
         }
     }
-    void * dest = (char *)array->data + array->size * array->element_size;
+    void *dest = (char *)array->data + array->size * array->element_size;
     memcpy(dest, value, array->element_size);
     array->size++;
     return 0;
 }
 
-void array_pop_front(Array * array)
+void array_pop_front(Array *array)
 {
     if(!array || array->size == 0)
     {
@@ -274,7 +256,7 @@ void array_pop_front(Array * array)
     array->size--;
 }
 
-void array_pop_back(Array * array)
+void array_pop_back(Array *array)
 {
     if(!array)
     {
@@ -285,40 +267,40 @@ void array_pop_back(Array * array)
         return;
     }
     array->size--;
-    void * dest = (char *)array->data + array->size * array->element_size;
+    void *dest = (char *)array->data + array->size * array->element_size;
     memset(dest, 0, array->element_size);
 }
 
-int array_get(const Array * array, size_t index, void * out_value)
+int array_get(const Array *array, size_t index, void *out_value)
 {
     if(!array || !out_value || index >= array->size)
     {
         return EINVAL;
     }
-    const char * base = array->data;
-    const void * src = base + index * array->element_size;
+    const char *base = array->data;
+    const void *src = base + index * array->element_size;
     memcpy(out_value, src, array->element_size);
     return 0;
 }
 
-int array_set(Array * array, size_t index, const void * value)
+int array_set(Array *array, size_t index, const void *value)
 {
     if(!array || !value || index >= array->size)
     {
         return EINVAL;
     }
-    char * base = array->data;
-    void * dest = base + index * array->element_size;
+    char *base = array->data;
+    void *dest = base + index * array->element_size;
     memcpy(dest, value, array->element_size);
     return 0;
 }
 
-size_t array_size(const Array * array)
+size_t array_size(const Array *array)
 {
     return array ? array->size : 0;
 }
 
-size_t array_capacity(const Array * array)
+size_t array_capacity(const Array *array)
 {
     return array ? array->capacity : 0;
 }
