@@ -23,7 +23,6 @@ int array_set(Array *array, size_t index, const void *value);
 size_t array_size(const Array *array);
 size_t array_capacity(const Array *array);
 
-void array_free(Array *array);
 void array_delete(Array *array);
 
 #endif // !ARRAY_H

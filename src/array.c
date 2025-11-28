@@ -117,28 +117,13 @@ int array_shrink_to_fit(Array *array)
     return 0;
 }
 
-void array_free(Array *array)
+void array_delete(Array *a)
 {
-    if(!array)
+    if(a)
     {
-        printf("Error: NULL pointer\n");
-        return;
+        free(a->data);
+        free(a);
     }
-    free(array->data);
-    array->data = NULL;
-    array->size = 0;
-    array->capacity = 0;
-}
-
-void array_delete(Array *array)
-{
-    if(!array)
-    {
-        printf("Error: NULL pointer\n");
-        return;
-    }
-    array_free(array);
-    free(array);
 }
 
 int array_insert(Array *array, size_t index, const void *value)
