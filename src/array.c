@@ -119,11 +119,8 @@ int array_shrink_to_fit(Array *array)
 
 void array_delete(Array *a)
 {
-    if(a)
-    {
-        free(a->data);
-        free(a);
-    }
+    free(a ? a->data : NULL);
+    free(a);
 }
 
 int array_insert(Array *array, size_t index, const void *value)
