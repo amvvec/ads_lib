@@ -10,7 +10,7 @@
  * @param visited Array to track visited vertices.
  * @complexity O(V + E) where V is vertices, E is edges.
  */
-static void dfs_recursive(Graph * g, int vertex, int * visited)
+static void dfs_recursive(Graph *g, int vertex, int *visited)
 {
     visited[vertex] = 1;
     printf("%d ", vertex);
@@ -30,7 +30,7 @@ static void dfs_recursive(Graph * g, int vertex, int * visited)
  * @note Prints visited vertices to stdout.
  * @complexity O(V + E) where V is vertices, E is edges.
  */
-void dfs(Graph * g, int start)
+void dfs(Graph *g, int start)
 {
     if(!g)
     {
@@ -42,7 +42,7 @@ void dfs(Graph * g, int start)
         fprintf(stderr, "Invalid start vertext: %d\n", start);
         return;
     }
-    int * visited = calloc(g->vertices, sizeof(int));
+    int *visited = calloc((size_t)g->vertices, sizeof(int));
     if(!visited)
     {
         fprintf(stderr, "Visited array allocation failed\n");

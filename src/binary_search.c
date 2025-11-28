@@ -11,7 +11,7 @@
  * @note Returns -1 if arr is NULL or size <= 0.
  * @complexity O(log n) where n is the array size.
  */
-int binary_search(int * arr, int size, int target)
+int binary_search(int *arr, int size, int target)
 {
     if(!arr || size <= 0)
     {

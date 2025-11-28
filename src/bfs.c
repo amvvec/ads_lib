@@ -3,15 +3,17 @@
 
 #include "bfs.h"
 
-Queue * create_queue(int capacity)
+Queue *create_queue(int capacity)
 {
-    Queue * q = malloc(sizeof(Queue));
+    Queue *q = malloc(sizeof(Queue));
     if(!q)
     {
         fprintf(stderr, "Queue allocation failed\n");
         exit(1);
     }
-    q->item = malloc(capacity * sizeof(int));
+    // TODO: add safety check for (int) capacity
+    // q->item = malloc(capacity * sizeof(int)); // WARNING: int -> long long
+    q->item = malloc(sizeof(int) * (size_t)capacity);
     if(!q->item)
     {
         fprintf(stderr, "Queue allocation failed\n");
@@ -20,11 +22,10 @@ Queue * create_queue(int capacity)
     q->front = 0;
     q->rear = -1;
     q->capacity = capacity;
-
     return q;
 }
 
-void enqueue(Queue * q, int value)
+void enqueue(Queue *q, int value)
 {
     if(q->rear >= q->capacity - 1)
     {
@@ -33,7 +34,7 @@ void enqueue(Queue * q, int value)
     q->item[++q->rear] = value;
 }
 
-int dequeue(Queue * q)
+int dequeue(Queue *q)
 {
     if(q->front > q->rear)
     {
@@ -42,7 +43,7 @@ int dequeue(Queue * q)
     return q->item[q->front++];
 }
 
-void free_queue(Queue * q)
+void free_queue(Queue *q)
 {
     free(q->item);
     free(q);
@@ -55,7 +56,7 @@ void free_queue(Queue * q)
  * @note Prints visited vertices to stdout.
  * @complexity O(V + E) where V is vertices, E is edges.
  */
-void bfs(Graph * g, int start)
+void bfs(Graph *g, int start)
 {
     if(!g)
     {
@@ -67,13 +68,15 @@ void bfs(Graph * g, int start)
         fprintf(stderr, "Invalid start vertex: %d\n", start);
         return;
     }
-    int * visited = calloc(g->vertices, sizeof(int));
+    // WARNING: int -> size-t
+    // int * visited = calloc(g->vertices, sizeof(int));
+    int *visited = calloc((size_t)g->vertices, sizeof(int));
     if(!visited)
     {
         fprintf(stderr, "Visited array allocation failed\n");
         return;
     }
-    Queue * q = create_queue(g->vertices);
+    Queue *q = create_queue(g->vertices);
     visited[start] = 1;
     enqueue(q, start);
     while(q->front <= q->rear)

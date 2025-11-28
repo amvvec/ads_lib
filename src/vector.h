@@ -10,16 +10,16 @@
  */
 typedef struct
 {
-    int * data;   /**< Pointer to the integer array storing the elements. */
+    int *data;    /**< Pointer to the integer array storing the elements. */
     int size;     /**< Current number of elements in the vector. */
     int capacity; /**< Maximum number of elements the vector can hold before
                      resizing. */
 } Vector;
 
-Vector * vector_init(int initial_capacity);
-void vector_push_back(Vector * vec, int value);
-void vector_pop_back(Vector * vec);
-int vector_get(Vector * vec, int index);
-void vector_free(Vector * vec);
+Vector *vector_init(int initial_capacity);
+void vector_push_back(Vector *vec, int value);
+void vector_pop_back(Vector *vec);
+int vector_get(Vector *vec, int index);
+void vector_free(Vector *vec);
 
 #endif // !VECTOR_H

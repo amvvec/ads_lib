@@ -5,7 +5,7 @@
 void runDListTests(void)
 {
     printf("\n[ RUN ] Doubly Linked List Tests\n\n");
-    DNode * head = NULL;
+    DNode *head = NULL;
     // Test 1: InsertDFront
     printf("Test 1: InsertDFront 3, 2, 1\n");
     insertDFront(&head, 3);

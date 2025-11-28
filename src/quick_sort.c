@@ -8,7 +8,7 @@
  *  @note Does nothing if either pointer is NULL. Time complexity is O(1).
  *  @warning Null pointer check is performed to prevent undefined behavior.
  */
-void swap(int * a, int * b)
+void swap(int *a, int *b)
 {
     if(!a || !b)
     {

@@ -8,7 +8,7 @@ void runSkipListTests(void)
     printf("\n[ RUN ] Skip List Tests\n\n");
     // Test 1: Insert and search
     printf("Test 1: Insert [5, 2, 8] and search\n");
-    SkipList * list = create_skip_list();
+    SkipList *list = create_skip_list();
     if(!list)
     {
         printf("Result: Fail (creation failed)\n");
@@ -30,7 +30,7 @@ void runSkipListTests(void)
 
     // Test 4: Empty list search
     printf("Test 4: Search in empty list\n");
-    SkipList * empty_list = create_skip_list();
+    SkipList *empty_list = create_skip_list();
     if(!empty_list)
     {
         printf("Result: Fail (creation failed)\n");

@@ -13,7 +13,7 @@ int max(int a, int b)
  *  @return The height of the node, or 0 if node is NULL. Time complexity is
  * O(1).
  */
-int get_height(AVLNode * node)
+int get_height(AVLNode *node)
 {
     return node ? node->height : 0;
 }
@@ -23,7 +23,7 @@ int get_height(AVLNode * node)
  *  @return The balance factor (height of left - height of right), or 0 if node
  * is NULL. Time complexity is O(1).
  */
-int get_balance(AVLNode * node)
+int get_balance(AVLNode *node)
 {
     return node ? get_height(node->left) - get_height(node->right) : 0;
 }
@@ -35,9 +35,9 @@ int get_balance(AVLNode * node)
  * O(1).
  *  @warning Returns NULL and prints an error if memory allocation fails.
  */
-AVLNode * create_node(int data)
+AVLNode *create_node(int data)
 {
-    AVLNode * node = (AVLNode *)calloc(1, sizeof(AVLNode));
+    AVLNode *node = (AVLNode *)calloc(1, sizeof(AVLNode));
 
     if(!node)
     {
@@ -60,7 +60,7 @@ AVLNode * create_node(int data)
  *  @note Updates heights after rotation. Time complexity is O(1).
  *  @warning Returns x and prints an error if x or x->right is NULL.
  */
-AVLNode * left_rotate(AVLNode * x)
+AVLNode *left_rotate(AVLNode *x)
 {
     if(!x || !x->right)
     {
@@ -68,8 +68,8 @@ AVLNode * left_rotate(AVLNode * x)
         return x;
     }
 
-    AVLNode * y = x->right;
-    AVLNode * tmp = y->left;
+    AVLNode *y = x->right;
+    AVLNode *tmp = y->left;
 
     y->left = x;
     x->right = tmp;
@@ -87,7 +87,7 @@ AVLNode * left_rotate(AVLNode * x)
  *  @note Updates heights after rotation. Time complexity is O(1).
  *  @warning Returns y and prints an error if y or y->left is NULL.
  */
-AVLNode * right_rotate(AVLNode * y)
+AVLNode *right_rotate(AVLNode *y)
 {
     if(!y || !y->left)
     {
@@ -95,8 +95,8 @@ AVLNode * right_rotate(AVLNode * y)
         return y;
     }
 
-    AVLNode * x = y->left;
-    AVLNode * tmp = x->right;
+    AVLNode *x = y->left;
+    AVLNode *tmp = x->right;
 
     x->right = y;
     y->left = tmp;
@@ -116,7 +116,7 @@ AVLNode * right_rotate(AVLNode * y)
  *  @warning Returns node and prints an error if rotation conditions are
  * invalid.
  */
-AVLNode * insert(AVLNode * node, int data)
+AVLNode *insert(AVLNode *node, int data)
 {
     if(!node)
     {
@@ -186,9 +186,9 @@ AVLNode * insert(AVLNode * node, int data)
  *  @note Sets the root to NULL. Time complexity is O(1).
  *  @warning Returns NULL and prints an error if memory allocation fails.
  */
-AVLTree * avl_tree_init(void)
+AVLTree *avl_tree_init(void)
 {
-    AVLTree * tree = (AVLTree *)malloc(sizeof(AVLTree));
+    AVLTree *tree = (AVLTree *)malloc(sizeof(AVLTree));
 
     if(!tree)
     {
@@ -209,7 +209,7 @@ AVLTree * avl_tree_init(void)
  *  @warning Does nothing if tree is NULL, with an error message to stderr.
  * Ignores duplicates.
  */
-void avl_tree_insert(AVLTree * tree, int data)
+void avl_tree_insert(AVLTree *tree, int data)
 {
     if(!tree)
     {
@@ -224,7 +224,7 @@ void avl_tree_insert(AVLTree * tree, int data)
  *  @param node Pointer to the root node to free (recursive).
  *  @note Recursively frees all nodes. Time complexity is O(n).
  */
-void avl_tree_free(AVLNode * node)
+void avl_tree_free(AVLNode *node)
 {
     if(node)
     {

@@ -16,9 +16,9 @@ static int random_level(void)
     return level;
 }
 
-SkipList * create_skip_list(void)
+SkipList *create_skip_list(void)
 {
-    SkipList * list = malloc(sizeof(SkipList));
+    SkipList *list = malloc(sizeof(SkipList));
     if(!list)
     {
         fprintf(stderr, "Skip list allocation failed\n");
@@ -40,15 +40,15 @@ SkipList * create_skip_list(void)
     return list;
 }
 
-void insert_skip_list(SkipList * list, int key)
+void insert_skip_list(SkipList *list, int key)
 {
     if(!list || !list->header)
     {
         fprintf(stderr, "Invalid skip list\n");
         return;
     }
-    SkipNode * update[MAX_LEVEL];
-    SkipNode * current = list->header;
+    SkipNode *update[MAX_LEVEL];
+    SkipNode *current = list->header;
     for(int i = list->level; i >= 0; i--)
     {
         while(current->forward[i] && current->forward[i]->key < key)
@@ -71,7 +71,7 @@ void insert_skip_list(SkipList * list, int key)
         }
         list->level = new_level;
     }
-    SkipNode * new_node = malloc(sizeof(SkipNode));
+    SkipNode *new_node = malloc(sizeof(SkipNode));
     if(!new_node)
     {
         fprintf(stderr, "Node allocation failed\n");
@@ -85,14 +85,14 @@ void insert_skip_list(SkipList * list, int key)
     }
 }
 
-int search_skip_list(SkipList * list, int key)
+int search_skip_list(SkipList *list, int key)
 {
     if(!list || !list->header)
     {
         fprintf(stderr, "Invalid skip list\n");
         return 0;
     }
-    SkipNode * current = list->header;
+    SkipNode *current = list->header;
     for(int i = list->level; i >= 0; i--)
     {
         while(current->forward[i] && current->forward[i]->key < key)
@@ -104,15 +104,15 @@ int search_skip_list(SkipList * list, int key)
     return current && current->key == key;
 }
 
-void delete_skip_list(SkipList * list, int key)
+void delete_skip_list(SkipList *list, int key)
 {
     if(!list || !list->header)
     {
         fprintf(stderr, "Invalid skip list\n");
         return;
     }
-    SkipNode * update[MAX_LEVEL];
-    SkipNode * current = list->header;
+    SkipNode *update[MAX_LEVEL];
+    SkipNode *current = list->header;
     for(int i = list->level; i >= 0; i--)
     {
         while(current->forward[i] && current->forward[i]->key < key)
@@ -140,16 +140,16 @@ void delete_skip_list(SkipList * list, int key)
     }
 }
 
-void free_skip_list(SkipList * list)
+void free_skip_list(SkipList *list)
 {
     if(!list)
     {
         return;
     }
-    SkipNode * current = list->header->forward[0];
+    SkipNode *current = list->header->forward[0];
     while(current)
     {
-        SkipNode * next = current->forward[0];
+        SkipNode *next = current->forward[0];
         free(current);
         current = next;
     }

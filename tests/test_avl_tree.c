@@ -8,7 +8,7 @@ void runAVLTreeTests(void)
     printf("\n[ RUN ] AVL Tree Tests\n\n");
     // Test 1: Initialization
     printf("Test 1: Initialize AVL Tree\n");
-    AVLTree * tree = avl_tree_init();
+    AVLTree *tree = avl_tree_init();
     if(tree && !tree->root)
     {
         printf("Result: Initialized successfully with NULL root\n");

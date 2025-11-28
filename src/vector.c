@@ -11,14 +11,14 @@
  *  @note Sets size to 0 and capacity to the given initial_capacity. O(1) time
  * complexity.
  */
-Vector * vector_init(int initial_capacity)
+Vector *vector_init(int initial_capacity)
 {
     if(initial_capacity <= 0)
     {
         fprintf(stderr, "Invalid initial capacity\n");
         return NULL;
     }
-    Vector * vec = (Vector *)malloc(sizeof(Vector));
+    Vector *vec = (Vector *)malloc(sizeof(Vector));
     if(!vec)
     {
         fprintf(stderr, "Memory allocation failed for vector\n");
@@ -44,7 +44,7 @@ Vector * vector_init(int initial_capacity)
  *  @note Resizes the vector by doubling capacity if full. O(1) amortized time
  * complexity.
  */
-void vector_push_back(Vector * vec, int value)
+void vector_push_back(Vector *vec, int value)
 {
     if(!vec)
     {
@@ -59,7 +59,8 @@ void vector_push_back(Vector * vec, int value)
             return;
         }
         vec->capacity *= 2;
-        int * new_data = (int *)realloc(vec->data, vec->capacity * sizeof(int));
+        int *new_data =
+            (int *)realloc(vec->data, (size_t)vec->capacity * sizeof(int));
         if(!new_data)
         {
             fprintf(stderr, "Reallocation failed\n");
@@ -76,7 +77,7 @@ void vector_push_back(Vector * vec, int value)
  *  @note Resizes the vector by doubling capacity if full. O(1) amortized time
  * complexity.
  */
-void vector_pop_back(Vector * vec)
+void vector_pop_back(Vector *vec)
 {
     if(!vec || vec->size <= 0)
     {
@@ -94,7 +95,7 @@ void vector_pop_back(Vector * vec)
  *  @note No bounds checking beyond NULL and size comparison. O(1) time
  * complexity.
  */
-int vector_get(Vector * vec, int index)
+int vector_get(Vector *vec, int index)
 {
     if(!vec || index < 0 || index >= vec->size)
     {
@@ -108,7 +109,7 @@ int vector_get(Vector * vec, int index)
  *  @param vec Pointer to the Vector.
  *  @note Does nothing if the vector is NULL. O(1) time complexity.
  */
-void vector_free(Vector * vec)
+void vector_free(Vector *vec)
 {
     if(!vec)
     {

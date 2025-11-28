@@ -5,7 +5,7 @@
 void runSListTests(void)
 {
     printf("\n[ RUN ] Singly Linked List Tests\n\n");
-    SNode * head = NULL;
+    SNode *head = NULL;
     // Test 1: InsertFront
     printf("Test 1: InsertFront 3, 2, 1\n");
     insertSFront(&head, 3);

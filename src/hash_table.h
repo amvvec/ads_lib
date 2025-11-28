@@ -11,10 +11,10 @@
  */
 typedef struct Node
 {
-    int key;            /**< The integer key for the hash table entry. */
-    int value;          /**< The integer value associated with the key. */
-    struct Node * next; /**< Pointer to the next node in the chain (for
-                           collision handling). */
+    int key;           /**< The integer key for the hash table entry. */
+    int value;         /**< The integer value associated with the key. */
+    struct Node *next; /**< Pointer to the next node in the chain (for
+                          collision handling). */
 } Node;
 
 /** @struct HashTable
@@ -25,14 +25,14 @@ typedef struct Node
  */
 typedef struct
 {
-    Node ** buckets; /**< Array of pointers to Node, representing the hash
-                        buckets. */
-    int size;        /**< Number of buckets in the hash table. */
+    Node **buckets; /**< Array of pointers to Node, representing the hash
+                       buckets. */
+    int size;       /**< Number of buckets in the hash table. */
 } HashTable;
 
-HashTable * hash_table_init(int size);
-void hash_table_put(HashTable * ht, int key, int value);
-int hash_table_get(HashTable * ht, int key);
-void hash_table_free(HashTable * ht);
+HashTable *hash_table_init(int size);
+void hash_table_put(HashTable *ht, int key, int value);
+int hash_table_get(HashTable *ht, int key);
+void hash_table_free(HashTable *ht);
 
 #endif // HASH_TABLE_H

@@ -5,10 +5,10 @@
 
 typedef struct Queue
 {
-    int * item;
+    int *item;
     int front, rear, capacity;
 } Queue;
 
-void bfs(Graph * g, int start);
+void bfs(Graph *g, int start);
 
 #endif // !BFS_H

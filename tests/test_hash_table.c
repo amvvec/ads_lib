@@ -7,7 +7,7 @@ void runHashTableTests(void)
     printf("\n[ RUN ] Hash Table Tests\n\n");
     // Test 1: Initialization
     printf("Test 1: Initialize Hash Table with size 5\n");
-    HashTable * ht = hash_table_init(5);
+    HashTable *ht = hash_table_init(5);
     if(ht && ht->size == 5)
     {
         printf("Result: Initialized successfully\n");

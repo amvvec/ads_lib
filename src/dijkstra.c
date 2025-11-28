@@ -11,7 +11,7 @@
  * @param vertices Number of vertices.
  * @return Index of minimum distance vertex.
  */
-static int min_distance(int * dst, int * visited, int vertices)
+static int min_distance(int *dst, int *visited, int vertices)
 {
     int min = INF, min_index = -1;
     for(int v = 0; v < vertices; v++)
@@ -33,7 +33,7 @@ static int min_distance(int * dst, int * visited, int vertices)
  * @note Prints shortest distances to stdout.
  * @complexity O(V²) where V is the number of vertices.
  */
-void dijkstra(Graph * g, int start)
+void dijkstra(Graph *g, int start)
 {
     if(!g)
     {
@@ -46,8 +46,8 @@ void dijkstra(Graph * g, int start)
         return;
     }
 
-    int * dst = malloc(g->vertices * sizeof(int));
-    int * visited = calloc(g->vertices, sizeof(int));
+    int *dst = malloc((size_t)g->vertices * sizeof(int));
+    int *visited = calloc((size_t)g->vertices, sizeof(int));
     if(!dst || !visited)
     {
         fprintf(stderr, "Memory allocation failed\n");

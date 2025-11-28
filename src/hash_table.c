@@ -1,6 +1,8 @@
-#include "hash_table.h"
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "hash_table.h"
 
 /** @brief Computes the hash value for a given key.
  *  @param key The integer key to hash.
@@ -8,14 +10,9 @@
  *  @return The hash index (0 to size-1), or 0 if size is invalid.
  *  @note Uses a simple modulo operation. O(1) time complexity.
  */
-unsigned int hash_function(int key, int size)
+unsigned int hash_function(int key, unsigned int size)
 {
-    if(size <= 0)
-    {
-        fprintf(stderr, "Invalid hash table size\n");
-        return 0;
-    }
-    return key % size;
+    return size ? ((unsigned int)key % size) : 0;
 }
 
 /** @brief Initializes a new hash table with the specified number of buckets.
@@ -24,20 +21,20 @@ unsigned int hash_function(int key, int size)
  * (invalid size or memory allocation error).
  *  @note Sets all buckets to NULL. O(n) time complexity, where n is the size.
  */
-HashTable * hash_table_init(int size)
+HashTable *hash_table_init(int size)
 {
     if(size <= 0)
     {
         fprintf(stderr, "Invalid initial size for hash table\n");
         return NULL;
     }
-    HashTable * ht = (HashTable *)malloc(sizeof(HashTable));
+    HashTable *ht = (HashTable *)malloc(sizeof(HashTable));
     if(!ht)
     {
         fprintf(stderr, "Memory allocation failed for HashTable\n");
         return NULL;
     }
-    ht->buckets = (Node **)malloc(size * sizeof(Node *));
+    ht->buckets = (Node **)malloc((size_t)size * sizeof(Node *));
     if(!ht->buckets)
     {
         fprintf(stderr, "Memory allocation failed for buckets\n");
@@ -59,7 +56,7 @@ HashTable * hash_table_init(int size)
  *  @note Updates the value if the key already exists; otherwise, adds a new
  * node. O(1) average time complexity.
  */
-void hash_table_put(HashTable * ht, int key, int value)
+void hash_table_put(HashTable *ht, int key, int value)
 {
     if(!ht)
     {
@@ -71,8 +68,8 @@ void hash_table_put(HashTable * ht, int key, int value)
         fprintf(stderr, "Invalid hash table size\n");
         return;
     }
-    unsigned int index = hash_function(key, ht->size);
-    Node * current = ht->buckets[index];
+    unsigned int index = hash_function(key, (unsigned int)ht->size);
+    Node *current = ht->buckets[index];
     while(current)
     {
         if(current->key == key)
@@ -81,7 +78,7 @@ void hash_table_put(HashTable * ht, int key, int value)
             return;
         }
     }
-    Node * new_node = (Node *)malloc(sizeof(Node));
+    Node *new_node = (Node *)malloc(sizeof(Node));
     if(!new_node)
     {
         fprintf(stderr, "Memory allocation failed for new node\n");
@@ -99,7 +96,7 @@ void hash_table_put(HashTable * ht, int key, int value)
  *  @return The value associated with the key, or -1 if the key is not found.
  *  @note O(1) average time complexity, O(n) in worst case due to collisions.
  */
-int hash_table_get(HashTable * ht, int key)
+int hash_table_get(HashTable *ht, int key)
 {
     if(!ht)
     {
@@ -111,8 +108,8 @@ int hash_table_get(HashTable * ht, int key)
         fprintf(stderr, "Invalid hash table size\n");
         return -1;
     }
-    unsigned int index = hash_function(key, ht->size);
-    Node * current = ht->buckets[index];
+    unsigned int index = hash_function(key, (unsigned int)ht->size);
+    Node *current = ht->buckets[index];
     while(current)
     {
         if(current->key == key)
@@ -129,7 +126,7 @@ int hash_table_get(HashTable * ht, int key)
  *  @note Frees all nodes in each bucket and the hash table itself. O(n) time
  * complexity, where n is the total number of nodes.
  */
-void hash_table_free(HashTable * ht)
+void hash_table_free(HashTable *ht)
 {
     if(!ht)
     {
@@ -139,10 +136,10 @@ void hash_table_free(HashTable * ht)
     int size = ht->size;
     for(int i = 0; i < size; i++)
     {
-        Node * current = ht->buckets[i];
+        Node *current = ht->buckets[i];
         while(current)
         {
-            Node * temp = current;
+            Node *temp = current;
             current = current->next;
             free(temp);
         }
