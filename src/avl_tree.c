@@ -188,7 +188,7 @@ AVLNode *insert(AVLNode *node, int data)
  */
 AVLTree *avl_tree_init(void)
 {
-    AVLTree *tree = (AVLTree *)malloc(sizeof(AVLTree));
+    AVLTree *tree = (AVLTree *)malloc(sizeof tree);
 
     if(!tree)
     {
@@ -213,10 +213,8 @@ void avl_tree_insert(AVLTree *tree, int data)
 {
     if(!tree)
     {
-        fprintf(stderr, "Invalid tree: NULL\n");
         return;
     }
-
     tree->root = insert(tree->root, data);
 }
 

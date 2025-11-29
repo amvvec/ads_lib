@@ -15,7 +15,7 @@ static void test_array_new(void)
     array_delete(array);
     array = NULL;
 
-    printf("[ PASS ] test_array_new\n");
+    printf("[ OK ] test_array_new\n");
 }
 
 static void test_array_new_zero_size(void)
@@ -29,7 +29,7 @@ static void test_array_new_zero_size(void)
     array_delete(array);
     array = NULL;
 
-    printf("[ PASS ] test_array_new_zero_size\n");
+    printf("[ OK ] test_array_new_zero_size\n");
 }
 
 static void test_array_new_large_size(void)
@@ -45,7 +45,7 @@ static void test_array_new_large_size(void)
     array_delete(array);
     array = NULL;
 
-    printf("[ PASS ] test_array_new_large_size\n\n");
+    printf("[ OK ] test_array_new_large_size\n\n");
 }
 
 static void test_array_delete_null(void)
@@ -54,7 +54,7 @@ static void test_array_delete_null(void)
 
     array_delete(NULL);
 
-    printf("[ PASS ] test_array_delete_null\n\n");
+    printf("[ OK ] test_array_delete_null\n\n");
 }
 
 static void test_array_delete_nonempty(void)
@@ -68,7 +68,7 @@ static void test_array_delete_nonempty(void)
     array_delete(array);
     array = NULL;
 
-    printf("[ PASS ] test_array_delete_nonempty\n\n");
+    printf("[ OK ] test_array_delete_nonempty\n\n");
 }
 
 static void test_array_free_null(void)
@@ -77,7 +77,7 @@ static void test_array_free_null(void)
 
     array_delete(NULL);
 
-    printf("[ PASS ] test_array_free_null\n\n");
+    printf("[ OK ] test_array_free_null\n\n");
 }
 
 static void test_array_free_nonempty(void)
@@ -91,7 +91,7 @@ static void test_array_free_nonempty(void)
     array_delete(array);
     array = NULL;
 
-    printf("[ PASS ] test_array_free_nonempty\n");
+    printf("[ OK ] test_array_free_nonempty\n");
 }
 
 void run_array_tests(void)
