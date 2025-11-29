@@ -8,8 +8,10 @@ static void test_array_new(void)
 {
     printf("\n[ RUN ] test_array_new\n");
 
-    Array *array = array_init(sizeof(int));
+    Array *array = array_init(sizeof array);
+
     assert(array != NULL);
+
     array_delete(array);
     array = NULL;
 
@@ -21,7 +23,9 @@ static void test_array_new_zero_size(void)
     printf("\n[ RUN ] test_array_new_zero_size\n");
 
     Array *array = array_init(0);
+
     assert(array == NULL);
+
     array_delete(array);
     array = NULL;
 
@@ -35,7 +39,9 @@ static void test_array_new_large_size(void)
     size_t size = (((size_t)-1) / 2);
 
     Array *array = array_init(size);
+
     assert(array == NULL);
+
     array_delete(array);
     array = NULL;
 
@@ -55,8 +61,10 @@ static void test_array_delete_nonempty(void)
 {
     printf("[ RUN ] test_array_delete_nonempty\n");
 
-    Array *array = array_init(sizeof(int));
+    Array *array = array_init(sizeof array);
+
     assert(array != NULL);
+
     array_delete(array);
     array = NULL;
 
@@ -76,8 +84,10 @@ static void test_array_free_nonempty(void)
 {
     printf("[ RUN ] test_array_free_nonempty\n");
 
-    Array *array = array_init(sizeof(int));
+    Array *array = array_init(sizeof array);
+
     assert(array != NULL);
+
     array_delete(array);
     array = NULL;
 
