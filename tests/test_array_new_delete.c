@@ -94,7 +94,7 @@ static void test_array_free_nonempty(void)
     printf("[ PASS ] test_array_free_nonempty\n");
 }
 
-void run_array_tests_new_delete(void)
+void run_array_tests(void)
 {
     test_array_new();
     test_array_new_zero_size();
