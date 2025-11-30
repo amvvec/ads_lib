@@ -4,22 +4,6 @@
 
 #include "../src/array.h"
 
-static void test_array_init_large_size(void)
-{
-    printf("\n[ RUN ] test_array_init_large_size\n");
-
-    size_t size = (((size_t)-1) / 2);
-
-    Array *a = array_init(size);
-
-    assert(a == NULL);
-
-    array_delete(a);
-    a = NULL;
-
-    printf("[ OK ] test_array_init_large_size\n\n");
-}
-
 static void test_array_delete_null(void)
 {
     printf("[ RUN ] test_array_delete_null\n");
@@ -75,7 +59,7 @@ static void test_array_init_zero_size(void)
 {
     printf("\n[ RUN ] test_array_init_zero_size\n");
 
-    Array * a = array_init(0);
+    Array *a = array_init(0);
 
     assert(a = NULL);
     array_delete(a);
@@ -84,20 +68,20 @@ static void test_array_init_zero_size(void)
     printf("[ OK ] test_array_init_zero_size\n");
 }
 
-static void test_array_new_large_size(void)
+static void test_array_init_large_size(void)
 {
-    printf("\n[ RUN ] test_array_new_large_size\n");
+    printf("\n[ RUN ] test_array_init_large_size\n");
 
     size_t size = (((size_t)-1) / 2);
 
-    Array *array = array_init(size);
+    Array *a = array_init(size);
 
-    assert(array == NULL);
+    assert(a == NULL);
 
-    array_delete(array);
-    array = NULL;
+    array_delete(a);
+    a = NULL;
 
-    printf("[ OK ] test_array_new_large_size\n\n");
+    printf("[ OK ] test_array_init_large_size\n\n");
 }
 
 static void test_array_delete_null(void)
