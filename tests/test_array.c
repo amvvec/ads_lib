@@ -4,20 +4,6 @@
 
 #include "../src/array.h"
 
-static void test_array_delete_nonempty(void)
-{
-    printf("[ RUN ] test_array_delete_nonempty\n");
-
-    Array *a = array_init(sizeof a);
-
-    assert(a != NULL);
-
-    array_delete(a);
-    a = NULL;
-
-    printf("[ OK ] test_array_delete_nonempty\n");
-}
-
 static void test_array_double_delete(void)
 {
     printf("\n[ RUN ] test_array_double_delete\n");
@@ -88,12 +74,12 @@ static void test_array_delete_nonempty(void)
 {
     printf("[ RUN ] test_array_delete_nonempty\n");
 
-    Array *array = array_init(sizeof array);
+    Array *a = array_init(sizeof(int));
 
-    assert(array != NULL);
+    assert(a != NULL);
 
-    array_delete(array);
-    array = NULL;
+    array_delete(a);
+    a = NULL;
 
     printf("[ OK ] test_array_delete_nonempty\n");
 }
