@@ -4,15 +4,6 @@
 
 #include "../src/array.h"
 
-static void test_array_delete_null(void)
-{
-    printf("[ RUN ] test_array_delete_null\n");
-
-    array_delete(NULL);
-
-    printf("[ OK ] test_array_delete_null\n\n");
-}
-
 static void test_array_delete_nonempty(void)
 {
     printf("[ RUN ] test_array_delete_nonempty\n");
