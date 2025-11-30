@@ -51,17 +51,17 @@ static int mult_overflow_size_t(size_t count, size_t element_size,
     return 0;
 }
 
-static int array_grow_to(Array *array, size_t start_capacity)
+static int array_grow_to(Array *a, size_t start_capacity)
 {
-    if(!array)
+    if(!a)
     {
         return EINVAL;
     }
-    if(start_capacity <= array->capacity)
+    if(start_capacity <= a->capacity)
     {
         return 0; // Enough memory
     }
-    size_t new_capacity = array->capacity ? array->capacity : ARRAY_INIT_CAP;
+    size_t new_capacity = a->capacity ? a->capacity : ARRAY_INIT_CAP;
     while(new_capacity < start_capacity)
     {
         if(new_capacity > SIZE_MAX / 2)
@@ -71,49 +71,49 @@ static int array_grow_to(Array *array, size_t start_capacity)
         new_capacity *= 2;
     }
     size_t new_bytes;
-    if(mult_overflow_size_t(start_capacity, array->element_size, &new_bytes))
+    if(mult_overflow_size_t(start_capacity, a->element_size, &new_bytes))
     {
         return EOVERFLOW;
     }
-    struct ArrayNode *new_data = realloc(array->data, new_bytes);
+    struct ArrayNode *new_data = realloc(a->data, new_bytes);
     if(!new_data)
     {
         return ENOMEM;
     }
-    array->data = new_data;
-    array->capacity = new_capacity;
+    a->data = new_data;
+    a->capacity = new_capacity;
     return 0;
 }
 
-int array_shrink_to_fit(Array *array)
+int array_shrink_to_fit(Array *a)
 {
-    if(!array)
+    if(!a)
     {
         return EINVAL;
     }
-    if(array->size == array->capacity)
+    if(a->size == a->capacity)
     {
         return 0;
     }
-    if(array->size == 0)
+    if(a->size == 0)
     {
-        free(array->data);
-        array->data = NULL;
-        array->capacity = 0;
+        free(a->data);
+        a->data = NULL;
+        a->capacity = 0;
         return 0;
     }
     size_t new_bytes;
-    if(mult_overflow_size_t(array->size, array->element_size, &new_bytes) != 0)
+    if(mult_overflow_size_t(a->size, a->element_size, &new_bytes) != 0)
     {
         return EOVERFLOW;
     }
-    void *tmp = realloc(array->data, new_bytes);
+    void *tmp = realloc(a->data, new_bytes);
     if(!tmp)
     {
         return ENOMEM; // TODO
     }
-    array->data = tmp;
-    array->capacity = array->size;
+    a->data = tmp;
+    a->capacity = a->size;
     return 0;
 }
 
@@ -123,166 +123,166 @@ void array_delete(Array *a)
     free(a);
 }
 
-int array_insert(Array *array, size_t index, const void *value)
+int array_insert(Array *a, size_t index, const void *value)
 {
-    if(!array || !value)
+    if(!a || !value)
     {
         return EINVAL;
     }
-    if(index > array->size)
+    if(index > a->size)
     {
         return EINVAL;
     }
-    if(array->size >= array->capacity)
+    if(a->size >= a->capacity)
     {
-        int error = array_grow_to(array, array->capacity ? array->capacity * 2
-                                                         : ARRAY_INIT_CAP);
+        int error =
+            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
         if(error)
         {
             return error;
         }
     }
-    char *base = (char *)array->data;
-    if(index < array->size)
+    char *base = (char *)a->data;
+    if(index < a->size)
     {
-        void *dest = base + (index + 1) * array->element_size;
-        void *src = base + index * array->element_size;
-        size_t bytes_to_move = (array->size - index) * array->element_size;
+        void *dest = base + (index + 1) * a->element_size;
+        void *src = base + index * a->element_size;
+        size_t bytes_to_move = (a->size - index) * a->element_size;
         memmove(dest, src, bytes_to_move);
     }
-    void *insert = base + index * array->element_size;
-    memcpy(insert, value, array->element_size);
-    array->size++;
+    void *insert = base + index * a->element_size;
+    memcpy(insert, value, a->element_size);
+    a->size++;
     return 0;
 }
 
-int array_erase(Array *array, size_t index)
+int array_erase(Array *a, size_t index)
 {
-    if(!array)
+    if(!a)
     {
         return EINVAL;
     }
-    if(index >= array->size)
+    if(index >= a->size)
     {
         return EINVAL;
     }
-    if(index < array->size - 1)
+    if(index < a->size - 1)
     {
-        char *base = (char *)array->data;
-        void *dest = base + index * array->element_size;
-        void *src = base + (index + 1) * array->element_size;
-        size_t bytes_to_move = (array->size - index - 1) * array->element_size;
+        char *base = (char *)a->data;
+        void *dest = base + index * a->element_size;
+        void *src = base + (index + 1) * a->element_size;
+        size_t bytes_to_move = (a->size - index - 1) * a->element_size;
         memmove(dest, src, bytes_to_move);
     }
-    array->size--;
-    void *last = (char *)array->data + array->size * array->element_size;
-    memset(last, 0, array->element_size);
+    a->size--;
+    void *last = (char *)a->data + a->size * a->element_size;
+    memset(last, 0, a->element_size);
     return 0;
 }
 
-int array_push_front(Array *array, const void *value)
+int array_push_front(Array *a, const void *value)
 {
-    if(!array || !value)
+    if(!a || !value)
     {
         return EINVAL;
     }
-    if(array->size >= array->capacity)
+    if(a->size >= a->capacity)
     {
-        int error = array_grow_to(array, array->capacity ? array->capacity * 2
-                                                         : ARRAY_INIT_CAP);
+        int error =
+            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
         if(error)
         {
             return error;
         }
     }
-    void *dest = (char *)array->data + 1 * array->element_size;
-    void *src = (char *)array->data;
-    size_t bytes_to_move = array->size * array->element_size;
+    void *dest = (char *)a->data + 1 * a->element_size;
+    void *src = (char *)a->data;
+    size_t bytes_to_move = a->size * a->element_size;
     memmove(dest, src, bytes_to_move);
-    memcpy(array->data, value, array->element_size);
-    array->size++;
+    memcpy(a->data, value, a->element_size);
+    a->size++;
     return 0;
 }
 
-int array_push_back(Array *array, const void *value)
+int array_push_back(Array *a, const void *value)
 {
-    if(!array && !value)
+    if(!a && !value)
     {
         return EINVAL;
     }
-    if(array->size >= array->capacity)
+    if(a->size >= a->capacity)
     {
-        int error = array_grow_to(array, array->capacity ? array->capacity * 2
-                                                         : ARRAY_INIT_CAP);
+        int error =
+            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
         if(error)
         {
             return error;
         }
     }
-    void *dest = (char *)array->data + array->size * array->element_size;
-    memcpy(dest, value, array->element_size);
-    array->size++;
+    void *dest = (char *)a->data + a->size * a->element_size;
+    memcpy(dest, value, a->element_size);
+    a->size++;
     return 0;
 }
 
-void array_pop_front(Array *array)
+void array_pop_front(Array *a)
 {
-    if(!array || array->size == 0)
+    if(!a || a->size == 0)
     {
         return;
     }
-    size_t bytes_to_move =
-        (array->size - 1) * array->capacity; // WARNING: smth is wrong here
-    memmove(array->data, (char *)array->data + array->element_size,
-            bytes_to_move);
-    array->size--;
+    // WARNING: smth is wrong here
+    // size_t bytes_to_move = (size_t)(a->size - 1) * (size_t)a->capacity;
+    size_t bytes_to_move = (a->size - 1) * a->capacity;
+    memmove(a->data, (char *)a->data + a->element_size, bytes_to_move);
+    a->size--;
 }
 
-void array_pop_back(Array *array)
+void array_pop_back(Array *a)
 {
-    if(!array)
+    if(!a)
     {
         return;
     }
-    if(array->size == 0)
+    if(a->size == 0)
     {
         return;
     }
-    array->size--;
-    void *dest = (char *)array->data + array->size * array->element_size;
-    memset(dest, 0, array->element_size);
+    a->size--;
+    void *dest = (char *)a->data + a->size * a->element_size;
+    memset(dest, 0, a->element_size);
 }
 
-int array_get(const Array *array, size_t index, void *out_value)
+int array_get(const Array *a, size_t index, void *out_value)
 {
-    if(!array || !out_value || index >= array->size)
+    if(!a || !out_value || index >= a->size)
     {
         return EINVAL;
     }
-    const char *base = array->data;
-    const void *src = base + index * array->element_size;
-    memcpy(out_value, src, array->element_size);
+    const char *base = a->data;
+    const void *src = base + index * a->element_size;
+    memcpy(out_value, src, a->element_size);
     return 0;
 }
 
-int array_set(Array *array, size_t index, const void *value)
+int array_set(Array *a, size_t index, const void *value)
 {
-    if(!array || !value || index >= array->size)
+    if(!a || !value || index >= a->size)
     {
         return EINVAL;
     }
-    char *base = array->data;
-    void *dest = base + index * array->element_size;
-    memcpy(dest, value, array->element_size);
+    char *base = a->data;
+    void *dest = base + index * a->element_size;
+    memcpy(dest, value, a->element_size);
     return 0;
 }
 
-size_t array_size(const Array *array)
+size_t array_size(const Array *a)
 {
-    return array ? array->size : 0;
+    return a ? a->size : 0;
 }
 
-size_t array_capacity(const Array *array)
+size_t array_capacity(const Array *a)
 {
-    return array ? array->capacity : 0;
+    return a ? a->capacity : 0;
 }

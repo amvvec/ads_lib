@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "test_array_new_delete.c"
+#include "test_array.c"
 #include "test_avl_tree.c"
 #include "test_runner.h"
 
