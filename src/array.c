@@ -119,7 +119,11 @@ int array_shrink_to_fit(Array *a)
 
 void array_delete(Array *a)
 {
-    free(a ? a->data : NULL);
+    if(a == NULL)
+    {
+        return;
+    }
+    free(a->data);
     free(a);
 }
 

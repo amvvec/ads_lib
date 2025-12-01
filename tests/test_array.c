@@ -77,9 +77,8 @@ static void test_array_delete_double(void)
     assert(a != NULL);
 
     array_delete(a);
-    array_delete(a);
-
     a = NULL;
+    array_delete(a);
 
     printf("[ OK ] test_array_delete_double\n");
 }
