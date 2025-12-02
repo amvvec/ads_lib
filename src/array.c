@@ -5,6 +5,12 @@
 
 #include "array.h"
 
+enum
+{
+    ARRAY_INIT_CAP = 8,
+    MAX_ELEMENT_SIZE = (SIZE_MAX / 8u)
+};
+
 typedef struct Array
 {
     void *data;
@@ -12,11 +18,6 @@ typedef struct Array
     size_t capacity;
     size_t element_size;
 } Array;
-
-enum
-{
-    ARRAY_INIT_CAP = 8
-};
 
 Array *array_init(size_t element_size)
 {
