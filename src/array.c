@@ -132,7 +132,14 @@ void array_delete(Array *a)
     {
         return;
     }
+    
     free(a->data);
+
+    a->data = NULL;
+    a->size = 0u;
+    a->capacity = 0u;
+    a->element_size = 0u;
+
     free(a);
 }
 
