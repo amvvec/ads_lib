@@ -27,24 +27,26 @@ static int is_valid_element_size(size_t size)
 
 Array *array_init(size_t element_size)
 {
-    if(element_size == 0 || element_size > SIZE_MAX / 8)
+    if(!is_valid_element_size(element_size))
     {
         return NULL;
     }
-    Array *a = malloc(sizeof *a);
-    if(!a)
+
+    Array *a = (Array *)malloc(sizeof(*a));
+    if(a == NULL)
     {
         return NULL;
     }
+
     a->data = NULL;
-    a->capacity = 0;
-    a->size = 0;
+    a->size = 0u;
+    a->capacity = 0u;
     a->element_size = element_size;
+
     return a;
 }
 
-static int mult_overflow_size_t(size_t count, size_t element_size,
-                                size_t *out_bytes)
+static int mult_overflow_size_t(size_t count, size_t element_size, size_t *out_bytes)
 {
     if(!out_bytes || element_size == 0)
     {
@@ -146,8 +148,7 @@ int array_insert(Array *a, size_t index, const void *value)
     }
     if(a->size >= a->capacity)
     {
-        int error =
-            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
+        int error = array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
         if(error)
         {
             return error;
@@ -199,8 +200,7 @@ int array_push_front(Array *a, const void *value)
     }
     if(a->size >= a->capacity)
     {
-        int error =
-            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
+        int error = array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
         if(error)
         {
             return error;
@@ -223,8 +223,7 @@ int array_push_back(Array *a, const void *value)
     }
     if(a->size >= a->capacity)
     {
-        int error =
-            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
+        int error = array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
         if(error)
         {
             return error;

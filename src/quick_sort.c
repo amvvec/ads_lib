@@ -31,9 +31,8 @@ int partition(int arr[], int low, int high)
 {
     if(!arr || low < 0 || high < 0 || low > high)
     {
-        fprintf(stderr,
-                "Invalid partition parameters: arr=%p, low=%d, high=%d\n",
-                (void *)arr, low, high);
+        fprintf(stderr, "Invalid partition parameters: arr=%p, low=%d, high=%d\n", (void *)arr, low,
+                high);
         return -1;
     }
 
@@ -65,9 +64,8 @@ void quick_sort(int arr[], int low, int high)
 {
     if(!arr || low < 0 || high < 0)
     {
-        fprintf(stderr,
-                "Invalid quicksort parameters: arr=%p, low=%d, high=%d\n",
-                (void *)arr, low, high);
+        fprintf(stderr, "Invalid quicksort parameters: arr=%p, low=%d, high=%d\n", (void *)arr, low,
+                high);
         return;
     }
     if(low >= high)

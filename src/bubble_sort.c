@@ -33,8 +33,7 @@ void bubble_sort(int arr[], int size)
             }
             if(arr[j] > INT_MAX / 2 || arr[j + 1] > INT_MAX / 2)
             {
-                fprintf(stderr, "Potential injection detected at index %d\n",
-                        j);
+                fprintf(stderr, "Potential injection detected at index %d\n", j);
                 return;
             }
 

@@ -7,8 +7,7 @@ void runDijkstraTests(void)
 {
     printf("\n[ RUN ] Dijkstra Tests\n\n");
     // Test 1: Graph with edges 0->1, 0->2, 1->3
-    printf(
-        "Test 1: Shortest paths from 0 in graph with edges 0->1, 0->2, 1->3\n");
+    printf("Test 1: Shortest paths from 0 in graph with edges 0->1, 0->2, 1->3\n");
     Graph g;
     init_graph(&g, 4);
     add_edge(&g, 0, 1); // Weight = 1

@@ -11,9 +11,9 @@
  */
 typedef struct AVLNode
 {
-    int data;             /**< The integer data stored in the node. */
-    int height;           /**< The height of the subtree rooted at this node. */
-    struct AVLNode *left; /**< Pointer to the left child node. */
+    int data;              /**< The integer data stored in the node. */
+    int height;            /**< The height of the subtree rooted at this node. */
+    struct AVLNode *left;  /**< Pointer to the left child node. */
     struct AVLNode *right; /**< Pointer to the right child node. */
 } AVLNode;
 

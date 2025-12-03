@@ -24,8 +24,8 @@ void runSkipListTests(void)
     // Test 2: Delete
     printf("Test 2: Delete 5 and search\n");
     delete_skip_list(list, 5);
-    int pass2 = !search_skip_list(list, 5) && search_skip_list(list, 2) &&
-                search_skip_list(list, 8);
+    int pass2 =
+        !search_skip_list(list, 5) && search_skip_list(list, 2) && search_skip_list(list, 8);
     printf("Result: %s\n", pass2 ? "Pass" : "Fail");
 
     // Test 4: Empty list search
@@ -45,8 +45,7 @@ void runSkipListTests(void)
     insert_skip_list(empty_list, 10);
     insert_skip_list(empty_list, 20);
     delete_skip_list(empty_list, 10);
-    int pass5 =
-        search_skip_list(empty_list, 20) && !search_skip_list(empty_list, 10);
+    int pass5 = search_skip_list(empty_list, 20) && !search_skip_list(empty_list, 10);
     free_skip_list(empty_list);
     printf("Result: %s\n", pass5 ? "Pass" : "Fail");
 

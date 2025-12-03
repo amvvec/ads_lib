@@ -22,8 +22,7 @@ void runHashTableTests(void)
     hash_table_put(ht, 1, 10);
     hash_table_put(ht, 2, 20);
     hash_table_put(ht, 3, 30);
-    if(hash_table_get(ht, 1) == 10 && hash_table_get(ht, 2) == 20 &&
-       hash_table_get(ht, 3) == 30)
+    if(hash_table_get(ht, 1) == 10 && hash_table_get(ht, 2) == 20 && hash_table_get(ht, 3) == 30)
     {
         printf("Result: Get successful (1:10, 2:20, 3:30)\n");
     }
