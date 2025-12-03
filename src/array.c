@@ -7,9 +7,10 @@
 
 enum
 {
-    ARRAY_INIT_CAP = 8,
-    MAX_ELEMENT_SIZE = (SIZE_MAX / 8u)
+    ARRAY_INIT_CAP = 8
 };
+
+static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / 8u);
 
 typedef struct Array
 {
