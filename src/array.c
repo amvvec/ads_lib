@@ -32,7 +32,7 @@ Array *array_init(size_t element_size)
         return NULL;
     }
 
-    Array *a = (Array *)malloc(sizeof(*a));
+    Array *a = malloc(sizeof(*a));
     if(a == NULL)
     {
         return NULL;
@@ -50,11 +50,11 @@ static int mult_overflow_size_t(size_t count, size_t element_size, size_t *out_b
 {
     if(!out_bytes || element_size == 0)
     {
-        return EINVAL;
+        return 1;
     }
     if(count > SIZE_MAX / element_size)
     {
-        return EOVERFLOW;
+        return 1;
     }
     *out_bytes = count * element_size;
     return 0;
