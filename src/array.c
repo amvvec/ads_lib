@@ -7,7 +7,7 @@
 
 enum
 {
-    ARRAY_INIT_CAP = 8
+    ARRAY_INIT_CAP = 8u
 };
 
 static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / 8u);
@@ -58,10 +58,6 @@ static int mult_overflow_size_t(size_t *out_bytes, size_t element_count, size_t 
         return EINVAL;
     }
 
-    if(element_count > SIZE_MAX)
-    {
-        return EOVERFLOW;
-    }
     if(element_count > (SIZE_MAX / element_size))
     {
         return EOVERFLOW;
@@ -93,18 +89,21 @@ static int array_grow_to(Array *a, size_t start_capacity)
         new_capacity *= 2u;
     }
 
-    size_t new_bytes;
+    size_t new_bytes = 0u;
     if(mult_overflow_size_t(&new_bytes, start_capacity, a->element_size))
     {
         return EOVERFLOW;
     }
+    
     void *new_data = realloc(a->data, new_bytes);
-    if(!new_data)
+    if(new_data == NULL)
     {
         return ENOMEM;
     }
+
     a->data = new_data;
     a->capacity = new_capacity;
+
     return 0;
 }
 
@@ -125,7 +124,7 @@ int array_shrink_to_fit(Array *a)
         a->capacity = 0;
         return 0;
     }
-    size_t new_bytes;
+    size_t new_bytes = 0u;
     if(mult_overflow_size_t(&new_bytes, a->size, a->element_size) != 0)
     {
         return EOVERFLOW;
@@ -191,14 +190,16 @@ int array_insert(Array *a, size_t index, const void *value)
 
 int array_erase(Array *a, size_t index)
 {
-    if(!a)
+    if(a == NULL)
     {
         return EINVAL;
     }
+
     if(index >= a->size)
     {
         return EINVAL;
     }
+    
     if(index < a->size - 1)
     {
         char *base = (char *)a->data;
