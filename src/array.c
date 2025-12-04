@@ -62,23 +62,25 @@ static int mult_overflow_size_t(size_t count, size_t element_size, size_t *out_b
 
 static int array_grow_to(Array *a, size_t start_capacity)
 {
-    if(!a)
+    if(a == NULL)
     {
         return EINVAL;
     }
     if(start_capacity <= a->capacity)
     {
-        return 0; // Enough memory
+        return 0; // enough memory
     }
+
     size_t new_capacity = a->capacity ? a->capacity : ARRAY_INIT_CAP;
     while(new_capacity < start_capacity)
     {
-        if(new_capacity > SIZE_MAX / 2)
+        if(new_capacity > (MAX_ELEMENT_SIZE / 2u))
         {
             return EOVERFLOW;
         }
-        new_capacity *= 2;
+        new_capacity *= 2u;
     }
+    
     size_t new_bytes;
     if(mult_overflow_size_t(start_capacity, a->element_size, &new_bytes))
     {
