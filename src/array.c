@@ -46,17 +46,29 @@ Array *array_init(size_t element_size)
     return a;
 }
 
-static int mult_overflow_size_t(size_t count, size_t element_size, size_t *out_bytes)
+static int mult_overflow_size_t(size_t *out_bytes, size_t element_count, size_t element_size)
 {
-    if(!out_bytes || element_size == 0)
+    if(out_bytes == NULL)
     {
-        return 1;
+        return EINVAL;
     }
-    if(count > SIZE_MAX / element_size)
+
+    if((element_size == 0u) || (element_size > MAX_ELEMENT_SIZE))
     {
-        return 1;
+        return EINVAL;
     }
-    *out_bytes = count * element_size;
+
+    if(element_count > SIZE_MAX)
+    {
+        return EOVERFLOW;
+    }
+    if(element_count > (SIZE_MAX / element_size))
+    {
+        return EOVERFLOW;
+    }
+
+    *out_bytes = (element_count * element_size);
+
     return 0;
 }
 
@@ -80,9 +92,9 @@ static int array_grow_to(Array *a, size_t start_capacity)
         }
         new_capacity *= 2u;
     }
-    
+
     size_t new_bytes;
-    if(mult_overflow_size_t(start_capacity, a->element_size, &new_bytes))
+    if(mult_overflow_size_t(&new_bytes, start_capacity, a->element_size))
     {
         return EOVERFLOW;
     }
@@ -114,7 +126,7 @@ int array_shrink_to_fit(Array *a)
         return 0;
     }
     size_t new_bytes;
-    if(mult_overflow_size_t(a->size, a->element_size, &new_bytes) != 0)
+    if(mult_overflow_size_t(&new_bytes, a->size, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
@@ -134,7 +146,7 @@ void array_delete(Array *a)
     {
         return;
     }
-    
+
     free(a->data);
 
     a->data = NULL;
