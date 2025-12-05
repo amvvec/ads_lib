@@ -6,8 +6,6 @@
 
 static void test_avl_tree_init(void)
 {
-    printf("\n[ RUN ] test_avl_tree_init\n");
-
     AVLTree *tree = avl_tree_init();
 
     assert(tree != NULL);
@@ -17,14 +15,10 @@ static void test_avl_tree_init(void)
     tree->root = NULL;
     free(tree);
     tree = NULL;
-
-    printf("[ OK ] test_avl_tree_init\n");
 }
 
 static void test_avl_tree_insert_and_balance(void)
 {
-    printf("\n[ RUN ] test_avl_tree_insert_and_balance\n");
-
     AVLTree *tree = avl_tree_init();
 
     assert(tree != NULL);
@@ -48,14 +42,10 @@ static void test_avl_tree_insert_and_balance(void)
     tree->root = NULL;
     free(tree);
     tree = NULL;
-
-    printf("[ OK ] test_avl_tree_insert_and_balance\n");
 }
 
 static void test_avl_tree_null_safety(void)
 {
-    printf("\n[ RUN ] test_avl_tree_null_safety\n");
-
     avl_tree_insert(NULL, 42);
 
     AVLTree *tree = avl_tree_init();
@@ -68,8 +58,6 @@ static void test_avl_tree_null_safety(void)
     tree->root = NULL;
     free(tree);
     tree = NULL;
-
-    printf("[ OK ] test_avl_tree_null_safety\n");
 }
 
 void run_avl_tree_tests(void)

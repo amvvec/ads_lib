@@ -61,15 +61,15 @@ static void test_array_delete_double(void)
 
 static void test_array_insert_basic(void)
 {
-    Array * a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
-    
-    int value = 1;
+
+    const int value = 1;
     array_insert(a, &value, 0);
 
-    size_t s = array_size(a);
+    const size_t s = array_size(a);
     assert(s == 1);
-    
+
     array_delete(a);
     a = NULL;
 }
