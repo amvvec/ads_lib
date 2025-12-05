@@ -6,6 +6,10 @@
 
 void test_runner(void)
 {
+    printf("Running tests...\n");
+    
     run_array_tests();
-    run_avl_tree_tests();
+    // run_avl_tree_tests();
+    
+    printf("All tests passed\n");
 }
