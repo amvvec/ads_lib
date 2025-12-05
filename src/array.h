@@ -10,7 +10,7 @@ Array *array_init(size_t element_size);
 
 int array_shrink_to_fit(Array *array);
 
-int array_insert(Array *array, size_t index, const void *value);
+int array_insert(Array *array, const void *value, size_t index);
 int array_erase(Array *array, size_t index);
 int array_push_front(Array *array, const void *value);
 int array_push_back(Array *array, const void *value);

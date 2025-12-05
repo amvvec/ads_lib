@@ -156,35 +156,69 @@ void array_delete(Array *a)
     free(a);
 }
 
-int array_insert(Array *a, size_t index, const void *value)
+int array_insert(Array *a, const void *value, size_t index)
 {
-    if(!a || !value)
+    if(a == NULL)
     {
         return EINVAL;
     }
+
+    if(value == NULL)
+    {
+        return EINVAL;
+    }
+
     if(index > a->size)
     {
         return EINVAL;
     }
+
     if(a->size >= a->capacity)
     {
-        int error = array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
-        if(error)
+        size_t new_capacity = (a->capacity != 0u) ? (a->capacity * 2u) : ARRAY_INIT_CAP;
+
+        int err = array_grow_to(a, new_capacity);
+
+        if(err != 0)
         {
-            return error;
+            return err;
         }
     }
+
     char *base = (char *)a->data;
-    if(index < a->size)
+    if(index <= a->size)
     {
-        void *dest = base + (index + 1) * a->element_size;
-        void *src = base + index * a->element_size;
-        size_t bytes_to_move = (a->size - index) * a->element_size;
-        memmove(dest, src, bytes_to_move);
+        size_t src_offset = 0u;
+        if(mult_overflow_size_t(&src_offset, index, a->element_size) != 0)
+        {
+            return EINVAL;
+        }
+
+        size_t dst_offset = 0u;
+        if(mult_overflow_size_t(&dst_offset, index, a->element_size) != 0)
+        {
+            return EINVAL;
+        }
+
+        size_t bytes_to_move = 0u;
+        size_t tail_count = a->size - index;
+        if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) != 0)
+        {
+            return EINVAL;
+        }
+
+        memmove(base + dst_offset, base + src_offset, bytes_to_move);
     }
-    void *insert = base + index * a->element_size;
-    memcpy(insert, value, a->element_size);
+
+    size_t insert_offset = 0u;
+    if(mult_overflow_size_t(&insert_offset, index, a->element_size) != 0)
+    {
+        return EINVAL;
+    }
+
+    memcpy(base + insert_offset, value, a->element_size);
     a->size++;
+
     return 0;
 }
 
