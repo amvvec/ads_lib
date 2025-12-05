@@ -94,7 +94,7 @@ static int array_grow_to(Array *a, size_t start_capacity)
     {
         return EOVERFLOW;
     }
-    
+
     void *new_data = realloc(a->data, new_bytes);
     if(new_data == NULL)
     {
@@ -199,18 +199,56 @@ int array_erase(Array *a, size_t index)
     {
         return EINVAL;
     }
-    
-    if(index < a->size - 1)
+
+    if(index < (a->size - 1u))
     {
         char *base = (char *)a->data;
-        void *dest = base + index * a->element_size;
-        void *src = base + (index + 1) * a->element_size;
-        size_t bytes_to_move = (a->size - index - 1) * a->element_size;
-        memmove(dest, src, bytes_to_move);
+
+        size_t tail_count = a->size - index - 1u;
+
+        size_t src_offset = 0u;
+        if(mult_overflow_size_t(&src_offset, index, a->element_size) != 0)
+        {
+            return EOVERFLOW;
+        }
+
+        size_t dst_offset = 0u;
+        if(mult_overflow_size_t(&dst_offset, index, a->element_size) != 0)
+        {
+            return EOVERFLOW;
+        }
+
+        size_t bytes_to_move = 0u;
+        if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) != 0)
+        {
+            return EOVERFLOW;
+        }
+
+        {
+            void *dest = base + dst_offset;
+            void *src = base + src_offset;
+
+            memmove(dest, src, bytes_to_move);
+        }
     }
+
     a->size--;
-    void *last = (char *)a->data + a->size * a->element_size;
-    memset(last, 0, a->element_size);
+
+    {
+        size_t last_offset = 0u;
+        if(mult_overflow_size_t(&last_offset, a->size, a->element_size) != 0)
+        {
+            return EOVERFLOW;
+        }
+
+        {
+            char *base = (char *)a->data;
+            void *last = &base[last_offset];
+
+            memset(last, 0, a->element_size);
+        }
+    }
+
     return 0;
 }
 
