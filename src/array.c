@@ -38,9 +38,9 @@ Array *array_init(size_t element_size)
         return NULL;
     }
 
-    a->data = NULL;
-    a->size = 0u;
-    a->capacity = 0u;
+    a->data         = NULL;
+    a->size         = 0u;
+    a->capacity     = 0u;
     a->element_size = element_size;
 
     return a;
