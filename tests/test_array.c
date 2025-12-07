@@ -74,6 +74,22 @@ static void test_array_insert_basic(void)
     a = NULL;
 }
 
+static void test_array_erase_basic(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    const int value = 1;
+    array_insert(a, &value, 0);
+    array_erase(a, 0);
+
+    const size_t s = array_size(a);
+    assert(s == 0);
+
+    array_delete(a);
+    a = NULL;
+}
+
 void run_array_tests(void)
 {
     test_array_init_basic();
@@ -83,4 +99,5 @@ void run_array_tests(void)
     test_array_delete_nonempty();
     test_array_delete_double();
     test_array_insert_basic();
+    test_array_erase_basic();
 }
