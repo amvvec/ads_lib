@@ -76,18 +76,11 @@ static void test_array_insert_basic(void)
 
 static void test_array_insert_null_array(void)
 {
-    Array *a = array_init(sizeof(int));
-    assert(a != NULL);
-
     int v = 1;
-    
-    assert(array_insert(NULL, &v, 0) != 0); // NULL array
-    
-    assert(array_size(a) == 0);
-    assert(array_capacity(a) == 0);
-    
-    array_delete(a);
-    a = NULL;
+
+    assert(
+        array_insert(NULL, &v, 0) != 0 // NULL array
+    );
 }
 
 static void test_array_erase_basic(void)
