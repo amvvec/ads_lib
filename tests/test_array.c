@@ -92,6 +92,20 @@ static void test_array_insert_null_value(void)
     a = NULL;
 }
 
+static void test_array_insert_invalid_index(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    int v = 1;
+
+    assert(array_insert(a, &v, 1) != 0); // index > size (array is empty)
+    assert(array_insert(a, &v, 0) == 0);
+
+    array_delete(a);
+    a = NULL;
+}
+
 static void test_array_erase_basic(void)
 {
     Array *a = array_init(sizeof(int));
@@ -120,4 +134,5 @@ void run_array_tests(void)
     test_array_erase_basic();
     test_array_insert_null_array();
     test_array_insert_null_value();
+    test_array_insert_invalid_index();
 }
