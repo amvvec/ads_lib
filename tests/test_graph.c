@@ -24,7 +24,8 @@ void runGraphTests(void)
     add_edge(&g, 0, 1);
     add_edge(&g, 1, 2);
     add_edge(&g, 2, 0);
-    if(g.adj_matrix[0][1] == 1 && g.adj_matrix[1][2] == 1 && g.adj_matrix[2][0] == 1)
+    if(g.adj_matrix[0][1] == 1 && g.adj_matrix[1][2] == 1 &&
+       g.adj_matrix[2][0] == 1)
     {
         printf("Result: Edges added correctly\n");
     }

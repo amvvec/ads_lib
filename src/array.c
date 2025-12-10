@@ -46,7 +46,8 @@ Array *array_init(size_t element_size)
     return a;
 }
 
-static int mult_overflow_size_t(size_t *out_bytes, size_t element_count, size_t element_size)
+static int mult_overflow_size_t(size_t *out_bytes, size_t element_count,
+                                size_t element_size)
 {
     if(out_bytes == NULL)
     {
@@ -175,7 +176,8 @@ int array_insert(Array *a, const void *value, size_t index)
 
     if(a->size >= a->capacity)
     {
-        size_t new_capacity = (a->capacity != 0u) ? (a->capacity * 2u) : ARRAY_INIT_CAP;
+        size_t new_capacity =
+            (a->capacity != 0u) ? (a->capacity * 2u) : ARRAY_INIT_CAP;
 
         int err = array_grow_to(a, new_capacity);
 
@@ -202,7 +204,8 @@ int array_insert(Array *a, const void *value, size_t index)
 
         size_t bytes_to_move = 0u;
         size_t tail_count = a->size - index;
-        if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) != 0)
+        if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) !=
+           0)
         {
             return EINVAL;
         }
@@ -253,7 +256,8 @@ int array_erase(Array *a, size_t index)
         }
 
         size_t bytes_to_move = 0u;
-        if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) != 0)
+        if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) !=
+           0)
         {
             return EOVERFLOW;
         }
@@ -294,7 +298,8 @@ int array_push_front(Array *a, const void *value)
     }
     if(a->size >= a->capacity)
     {
-        int error = array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
+        int error =
+            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
         if(error)
         {
             return error;
@@ -317,7 +322,8 @@ int array_push_back(Array *a, const void *value)
     }
     if(a->size >= a->capacity)
     {
-        int error = array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
+        int error =
+            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
         if(error)
         {
             return error;

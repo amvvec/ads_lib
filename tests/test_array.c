@@ -59,16 +59,18 @@ static void test_array_delete_double(void)
     array_delete(a);
 }
 
-static void test_array_insert_basic(void)
+static void test_array_insert_empty_array(void)
 {
     Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
-    const int v = 1;
-    array_insert(a, &v, 0);
+    int value = 1;
+    size_t out = 0u;
 
-    const size_t s = array_size(a);
-    assert(s == 1);
+    assert(array_insert(a, &value, 0) == 0);
+    assert(array_size(a) == 1);
+    assert(array_get(a, 0, &out) == 0);
+    assert(out == 1);
 
     array_delete(a);
     a = NULL;
@@ -86,7 +88,7 @@ static void test_array_insert_null_value(void)
     Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
-    assert(array_insert(a, NULL, 0) != 0);
+    assert(array_insert(a, NULL, 0) != 0); // NULL value
 
     array_delete(a);
     a = NULL;
@@ -130,9 +132,9 @@ void run_array_tests(void)
     test_array_delete_null();
     test_array_delete_nonempty();
     test_array_delete_double();
-    test_array_insert_basic();
-    test_array_erase_basic();
+    test_array_insert_empty_array();
     test_array_insert_null_array();
     test_array_insert_null_value();
     test_array_insert_invalid_index();
+    test_array_erase_basic();
 }

@@ -59,7 +59,8 @@ void vector_push_back(Vector *vec, int value)
             return;
         }
         vec->capacity *= 2;
-        int *new_data = (int *)realloc(vec->data, (size_t)vec->capacity * sizeof(int));
+        int *new_data =
+            (int *)realloc(vec->data, (size_t)vec->capacity * sizeof(int));
         if(!new_data)
         {
             fprintf(stderr, "Reallocation failed\n");

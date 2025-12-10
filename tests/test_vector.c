@@ -24,7 +24,8 @@ void runVectorTests(void)
     vector_push_back(vec, 3); // Should trigger resize
     if(vec->size == 3)
     {
-        printf("Result: Size is %d, get(0)=%d\n", vec->size, vector_get(vec, 0));
+        printf("Result: Size is %d, get(0)=%d\n", vec->size,
+               vector_get(vec, 0));
     }
     else
     {
