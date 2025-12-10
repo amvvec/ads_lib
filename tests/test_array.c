@@ -78,9 +78,18 @@ static void test_array_insert_null_array(void)
 {
     int v = 1;
 
-    assert(
-        array_insert(NULL, &v, 0) != 0 // NULL array
-    );
+    assert(array_insert(NULL, &v, 0) != 0); // NULL array
+}
+
+static void test_array_insert_null_value(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    assert(array_insert(a, NULL, 0) != 0);
+
+    array_delete(a);
+    a = NULL;
 }
 
 static void test_array_erase_basic(void)
@@ -110,4 +119,5 @@ void run_array_tests(void)
     test_array_insert_basic();
     test_array_erase_basic();
     test_array_insert_null_array();
+    test_array_insert_null_value();
 }
