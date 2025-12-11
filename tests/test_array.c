@@ -4,10 +4,9 @@
 
 #include "../src/array.h"
 
-static void test_array_init_basic(void)
+static void test_array_init_and_delete(void)
 {
     Array *a = array_init(sizeof(int));
-
     assert(a != NULL);
     array_delete(a);
     a = NULL;
@@ -153,7 +152,7 @@ static void test_array_erase_basic(void)
 
 void run_array_tests(void)
 {
-    test_array_init_basic();
+    test_array_init_and_delete();
     test_array_init_zero_size();
     test_array_init_large_size();
     test_array_delete_null();
