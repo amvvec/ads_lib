@@ -64,10 +64,10 @@ static void test_array_insert_empty_array(void)
     Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
-    int value = 1;
+    int value1 = 1;
     size_t out = 0u;
 
-    assert(array_insert(a, &value, 0) == 0);
+    assert(array_insert(a, &value1, 0) == 0);
     assert(array_size(a) == 1);
     assert(array_get(a, 0, &out) == 0);
     assert(out == 1);
@@ -108,6 +108,33 @@ static void test_array_insert_invalid_index(void)
     a = NULL;
 }
 
+static void test_array_insert_back_preserve_order(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    int value1 = 1;
+    int out1 = 0;
+
+    assert(array_insert(a, &value1, 0) == 0);
+    assert(array_size(a) == 1);
+    assert(array_get(a, 0, &out1) == 0);
+    assert(out1 == 1);
+
+    int value2 = 2;
+    int out2 = 0;
+
+    assert(array_insert(a, &value2, 1) == 0);
+    assert(array_size(a) == 2);
+    assert(array_get(a, 0, &out1) == 0);
+    assert(out1 == 1);
+    assert(array_get(a, 1, &out2) == 0);
+    assert(out2 == 2);
+
+    array_delete(a);
+    a = NULL;
+}
+
 static void test_array_erase_basic(void)
 {
     Array *a = array_init(sizeof(int));
@@ -136,5 +163,6 @@ void run_array_tests(void)
     test_array_insert_null_array();
     test_array_insert_null_value();
     test_array_insert_invalid_index();
+    test_array_insert_back_preserve_order();
     test_array_erase_basic();
 }

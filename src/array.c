@@ -10,7 +10,7 @@ enum
     ARRAY_INIT_CAP = 8u
 };
 
-static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / 8u);
+static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / ARRAY_INIT_CAP);
 
 typedef struct Array
 {
@@ -341,7 +341,7 @@ void array_pop_front(Array *a)
     {
         return;
     }
-    // WARNING: smth is wrong here
+    // WARNING: something is wrong here
     // size_t bytes_to_move = (size_t)(a->size - 1) * (size_t)a->capacity;
     size_t bytes_to_move = (a->size - 1) * a->capacity;
     memmove(a->data, (char *)a->data + a->element_size, bytes_to_move);
