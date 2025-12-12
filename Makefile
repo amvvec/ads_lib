@@ -37,7 +37,8 @@ CFLAGS +=	-fsanitize=address,undefined,leak \
 			-Wold-style-definition \
 			-fno-common \
 			-fstack-protector-strong \
-			-D_FORTIFY_SOURCE=2
+			-D_FORTIFY_SOURCE=2 \
+			-g
 
 SRC_DIR 	:= src
 BUILD_DIR 	:= build
