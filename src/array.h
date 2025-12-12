@@ -12,8 +12,10 @@ int array_shrink_to_fit(Array *array);
 
 int array_insert(Array *array, const void *value, size_t index);
 int array_erase(Array *array, size_t index);
+
 int array_push_front(Array *array, const void *value);
 int array_push_back(Array *array, const void *value);
+
 void array_pop_back(Array *array);
 void array_pop_front(Array *array);
 

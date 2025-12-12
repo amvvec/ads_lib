@@ -110,33 +110,41 @@ static int array_grow_to(Array *a, size_t start_capacity)
 
 int array_shrink_to_fit(Array *a)
 {
-    if(!a)
+    if(a == NULL)
     {
         return EINVAL;
     }
+
     if(a->size == a->capacity)
     {
-        return 0;
+        return 0; // enough memory
     }
+
     if(a->size == 0)
     {
         free(a->data);
+
         a->data = NULL;
         a->capacity = 0;
+
         return 0;
     }
+
     size_t new_bytes = 0u;
     if(mult_overflow_size_t(&new_bytes, a->size, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
+
     void *tmp = realloc(a->data, new_bytes);
-    if(!tmp)
+    if(tmp == NULL)
     {
-        return ENOMEM; // TODO
+        return ENOMEM; // TODO: ?
     }
+
     a->data = tmp;
     a->capacity = a->size;
+
     return 0;
 }
 
