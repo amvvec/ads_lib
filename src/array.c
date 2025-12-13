@@ -165,6 +165,23 @@ void array_delete(Array *a)
     free(a);
 }
 
+/**
+ * Inserts an element at given index
+ *
+ * @pre a != NULL
+ * @pre value != NULL
+ * @pre index <= array_size(a)
+ *
+ * @post On success:
+ *       - array_size(a) is increased by 1
+ *       - elements at (index, old_size) are shifted right
+ *       - element at index equals *value
+ *
+ * @post On failure:
+ *       - array remains unchanged
+ *
+ * @return 0 on success, error code otherwise
+ */
 int array_insert(Array *a, const void *value, size_t index)
 {
     if(a == NULL)

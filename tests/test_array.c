@@ -4,14 +4,6 @@
 
 #include "../src/array.h"
 
-static void print_array(Array * a)
-{
-    for(size_t i = 0; i < sizeof(a); i++)
-    {
-
-    }
-}
-
 static void test_array_init_and_delete(void)
 {
     Array *a = array_init(sizeof(int));
@@ -161,7 +153,7 @@ static void test_array_insert_front_preserve_order(void)
     assert(array_insert(a, &value2, 1) == 0);
     assert(array_size(a) == 2);
     assert(array_get(a, 1, &out2) == 0);
-    assert(out2 == 2);  
+    assert(out2 == 2);
 
     array_delete(a);
     a = NULL;
