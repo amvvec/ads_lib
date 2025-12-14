@@ -166,6 +166,14 @@ void array_delete(Array *a)
 }
 
 /**
+ * 
+ */
+static int offset_helper(Array * a, size_t index, size_t * out)
+{
+    return mult_overflow_size_t(out, index, a->element_size);
+}
+
+/**
  * Inserts an element at given index
  *
  * @pre a != NULL
