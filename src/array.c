@@ -211,30 +211,27 @@ int array_insert(Array *a, const void *value, size_t index)
     }
 
     char *base = (char *)a->data;
-    if(index <= a->size)
+
+    size_t src_offset = 0u;
+    if(offset_helper(a, index, &src_offset) != 0)
     {
-        size_t src_offset = 0u;
-        if(offset_helper(a, index, &src_offset) != 0)
-        {
-            return EINVAL;
-        }
-
-        size_t dst_offset = 0u;
-        if(offset_helper(a, index, &dst_offset) != 0)
-        {
-            return EINVAL;
-        }
-
-        size_t bytes_to_move = 0u;
-        size_t tail_count = a->size - index;
-        if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) !=
-           0)
-        {
-            return EINVAL;
-        }
-
-        memmove(base + dst_offset, base + src_offset, bytes_to_move);
+        return EINVAL;
     }
+
+    size_t dst_offset = 0u;
+    if(offset_helper(a, index, &dst_offset) != 0)
+    {
+        return EINVAL;
+    }
+
+    size_t bytes_to_move = 0u;
+    size_t tail_count = a->size - index;
+    if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) != 0)
+    {
+        return EINVAL;
+    }
+
+    memmove(base + dst_offset, base + src_offset, bytes_to_move);
 
     size_t insert_offset = 0u;
     if(mult_overflow_size_t(&insert_offset, index, a->element_size) != 0)
