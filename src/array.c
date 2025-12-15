@@ -192,17 +192,8 @@ static int offset_helper(Array *a, size_t index, size_t *out)
  */
 int array_insert(Array *a, const void *value, size_t index)
 {
-    if(a == NULL)
-    {
-        return EINVAL;
-    }
-
-    if(value == NULL)
-    {
-        return EINVAL;
-    }
-
-    if(index > a->size)
+    // validate
+    if(a == NULL || value == NULL || index > a->size)
     {
         return EINVAL;
     }
