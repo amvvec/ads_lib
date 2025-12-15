@@ -163,6 +163,8 @@ void array_delete(Array *a)
     a->element_size = 0u;
 
     free(a);
+
+    a = NULL;
 }
 
 /**
