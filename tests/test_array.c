@@ -107,31 +107,35 @@ static void test_array_insert_invalid_index(void)
     a = NULL;
 }
 
-static void test_array_insert_back_preserve_order(void)
+static void test_array_insert_back(void)
 {
     Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
-    int value1 = 1;
-    int out1 = 0;
+    assert(array_size(a) == 0);
+    assert(array_capacity(a) == 0);
 
-    assert(array_insert(a, &value1, 0) == 0);
-    assert(array_size(a) == 1);
-    assert(array_get(a, 0, &out1) == 0);
-    assert(out1 == 1);
+    size_t initial_capacity = array_capacity(a);
 
-    int value2 = 2;
-    int out2 = 0;
+    // insert element back index == size
+    for(int i = 0; i < 20; ++i)
+    {
+        assert(array_insert(a, &i, array_size(a)) == 0);
+        assert(array_size(a) == (size_t)i + 1);
+    }
 
-    assert(array_insert(a, &value2, 1) == 0);
-    assert(array_size(a) == 2);
-    assert(array_get(a, 0, &out1) == 0);
-    assert(out1 == 1);
-    assert(array_get(a, 1, &out2) == 0);
-    assert(out2 == 2);
+    // check order and value after growth
+    for(int i = 0; i < 20; ++i)
+    {
+        int value = -1;
+        assert(array_get(a, (size_t)i, &value) == 0);
+        assert(value == i);
+    }
+
+    // check capacity grow
+    assert(array_capacity(a) > initial_capacity);
 
     array_delete(a);
-    a = NULL;
 }
 
 static void test_array_insert_front_preserve_order(void)
@@ -187,7 +191,7 @@ void run_array_tests(void)
     test_array_insert_null_array();
     test_array_insert_null_value();
     test_array_insert_invalid_index();
-    test_array_insert_back_preserve_order();
+    test_array_insert_back();
     test_array_insert_front_preserve_order();
     test_array_erase_basic();
 }
