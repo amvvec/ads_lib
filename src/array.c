@@ -52,8 +52,8 @@ Array *array_init(size_t element_size)
     return a;
 }
 
-static int mult_overflow_size_t(size_t *out_bytes, size_t element_count,
-                                size_t element_size)
+static int multiply_overflow(size_t *out_bytes, size_t element_count,
+                             size_t element_size)
 {
     if(out_bytes == NULL)
     {
@@ -97,7 +97,7 @@ static int array_grow_to(Array *a, size_t start_capacity)
     }
 
     size_t new_bytes = 0u;
-    if(mult_overflow_size_t(&new_bytes, start_capacity, a->element_size))
+    if(multiply_overflow(&new_bytes, start_capacity, a->element_size))
     {
         return EOVERFLOW;
     }
@@ -137,7 +137,7 @@ int array_shrink_to_fit(Array *a)
     }
 
     size_t new_bytes = 0u;
-    if(mult_overflow_size_t(&new_bytes, a->size, a->element_size) != 0)
+    if(multiply_overflow(&new_bytes, a->size, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
@@ -173,12 +173,9 @@ void array_delete(Array *a)
     a = NULL;
 }
 
-/**
- *
- */
 static int offset_helper(Array *a, size_t index, size_t *out)
 {
-    return mult_overflow_size_t(out, index, a->element_size);
+    return multiply_overflow(out, index, a->element_size);
 }
 
 /**
@@ -218,6 +215,7 @@ int array_insert(Array *a, const void *value, size_t index)
         }
     }
 
+    // TODO: try to refactor this shit
     char *base = (char *)a->data;
 
     size_t src_offset = 0u;
@@ -234,7 +232,7 @@ int array_insert(Array *a, const void *value, size_t index)
 
     size_t bytes_to_move = 0u;
     size_t tail_count = a->size - index;
-    if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) != 0)
+    if(multiply_overflow(&bytes_to_move, tail_count, a->element_size) != 0)
     {
         return EINVAL;
     }
@@ -242,7 +240,7 @@ int array_insert(Array *a, const void *value, size_t index)
     memmove(base + dst_offset, base + src_offset, bytes_to_move);
 
     size_t insert_offset = 0u;
-    if(mult_overflow_size_t(&insert_offset, index, a->element_size) != 0)
+    if(multiply_overflow(&insert_offset, index, a->element_size) != 0)
     {
         return EINVAL;
     }
@@ -284,8 +282,7 @@ int array_erase(Array *a, size_t index)
         }
 
         size_t bytes_to_move = 0u;
-        if(mult_overflow_size_t(&bytes_to_move, tail_count, a->element_size) !=
-           0)
+        if(multiply_overflow(&bytes_to_move, tail_count, a->element_size) != 0)
         {
             return EOVERFLOW;
         }
@@ -302,7 +299,7 @@ int array_erase(Array *a, size_t index)
 
     {
         size_t last_offset = 0u;
-        if(mult_overflow_size_t(&last_offset, a->size, a->element_size) != 0)
+        if(multiply_overflow(&last_offset, a->size, a->element_size) != 0)
         {
             return EOVERFLOW;
         }

@@ -1,0 +1,202 @@
+
+
+
+
+static int offset(Array *a, size_t index, size_t *out)
+{
+    return multiply_overflow(out, index, a->element_size);
+}
+
+static int move_tail(Array * a, size_t index)
+{
+    size_t bytes = 0u;
+    size_t offset = 0u;
+
+    if(multiply_overflow(&bytes, index, a->element_size) != 0)
+    {
+        return EINVAL;
+    }
+
+    size_t tail_count = (a->size - index);
+
+    if(multiply_overflow(&offset, tail_count, a->element_size) != 0)
+    {
+        return EINVAL;
+    }
+
+    char *base = (char *)a->data;
+
+    memmove(
+        base + offset + a->element_size,
+        base + offset,
+        bytes
+    )
+}
+
+/**
+ * Inserts an element at given index
+ *
+ * @pre a != NULL
+ * @pre value != NULL
+ * @pre index <= array_size(a)
+ *
+ * @post On success:
+ *       - array_size(a) is increased by 1
+ *       - elements at (index, old_size) are shifted right
+ *       - element at index equals *value
+ *
+ * @post On failure:
+ *       - array remains unchanged
+ *
+ * @return 0 on success, error code otherwise
+ */
+int array_insert(Array *a, const void *value, size_t index)
+{
+    // validate
+    if(a == NULL || value == NULL || index > a->size)
+    {
+        return EINVAL;
+    }
+
+    // ensure capacity
+    if(a->size >= a->capacity)
+    {
+        size_t new_cap = (a->capacity != 0u) ? (a->capacity * 2u) : ARR_INIT_CAP;
+
+        int err = array_grow_to(a, new_cap);
+        if(err != 0)
+        {
+            return err;
+        }
+    }
+
+    char * base = (char *) a->data;
+
+    if(index <= a->size)
+    {
+        size_t src = 0u;
+        if(offset(a, index, src) != 0) // overflow check
+        {
+            return EINVAL;
+        }
+
+        size_t dst = 0u;
+        if(offset(a, index, dst) != 0) // overflow check
+        {
+            return EINVAL;
+        }
+
+
+
+
+    }
+
+    size_t insert_offset = 0u;
+    if(multiply_overflow(&insert_offset, index, a->element_size) != 0)
+    {
+        return EINVAL;
+    }
+
+    memcpy(base + insert_offset, value, a->element_size);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    a->size++;
+
+    return 0;
+}
+
+int array_erase(Array *a, size_t index)
+{
+    if(a == NULL)
+    {
+        return EINVAL;
+    }
+
+    if(index >= a->size)
+    {
+        return EINVAL;
+    }
+
+    if(index < (a->size - 1u))
+    {
+        char *base = (char *)a->data;
+
+        size_t tail_count = a->size - index - 1u;
+
+        size_t src_offset = 0u;
+        if(offset(a, index, &src_offset) != 0)
+        {
+            return EINVAL;
+        }
+
+        size_t dst_offset = 0u;
+        if(offset(a, index, &dst_offset) != 0)
+        {
+            return EINVAL;
+        }
+
+        size_t bytes_to_move = 0u;
+        if(multiply_overflow(&bytes_to_move, tail_count, a->element_size) !=
+           0)
+        {
+            return EOVERFLOW;
+        }
+
+        {
+            void *dest = base + dst_offset;
+            void *src = base + src_offset;
+
+            memmove(dest, src, bytes_to_move);
+        }
+    }
+
+    a->size--;
+
+    {
+        size_t last_offset = 0u;
+        if(multiply_overflow(&last_offset, a->size, a->element_size) != 0)
+        {
+            return EOVERFLOW;
+        }
+
+        {
+            char *base = (char *)a->data;
+            void *last = &base[last_offset];
+
+            memset(last, 0, a->element_size);
+        }
+    }
+
+    return 0;
+}

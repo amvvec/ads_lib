@@ -9,16 +9,13 @@ static void test_array_init_and_delete(void)
     Array *a = array_init(sizeof(int));
     assert(a != NULL);
     array_delete(a);
-    a = NULL;
 }
 
 static void test_array_init_zero_size(void)
 {
     Array *a = array_init(0);
-
     assert(a == NULL);
     array_delete(a);
-    a = NULL;
 }
 
 static void test_array_init_large_size(void)
@@ -30,7 +27,6 @@ static void test_array_init_large_size(void)
     assert(a == NULL);
 
     array_delete(a);
-    a = NULL;
 }
 
 static void test_array_delete_null(void)
@@ -132,7 +128,7 @@ static void test_array_insert_back(void)
         assert(value == i);
     }
 
-    // check capacity grow
+    // check capacity growth
     assert(array_capacity(a) > initial_capacity);
 
     array_delete(a);
