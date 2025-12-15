@@ -166,9 +166,9 @@ void array_delete(Array *a)
 }
 
 /**
- * 
+ *
  */
-static int offset_helper(Array * a, size_t index, size_t * out)
+static int offset_helper(Array *a, size_t index, size_t *out)
 {
     return mult_overflow_size_t(out, index, a->element_size);
 }
@@ -224,13 +224,13 @@ int array_insert(Array *a, const void *value, size_t index)
     if(index <= a->size)
     {
         size_t src_offset = 0u;
-        if(mult_overflow_size_t(&src_offset, index, a->element_size) != 0)
+        if(offset_helper(a, index, &src_offset) != 0)
         {
             return EINVAL;
         }
 
         size_t dst_offset = 0u;
-        if(mult_overflow_size_t(&dst_offset, index, a->element_size) != 0)
+        if(offset_helper(a, index, &dst_offset) != 0)
         {
             return EINVAL;
         }
@@ -277,15 +277,15 @@ int array_erase(Array *a, size_t index)
         size_t tail_count = a->size - index - 1u;
 
         size_t src_offset = 0u;
-        if(mult_overflow_size_t(&src_offset, index, a->element_size) != 0)
+        if(offset_helper(a, index, &src_offset) != 0)
         {
-            return EOVERFLOW;
+            return EINVAL;
         }
 
         size_t dst_offset = 0u;
-        if(mult_overflow_size_t(&dst_offset, index, a->element_size) != 0)
+        if(offset_helper(a, index, &dst_offset) != 0)
         {
-            return EOVERFLOW;
+            return EINVAL;
         }
 
         size_t bytes_to_move = 0u;
