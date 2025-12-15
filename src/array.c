@@ -38,9 +38,15 @@ Array *array_init(size_t element_size)
         return NULL;
     }
 
-    a->data = NULL;
+    a->data = malloc(ARR_INIT_CAP * element_size);
+    if(a->data == NULL)
+    {
+        free(a);
+        return NULL;
+    }
+
     a->size = 0u;
-    a->capacity = 0u;
+    a->capacity = ARR_INIT_CAP;
     a->element_size = element_size;
 
     return a;
