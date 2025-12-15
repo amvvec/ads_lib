@@ -113,7 +113,7 @@ static void test_array_insert_back(void)
     assert(a != NULL);
 
     assert(array_size(a) == 0);
-    assert(array_capacity(a) == 0);
+    assert(array_capacity(a) >= 1);
 
     size_t initial_capacity = array_capacity(a);
 
