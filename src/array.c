@@ -7,10 +7,10 @@
 
 enum
 {
-    ARRAY_INIT_CAP = 8u
+    ARR_INIT_CAP = 8u
 };
 
-static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / ARRAY_INIT_CAP);
+static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / ARR_INIT_CAP);
 
 typedef struct Array
 {
@@ -80,7 +80,7 @@ static int array_grow_to(Array *a, size_t start_capacity)
         return 0; // enough memory
     }
 
-    size_t new_capacity = a->capacity ? a->capacity : ARRAY_INIT_CAP;
+    size_t new_capacity = a->capacity ? a->capacity : ARR_INIT_CAP;
     while(new_capacity < start_capacity)
     {
         if(new_capacity > (MAX_ELEMENT_SIZE / 2u))
@@ -201,7 +201,7 @@ int array_insert(Array *a, const void *value, size_t index)
     if(a->size >= a->capacity)
     {
         size_t new_capacity =
-            (a->capacity != 0u) ? (a->capacity * 2u) : ARRAY_INIT_CAP;
+            (a->capacity != 0u) ? (a->capacity * 2u) : ARR_INIT_CAP;
 
         int err = array_grow_to(a, new_capacity);
 
@@ -323,7 +323,7 @@ int array_push_front(Array *a, const void *value)
     if(a->size >= a->capacity)
     {
         int error =
-            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
+            array_grow_to(a, a->capacity ? a->capacity * 2 : ARR_INIT_CAP);
         if(error)
         {
             return error;
@@ -347,7 +347,7 @@ int array_push_back(Array *a, const void *value)
     if(a->size >= a->capacity)
     {
         int error =
-            array_grow_to(a, a->capacity ? a->capacity * 2 : ARRAY_INIT_CAP);
+            array_grow_to(a, a->capacity ? a->capacity * 2 : ARR_INIT_CAP);
         if(error)
         {
             return error;
