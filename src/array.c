@@ -204,14 +204,15 @@ int array_insert(Array *a, const void *value, size_t index)
     }
 
     // ensure capacity
-    if(a->size >= a->capacity)
+    if(a->size == a->capacity)
     {
-        size_t new_cap = (a->capacity != 0) ? (a->capacity * 2u) : ARR_INIT_CAP;
+        size_t new_capacity =
+            (a->capacity != 0) ? (a->capacity * 2u) : ARR_INIT_CAP;
 
-        int err = array_grow_to(a, new_cap);
-        if(err != 0)
+        int error = array_grow_to(a, new_capacity);
+        if(error != 0)
         {
-            return err;
+            return error;
         }
     }
 
