@@ -206,8 +206,7 @@ int array_insert(Array *a, const void *value, size_t index)
     // ensure capacity
     if(a->size == a->capacity)
     {
-        size_t new_capacity =
-            (a->capacity != 0) ? (a->capacity * 2u) : ARR_INIT_CAP;
+        size_t new_capacity = (a->capacity != 0) ? (a->capacity * 2u) : ARR_INIT_CAP;
 
         int error = array_grow_to(a, new_capacity);
         if(error != 0)
@@ -216,37 +215,29 @@ int array_insert(Array *a, const void *value, size_t index)
         }
     }
 
-    // TODO: try to refactor this shit
-    char *base = (char *)a->data;
-
-    size_t src_offset = 0u;
-    if(offset_helper(a, index, &src_offset) != 0)
-    {
-        return EINVAL;
-    }
-
-    size_t dst_offset = 0u;
-    if(offset_helper(a, index, &dst_offset) != 0)
-    {
-        return EINVAL;
-    }
-
-    size_t bytes_to_move = 0u;
-    size_t tail_count = a->size - index;
-    if(multiply_overflow(&bytes_to_move, tail_count, a->element_size) != 0)
-    {
-        return EINVAL;
-    }
-
-    memmove(base + dst_offset, base + src_offset, bytes_to_move);
-
-    size_t insert_offset = 0u;
+    size_t insert_offset;
     if(multiply_overflow(&insert_offset, index, a->element_size) != 0)
     {
-        return EINVAL;
+        return EOVERFLOW;
     }
 
+    size_t tail_bytes;
+    size_t tail_count = (a->size - index);
+    if(multiply_overflow(&tail_bytes, tail_count, a->element_size) != 0)
+    {
+        return EOVERFLOW;
+    }
+
+    char *base = (char *)a->data;
+
+    memmove(
+        base + insert_offset + a->element_size,
+        base + insert_offset,
+        tail_bytes
+    );
+
     memcpy(base + insert_offset, value, a->element_size);
+
     a->size++;
 
     return 0;
