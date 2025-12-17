@@ -1,3 +1,5 @@
+#include <assert.h>
+
 #include "../src/array.h"
 
 static void test_array_insert_back(void)
@@ -8,6 +10,7 @@ static void test_array_insert_back(void)
     // Empty array initially
     assert(array_size(a) == 0);
     assert(array_capacity(a) >= 1);
+    assert(array_size(a) <= array_capacity(a));
 
     size_t initial_capacity = array_capacity(a);
 
