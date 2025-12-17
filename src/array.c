@@ -178,6 +178,26 @@ static int offset_helper(Array *a, size_t index, size_t *out)
     return multiply_overflow(out, index, a->element_size);
 }
 
+static int array_capacity_grow_helper(Array * a)
+{
+    size_t new_capacity;
+
+    if(a->capacity == 0)
+    {
+        new_capacity = ARR_INIT_CAP;
+    }
+    else if(a->capacity > (SIZE_MAX / 2))
+    {
+        return EOVERFLOW;
+    }
+    else
+    {
+        new_capacity = a->capacity * 2;
+    }
+
+    return array_grow_to(a, new_capacity);
+}
+
 /**
  * Inserts an element at given index
  *
@@ -191,7 +211,8 @@ static int offset_helper(Array *a, size_t index, size_t *out)
  *       - element at index equals *value
  *
  * @post On failure:
- *       - array remains unchanged
+ *       - logical contents (size + elements) remain unchanged
+ *       - capacity may increase
  *
  * @return 0 on success, error code otherwise
  */
@@ -204,15 +225,10 @@ int array_insert(Array *a, const void *value, size_t index)
     }
 
     // ensure capacity
-    if(a->size == a->capacity)
+    int error = array_capacity_grow_helper(a);
+    if(error != 0)
     {
-        size_t new_capacity = (a->capacity != 0) ? (a->capacity * 2u) : ARR_INIT_CAP;
-
-        int error = array_grow_to(a, new_capacity);
-        if(error != 0)
-        {
-            return error;
-        }
+        return error;
     }
 
     size_t insert_offset;
