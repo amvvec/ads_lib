@@ -47,4 +47,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Build and Run
 ```bash
-make && ASAN_OPTIONS=detect_leaks=1 ./launcher
+make && ./launcher

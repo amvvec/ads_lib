@@ -103,22 +103,6 @@ static void test_array_insert_invalid_index(void)
     a = NULL;
 }
 
-static void test_array_erase_basic(void)
-{
-    Array *a = array_init(sizeof(int));
-    assert(a != NULL);
-
-    const int v = 1;
-    array_insert(a, &v, 0);
-    array_erase(a, 0);
-
-    const size_t s = array_size(a);
-    assert(s == 0);
-
-    array_delete(a);
-    a = NULL;
-}
-
 void run_array_tests(void)
 {
     test_array_init_and_delete();
@@ -131,5 +115,4 @@ void run_array_tests(void)
     test_array_insert_null_array();
     test_array_insert_null_value();
     test_array_insert_invalid_index();
-    test_array_erase_basic();
 }

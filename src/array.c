@@ -173,11 +173,6 @@ void array_delete(Array *a)
     a = NULL;
 }
 
-static int offset_helper(Array *a, size_t index, size_t *out)
-{
-    return multiply_overflow(out, index, a->element_size);
-}
-
 static int array_capacity_grow_helper(Array * a)
 {
     size_t new_capacity;
@@ -200,13 +195,15 @@ static int array_capacity_grow_helper(Array * a)
 
 /**
  * Inserts an element at given index
+ * 
+ * @invariant index < a->size
  *
  * @pre a != NULL
  * @pre value != NULL
  * @pre index <= array_size(a)
  *
  * @post On success:
- *       - array_size(a) is increased by 1
+ *       - a->size is increased by 1
  *       - elements at (index, old_size) are shifted right
  *       - element at index equals *value
  *
@@ -261,63 +258,30 @@ int array_insert(Array *a, const void *value, size_t index)
 
 int array_erase(Array *a, size_t index)
 {
-    if(a == NULL)
+    if(a == NULL || index >= a->size)
     {
         return EINVAL;
     }
 
-    if(index >= a->size)
+    size_t tail_count = (a->size - index - 1);
+
+    if(tail_count > 0)
     {
-        return EINVAL;
-    }
-
-    if(index < (a->size - 1u))
-    {
-        char *base = (char *)a->data;
-
-        size_t tail_count = a->size - index - 1u;
-
-        size_t src_offset = 0u;
-        if(offset_helper(a, index, &src_offset) != 0)
-        {
-            return EINVAL;
-        }
-
-        size_t dst_offset = 0u;
-        if(offset_helper(a, index, &dst_offset) != 0)
-        {
-            return EINVAL;
-        }
-
-        size_t bytes_to_move = 0u;
+        size_t bytes_to_move;
         if(multiply_overflow(&bytes_to_move, tail_count, a->element_size) != 0)
         {
             return EOVERFLOW;
         }
 
-        {
-            void *dest = base + dst_offset;
-            void *src = base + src_offset;
+        char *base = (char *)a->data;
 
-            memmove(dest, src, bytes_to_move);
-        }
-    }
+        memmove(
+            base + index * a->element_size,
+            base + (index + 1) * a->element_size,
+            bytes_to_move
+        );
 
-    a->size--;
-
-    {
-        size_t last_offset = 0u;
-        if(multiply_overflow(&last_offset, a->size, a->element_size) != 0)
-        {
-            return EOVERFLOW;
-        }
-
-        {
-            char *base = (char *)a->data;
-            void *last = &base[last_offset];
-
-            memset(last, 0, a->element_size);
-        }
+        a->size--;
     }
 
     return 0;
