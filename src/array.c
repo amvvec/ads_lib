@@ -5,13 +5,14 @@
 
 #include "array.h"
 
-enum
-{
-    ARR_INIT_CAP = 8u
-};
-
-static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / ARR_INIT_CAP);
-
+/**
+ * Array invariants:
+ *  - a != NULL
+ *  - a->element_size > 0
+ *  - a->capacity >= a->size
+ *  - a->data != NULL iff a->capacity > 0
+ *  - size * element_size does not overflow size_t
+ */
 typedef struct Array
 {
     void *data;
@@ -19,6 +20,13 @@ typedef struct Array
     size_t capacity;
     size_t element_size;
 } Array;
+
+enum
+{
+    ARR_INIT_CAP = 8u
+};
+
+static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / ARR_INIT_CAP);
 
 static int is_valid_element_size(size_t size)
 {
@@ -206,8 +214,6 @@ static int array_capacity_grow_helper(Array * a)
 /**
  * Inserts an element at given index
  * 
- * @invariant index < a->size
- *
  * @pre a != NULL
  * @pre value != NULL
  * @pre index <= array_size(a)
