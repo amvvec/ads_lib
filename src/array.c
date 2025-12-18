@@ -175,6 +175,11 @@ void array_delete(Array *a)
 
 static int array_capacity_grow_helper(Array * a)
 {
+    if(a == NULL)
+    {
+        return EINVAL;
+    }
+
     size_t new_capacity;
 
     if(a->capacity == 0)
@@ -188,6 +193,11 @@ static int array_capacity_grow_helper(Array * a)
     else
     {
         new_capacity = a->capacity * 2;
+    }
+
+    if(new_capacity < (a->size + 1))
+    {
+        return EOVERFLOW;
     }
 
     return array_grow_to(a, new_capacity);
