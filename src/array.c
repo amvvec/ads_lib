@@ -231,8 +231,8 @@ static int array_capacity_grow_helper(Array *a)
  */
 int array_insert(Array *a, const void *value, size_t index)
 {
-    // validate
-    if(a == NULL || value == NULL || index > a->size)
+    // validation
+    if(!a || !value || a->element_size == 0 || index > a->size)
     {
         return EINVAL;
     }
