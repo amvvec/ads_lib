@@ -270,7 +270,10 @@ int array_insert(Array *a, const void *value, size_t index)
 
     memcpy(base + insert_offset, value, a->element_size);
 
-    
+    if(a->size == SIZE_MAX)
+    {
+        return EOVERFLOW;
+    }
     a->size++;
 
     return 0;
