@@ -181,7 +181,7 @@ void array_delete(Array *a)
     a = NULL;
 }
 
-static int array_capacity_grow_helper(Array * a)
+static int array_capacity_grow_helper(Array *a)
 {
     if(a == NULL)
     {
@@ -213,7 +213,7 @@ static int array_capacity_grow_helper(Array * a)
 
 /**
  * Inserts an element at given index
- * 
+ *
  * @pre a != NULL
  * @pre value != NULL
  * @pre index <= array_size(a)
@@ -264,11 +264,9 @@ int array_insert(Array *a, const void *value, size_t index)
 
     char *base = (char *)a->data;
 
-    memmove(
-        base + insert_offset + a->element_size,
-        base + insert_offset,
-        tail_bytes
-    );
+    memmove(base + insert_offset + a->element_size,
+            base + insert_offset,
+            tail_bytes);
 
     memcpy(base + insert_offset, value, a->element_size);
 
@@ -296,11 +294,8 @@ int array_erase(Array *a, size_t index)
 
         char *base = (char *)a->data;
 
-        memmove(
-            base + index * a->element_size,
-            base + (index + 1) * a->element_size,
-            bytes_to_move
-        );
+        memmove(base + index * a->element_size,
+                base + (index + 1) * a->element_size, bytes_to_move);
 
         a->size--;
     }
