@@ -232,7 +232,7 @@ static int array_capacity_grow_helper(Array *a)
 int array_insert(Array *a, const void *value, size_t index)
 {
     // validation
-    if(!a || !value || index > a->size)
+    if(!a || !value || index > a->size || a->element_size == 0)
     {
         return EINVAL;
     }
@@ -244,7 +244,7 @@ int array_insert(Array *a, const void *value, size_t index)
         return error;
     }
 
-    if(!a->data || (a->capacity <= a->size) || a->element_size == 0)
+    if(!a->data || (a->capacity <= a->size))
     {
         return EFAULT;
     }
