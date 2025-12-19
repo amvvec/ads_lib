@@ -244,6 +244,11 @@ int array_insert(Array *a, const void *value, size_t index)
         return error;
     }
 
+    if(a->data == NULL || a->capacity < (a->size + 1))
+    {
+        return EFAULT;
+    }
+
     size_t insert_offset;
     if(multiply_overflow(&insert_offset, index, a->element_size) != 0)
     {
