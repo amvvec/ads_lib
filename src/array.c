@@ -232,7 +232,7 @@ static int array_capacity_grow_helper(Array *a)
 int array_insert(Array *a, const void *value, size_t index)
 {
     // validation
-    if(!a || !value || index > a->size || a->element_size == 0)
+    if(!a || !value || index > a->size)
     {
         return EINVAL;
     }
@@ -244,11 +244,6 @@ int array_insert(Array *a, const void *value, size_t index)
         return error;
     }
 
-    if(!a->data || (a->capacity <= a->size))
-    {
-        return EFAULT;
-    }
-
     size_t insert_offset;
     if(multiply_overflow(&insert_offset, index, a->element_size) != 0)
     {
@@ -256,7 +251,7 @@ int array_insert(Array *a, const void *value, size_t index)
     }
 
     size_t tail_bytes;
-    size_t tail_count = (a->size - index);
+    const size_t tail_count = (a->size - index);
     if(multiply_overflow(&tail_bytes, tail_count, a->element_size) != 0)
     {
         return EOVERFLOW;
@@ -264,9 +259,11 @@ int array_insert(Array *a, const void *value, size_t index)
 
     char *base = (char *)a->data;
 
-    memmove(base + insert_offset + a->element_size,
-            base + insert_offset,
-            tail_bytes);
+    memmove(
+        base + insert_offset + a->element_size,
+        base + insert_offset,
+        tail_bytes
+    );
 
     memcpy(base + insert_offset, value, a->element_size);
 

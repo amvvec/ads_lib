@@ -1,3 +1,12 @@
+CC := gcc
+
+CFLAGS_COMMON := -Wall -Wextra -Werror -Wshadow -Wconversion -Wsign-conversion -Wpedantic \
+				 -std=17
+
+CFLAGS_DEBUG := -O0 -g
+
+CFLAGS_RELEASE := -O2
+
 CC		:= gcc
 CFLAGS +=	-fsanitize=address,undefined,leak \
 			-fsanitize-address-use-after-scope \
@@ -5,6 +14,7 @@ CFLAGS +=	-fsanitize=address,undefined,leak \
 			-Wcast-align=strict \
 			-Wstrict-aliasing=2 \
 			-Wdouble-promotion \
+			-O0 -fno-omit-frame-pointer \
 			-Wduplicated-cond \
 			-Wduplicated-branches \
 			-Wlogical-op \
