@@ -2,6 +2,12 @@
 
 #include "../src/array.h"
 
+static void assert_array_invariants(const Array * a)
+{
+    assert(a != NULL);
+    assert(array_capacity(a) >= array_size(a));
+}
+
 static void test_array_insert_back(void)
 {
     Array *a = array_init(sizeof(int));
