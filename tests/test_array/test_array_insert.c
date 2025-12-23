@@ -16,9 +16,7 @@ static void test_array_insert_back(void)
     assert(a != NULL);
 
     // Empty array initially
-    assert(array_size(a) == 0);
-    assert(array_capacity(a) >= 1);
-    assert(array_size(a) <= array_capacity(a));
+    assert_array_invariants(a);
 
     size_t initial_capacity = array_capacity(a);
 
@@ -49,9 +47,7 @@ static void test_array_insert_front(void)
     assert(a != NULL);
 
     // Empty array initially
-    assert(array_size(a) == 0);
-    assert(array_capacity(a) >= 1);
-    assert(array_size(a) <= array_capacity(a));
+    assert_array_invariants(a);
 
     size_t initial_capacity = array_capacity(a);
 
