@@ -2,10 +2,29 @@
 
 #include "../src/array.h"
 
-static void assert_array_invariants(const Array * a)
+static void assert_array_invariants(const Array *a)
 {
     assert(a != NULL);
     assert(array_capacity(a) >= array_size(a));
+}
+
+static void test_array_insert_empty_at_zero(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+    assert(array_size(a) == 0);
+
+    int val = 42;
+    assert(array_insert(a, &val, 0) == 0);
+    assert(array_size(a) == 1);
+
+    int got = 0;
+    assert(array_get(a, 0, &got) == 0);
+    assert(got == 42);
+
+    assert(array_capacity(a) >= 1);
+
+    array_delete(a);
 }
 
 static void test_array_insert_back(void)
