@@ -27,6 +27,23 @@ static void test_array_insert_empty_at_zero(void)
     array_delete(a);
 }
 
+static void test_array_insert_at_end_on_empty(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+    assert(array_size(a) == 0);
+
+    int val = 777;
+    assert(array_insert(a, &val, array_size(a)) == 0);
+
+    assert(array_size(a) == 1);
+    int got = 0;
+    assert(array_get(a, 0, &got) == 0);
+    assert(got == 777);
+
+    array_delete(a);
+}
+
 static void test_array_insert_back(void)
 {
     Array *a = array_init(sizeof(int));
