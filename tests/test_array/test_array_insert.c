@@ -44,6 +44,31 @@ static void test_array_insert_at_end_on_empty(void)
     array_delete(a);
 }
 
+static void test_array_insert_single_element_middle(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    int vals[] = {10, 30};
+    assert(array_push_back(a, &vals[0]) == 0);
+    assert(array_push_back(a, &vals[1]) == 0);
+    assert(array_size(a) == 2);
+
+    int insert_val = 20;
+    assert(array_insert(a, &insert_val, 1) == 0);
+
+    assert(array_size(a) == 3);
+
+    int expected[] = {10, 20, 30};
+    for (size_t i = 0; i < 3; ++i) {
+        int got = 0;
+        assert(array_get(a, i, &got) == 0);
+        assert(got == expected[i]);
+    }
+
+    array_delete(a);
+}
+
 static void test_array_insert_back(void)
 {
     Array *a = array_init(sizeof(int));
