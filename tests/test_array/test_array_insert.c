@@ -60,7 +60,36 @@ static void test_array_insert_single_element_middle(void)
     assert(array_size(a) == 3);
 
     int expected[] = {10, 20, 30};
-    for (size_t i = 0; i < 3; ++i) {
+    for(size_t i = 0; i < 3; ++i)
+    {
+        int got = 0;
+        assert(array_get(a, i, &got) == 0);
+        assert(got == expected[i]);
+    }
+
+    array_delete(a);
+}
+
+static void test_array_insert_front_on_nonempty(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    int vals[] = {20, 30, 40};
+    for(size_t i = 0; i < 3; ++i)
+    {
+        assert(array_push_back(a, &vals[i]) == 0);
+    }
+    assert(array_size(a) == 3);
+
+    int insert_val = 10;
+    assert(array_insert(a, &insert_val, 0) == 0);
+
+    assert(array_size(a) == 4);
+
+    int expected[] = {10, 20, 30, 40};
+    for(size_t i = 0; i < 4; ++i)
+    {
         int got = 0;
         assert(array_get(a, i, &got) == 0);
         assert(got == expected[i]);
