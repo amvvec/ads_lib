@@ -98,6 +98,29 @@ static void test_array_insert_front_on_nonempty(void)
     array_delete(a);
 }
 
+static void test_array_insert_back_equivalent_to_push_back(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+    assert(array_size(a) == 0);
+
+    // fill using array_insert at end (should behave exactly as push_back)
+    for (int i = 0; i < 25; ++i) {
+        assert(array_insert(a, &i, array_size(a)) == 0);
+    }
+
+    assert(array_size(a) == 25);
+
+    // verify identical content as if push_back was used
+    for (int i = 0; i < 25; ++i) {
+        int val = -1;
+        assert(array_get(a, (size_t)i, &val) == 0);
+        assert(val == i);
+    }
+
+    array_delete(a);
+}
+
 static void test_array_insert_back(void)
 {
     Array *a = array_init(sizeof(int));
