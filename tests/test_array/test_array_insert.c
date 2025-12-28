@@ -105,17 +105,51 @@ static void test_array_insert_back_equivalent_to_push_back(void)
     assert(array_size(a) == 0);
 
     // fill using array_insert at end (should behave exactly as push_back)
-    for (int i = 0; i < 25; ++i) {
+    for(int i = 0; i < 25; ++i)
+    {
         assert(array_insert(a, &i, array_size(a)) == 0);
     }
 
     assert(array_size(a) == 25);
 
     // verify identical content as if push_back was used
-    for (int i = 0; i < 25; ++i) {
+    for(int i = 0; i < 25; ++i)
+    {
         int val = -1;
         assert(array_get(a, (size_t)i, &val) == 0);
         assert(val == i);
+    }
+
+    array_delete(a);
+}
+
+static void test_array_insert_middle_single(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    // initial data: 0 1 2 3 4 5 6 7 8 9
+    for(int i = 0; i < 10; ++i)
+    {
+        assert(array_push_back(a, &i) == 0);
+    }
+
+    size_t old_capacity = array_capacity(a);
+
+    // insert 999 exactly in the middle (index 5)
+    int insert_val = 999;
+    assert(array_insert(a, &insert_val, 5) == 0);
+
+    assert(array_size(a) == 11);
+    assert(array_capacity(a) >= old_capacity);
+
+    // expected: 0 1 2 3 4 999 5 6 7 8 9
+    const int expected[] = {0, 1, 2, 3, 4, 999, 5, 6, 7, 8, 9};
+    for(size_t i = 0; i < 11; ++i)
+    {
+        int val = -1;
+        assert(array_get(a, i, &val) == 0);
+        assert(val == expected[i]);
     }
 
     array_delete(a);
