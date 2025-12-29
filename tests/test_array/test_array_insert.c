@@ -155,6 +155,34 @@ static void test_array_insert_middle_single(void)
     array_delete(a);
 }
 
+static void test_array_insert_at_last_position(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    // fill with 1...5
+    for(int i = 1; i <= 5; ++i)
+    {
+        assert(array_push_back(a, &i) == 0);
+    }
+
+    int val = 999;
+    // insert right before end (at position 4, becomes new last-1)
+    assert(array_insert(a, &val, 4) == 0);
+
+    assert(array_size(a) == 6);
+
+    const int expected[] = {1, 2, 3, 4, 999, 5};
+    for(size_t i = 0; i < 6; ++i)
+    {
+        int got = 0;
+        assert(array_get(a, i, &got) == 0);
+        assert(got == expected[i]);
+    }
+
+    array_delete(a);
+}
+
 static void test_array_insert_back(void)
 {
     Array *a = array_init(sizeof(int));
