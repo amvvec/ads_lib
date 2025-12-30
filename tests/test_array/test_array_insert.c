@@ -183,6 +183,40 @@ static void test_array_insert_at_last_position(void)
     array_delete(a);
 }
 
+static void test_array_insert_when_full_capacity(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    size_t cap = array_capacity(a);
+
+    // fill exactly to capacity
+    for(size_t i = 0; i < cap; ++i)
+    {
+        assert(array_push_back(a, &i) == 0);
+    }
+
+    assert(array_size(a) == cap);
+    assert(array_capacity(a) == cap);
+
+    int val = -777;
+    // insert at beginning must trigger growth
+    assert(array_insert(a, &val, 0) == 0);
+
+    assert(array_size(a) == cap + 1);
+    assert(array_capacity(a) > cap);
+
+    int got = 0;
+    assert(array_get(a, 0, &got) == 0);
+    assert(got == -777);
+
+    // check last element still correct
+    assert(array_get(a, cap, &got) == 0);
+    assert(got == (int)(cap - 1));
+
+    array_delete(a);
+}
+
 static void test_array_insert_back(void)
 {
     Array *a = array_init(sizeof(int));
