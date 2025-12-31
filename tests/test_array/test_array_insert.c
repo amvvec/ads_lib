@@ -217,6 +217,31 @@ static void test_array_insert_when_full_capacity(void)
     array_delete(a);
 }
 
+static void test_array_insert_triggers_realloc(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    size_t init_cap = array_capacity(a);
+
+    // fill to capacity
+    for(size_t i = 0; i < init_cap; ++i)
+    {
+        assert(array_push_back(a, &i) == 0);
+    }
+
+    assert(array_size(a) == init_cap);
+    assert(array_capacity(a) == init_cap);
+
+    int val = 999;
+    assert(array_insert(a, &val, init_cap) == 0);
+
+    assert(array_size(a) == init_cap + 1);
+    assert(array_capacity(a) > init_cap);
+
+    array_delete(a);
+}
+
 static void test_array_insert_back(void)
 {
     Array *a = array_init(sizeof(int));
