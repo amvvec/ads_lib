@@ -98,7 +98,7 @@ static void test_array_insert_front_on_nonempty(void)
     array_delete(a);
 }
 
-static void test_array_insert_back_equivalent_to_push_back(void)
+static void test_array_insert_back_equivalent_to_push(void)
 {
     Array *a = array_init(sizeof(int));
     assert(a != NULL);
@@ -242,24 +242,49 @@ static void test_array_insert_triggers_realloc(void)
     array_delete(a);
 }
 
+static void test_array_insert_no_change_enough_space(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    size_t init_cap = array_capacity(a);
+
+    // fill leaving 3 free slots
+    for (size_t i = 0; i < init_cap - 3; ++i) {
+        assert(array_push_back(a, &i) == 0);
+    }
+
+    assert(array_capacity(a) == init_cap);
+
+    int val = -1;
+    assert(array_insert(a, &val, 0) == 0); // front
+    assert(array_insert(a, &val, array_size(a)) == 0); // back
+    assert(array_insert(a, &val, 5) == 0); // middle
+
+    assert(array_size(a) == init_cap - 3 + 3);
+    assert(array_capacity(a) == init_cap); // no growth
+
+    array_delete(a);
+}
+
 static void test_array_insert_back(void)
 {
     Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
-    // Empty array initially
+    // empty array initially
     assert_array_invariants(a);
 
     size_t initial_capacity = array_capacity(a);
 
-    // Insert 20 elements at the back using insert at current size
+    // insert 20 elements at the back using insert at current size
     for(int i = 0; i < 20; ++i)
     {
         assert(array_insert(a, &i, array_size(a)) == 0);
         assert(array_size(a) == (size_t)i + 1);
     }
 
-    // Verify preserved order and values after multiple reallocations
+    // verify preserved order and values after multiple reallocations
     for(int i = 0; i < 20; ++i)
     {
         int value = -1;
@@ -267,7 +292,7 @@ static void test_array_insert_back(void)
         assert(value == i);
     }
 
-    // Capacity must have grown beyond initial value
+    // capacity must have grown beyond initial value
     assert(array_capacity(a) > initial_capacity);
 
     array_delete(a);
@@ -278,23 +303,23 @@ static void test_array_insert_front(void)
     Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
-    // Empty array initially
+    // empty array initially
     assert_array_invariants(a);
 
     size_t initial_capacity = array_capacity(a);
 
-    // Values to insert at front (order in array will be reversed)
+    // values to insert at front (order in array will be reversed)
     const int values[] = {5, 4, 3, 2, 1};
     const int n = sizeof(values) / sizeof(values[0]);
 
-    // Repeatedly insert at position 0
+    // repeatedly insert at position 0
     for(int i = 0; i < n; ++i)
     {
         assert(array_insert(a, &values[i], 0) == 0);
         assert(array_size(a) == (size_t)(i + 1));
     }
 
-    // Verify reversed order after all front insertions
+    // verify reversed order after all front insertions
     for(int i = 0; i < n; ++i)
     {
         int out = 0;
@@ -302,7 +327,7 @@ static void test_array_insert_front(void)
         assert(out == values[n - i - 1]);
     }
 
-    // Capacity should not shrink (at least initial)
+    // capacity should not shrink (at least initial)
     assert(array_capacity(a) >= initial_capacity);
 
     array_delete(a);
@@ -310,6 +335,16 @@ static void test_array_insert_front(void)
 
 void run_array_insert_tests(void)
 {
+    test_array_insert_empty_at_zero();
+    test_array_insert_at_end_on_empty();
+    test_array_insert_single_element_middle();
+    test_array_insert_front_on_nonempty();
+    test_array_insert_back_equivalent_to_push();
+    test_array_insert_middle_single();
+    test_array_insert_at_last_position();
+    test_array_insert_when_full_capacity();
+    test_array_insert_triggers_realloc();
+    test_array_insert_no_change_enough_space();
     test_array_insert_back();
     test_array_insert_front();
 }
