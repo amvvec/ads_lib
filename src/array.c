@@ -21,11 +21,7 @@ typedef struct Array
     size_t element_size;
 } Array;
 
-enum
-{
-    ARR_INIT_CAP = 8u
-};
-
+static const size_t ARR_INIT_CAP = 8;
 static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / ARR_INIT_CAP);
 
 static int is_valid_element_size(size_t size)
