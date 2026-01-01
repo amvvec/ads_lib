@@ -188,8 +188,13 @@ static int array_capacity_grow_helper(Array *a)
         return EINVAL;
     }
 
-    size_t new_capacity;
+    // if enough capacity
+    if(a->size < a->capacity)
+    {
+        return 0;
+    }
 
+    size_t new_capacity;
     if(a->capacity == 0)
     {
         new_capacity = ARR_INIT_CAP;
