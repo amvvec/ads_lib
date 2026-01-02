@@ -22,7 +22,7 @@ typedef struct Array
 } Array;
 
 static const size_t ARR_INIT_CAP = 8;
-static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / ARR_INIT_CAP);
+static const size_t MAX_ELEMENT_SIZE = (ARR_INIT_CAP / SIZE_MAX);
 
 static int is_valid_element_size(size_t size)
 {
