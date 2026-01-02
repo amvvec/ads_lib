@@ -56,26 +56,26 @@ Array *array_init(size_t element_size)
     return a;
 }
 
-static int multiply_overflow(size_t *out_bytes, size_t element_count,
-                             size_t element_size)
+static int multiply_overflow(size_t * out, size_t count, size_t size)
 {
-    if(out_bytes == NULL)
+    if(!out)
     {
         return EINVAL;
     }
 
-    if((element_size == 0u) || (element_size > MAX_ELEMENT_SIZE))
+    if(size == 0)
     {
-        return EINVAL;
+        * out = 0;
+        return 0;
     }
 
-    if(element_count > (SIZE_MAX / element_size))
+    if(count > (SIZE_MAX / size))
     {
         return EOVERFLOW;
     }
 
-    *out_bytes = (element_count * element_size);
-
+    * out = count * size;
+    
     return 0;
 }
 
