@@ -82,33 +82,34 @@ Array *array_init(size_t element_size)
 
 static int array_grow_to(Array *a, size_t start_capacity)
 {
-    if(a == NULL)
+    if(!a)
     {
         return EINVAL;
     }
-    if(start_capacity <= a->capacity)
+
+    if(a->capacity >= start_capacity)
     {
         return 0; // enough memory
     }
-
+    
     size_t new_capacity = a->capacity ? a->capacity : ARR_INIT_CAP;
-    while(new_capacity < start_capacity)
+    while(start_capacity > new_capacity)
     {
-        if(new_capacity > (MAX_ELEMENT_SIZE / 2u))
+        if(new_capacity > (MAX_ELEMENT_SIZE / 2))
         {
             return EOVERFLOW;
         }
-        new_capacity *= 2u;
+        new_capacity *= 2;
     }
 
-    size_t new_bytes = 0u;
+    size_t new_bytes;
     if(multiply_overflow(&new_bytes, start_capacity, a->element_size))
     {
         return EOVERFLOW;
     }
-
-    void *new_data = realloc(a->data, new_bytes);
-    if(new_data == NULL)
+    
+    void * new_data = realloc(a->data, new_bytes);
+    if(!new_data)
     {
         return ENOMEM;
     }
