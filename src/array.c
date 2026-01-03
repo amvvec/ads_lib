@@ -5,6 +5,9 @@
 
 #include "array.h"
 
+static const size_t ARR_INIT_CAP = 8;
+static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / ARR_INIT_CAP);
+
 /**
  * Array invariants:
  *  - a != NULL
@@ -21,39 +24,9 @@ typedef struct Array
     size_t element_size;
 } Array;
 
-static const size_t ARR_INIT_CAP = 8;
-static const size_t MAX_ELEMENT_SIZE = (ARR_INIT_CAP / SIZE_MAX);
-
 static int is_valid_element_size(size_t size)
 {
-    return (size > 0u) && (size <= MAX_ELEMENT_SIZE);
-}
-
-Array *array_init(size_t element_size)
-{
-    if(!is_valid_element_size(element_size))
-    {
-        return NULL;
-    }
-
-    Array *a = malloc(sizeof(*a));
-    if(a == NULL)
-    {
-        return NULL;
-    }
-
-    a->data = malloc(ARR_INIT_CAP * element_size);
-    if(a->data == NULL)
-    {
-        free(a);
-        return NULL;
-    }
-
-    a->size = 0u;
-    a->capacity = ARR_INIT_CAP;
-    a->element_size = element_size;
-
-    return a;
+    return (size > 0) && (size <= MAX_ELEMENT_SIZE);
 }
 
 static int multiply_overflow(size_t * out, size_t count, size_t size)
@@ -77,6 +50,34 @@ static int multiply_overflow(size_t * out, size_t count, size_t size)
     * out = count * size;
     
     return 0;
+}
+
+Array *array_init(size_t element_size)
+{
+    if(!is_valid_element_size(element_size))
+    {
+        return NULL;
+    }
+
+    Array * a = malloc(sizeof(* a));
+    if(!a)
+    {
+        return NULL;
+    }
+    
+    size_t new_bytes;
+    if(multiply_overflow(&new_bytes, ARR_INIT_CAP, element_size) != 0)
+    {
+        free(a);
+        return NULL;
+    }
+    a->data = malloc(element_size * ARR_INIT_CAP);
+
+    a->size = 0;
+    a->capacity = ARR_INIT_CAP;
+    a->element_size = element_size;
+
+    return a;
 }
 
 static int array_grow_to(Array *a, size_t start_capacity)
