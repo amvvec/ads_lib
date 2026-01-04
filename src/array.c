@@ -87,18 +87,12 @@ static int array_capacity_grow(Array *a)
         return EINVAL;
     }
 
-    if(a->size == SIZE_MAX)
-    {
-        return EOVERFLOW;
-    }
-
     if(a->capacity > a->size)
     {
         return 0; // enough memory
     }
 
     size_t new_capacity;
-
     if(a->capacity == 0)
     {
         new_capacity = ARR_INIT_CAP;
@@ -214,13 +208,12 @@ void array_delete(Array *a)
  */
 int array_insert(Array *a, const void *value, size_t index)
 {
-    // validation
     if(!a || !value || index > a->size)
     {
         return EINVAL;
     }
 
-    // ensure capacity
+    // ensure capacity growth
     int error = array_capacity_grow(a);
     if(error != 0)
     {
@@ -247,6 +240,8 @@ int array_insert(Array *a, const void *value, size_t index)
 
     memcpy(base + insert_offset, value, a->element_size);
 
+    // overflow check before a.size increment
+    // calling function is responsible
     if(a->size == SIZE_MAX)
     {
         return EOVERFLOW;
