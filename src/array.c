@@ -29,7 +29,7 @@ static int is_valid_element_size(size_t size)
     return (size > 0) && (size <= MAX_ELEMENT_SIZE);
 }
 
-static int multiply_overflow(size_t * out, size_t count, size_t size)
+static int multiply_overflow(size_t *out, size_t count, size_t size)
 {
     if(!out)
     {
@@ -38,7 +38,7 @@ static int multiply_overflow(size_t * out, size_t count, size_t size)
 
     if(size == 0)
     {
-        * out = 0;
+        *out = 0;
         return 0;
     }
 
@@ -47,8 +47,8 @@ static int multiply_overflow(size_t * out, size_t count, size_t size)
         return EOVERFLOW;
     }
 
-    * out = count * size;
-    
+    *out = count * size;
+
     return 0;
 }
 
@@ -59,12 +59,12 @@ Array *array_init(size_t element_size)
         return NULL;
     }
 
-    Array * a = malloc(sizeof(* a));
+    Array *a = malloc(sizeof(*a));
     if(!a)
     {
         return NULL;
     }
-    
+
     size_t new_bytes;
     if(multiply_overflow(&new_bytes, ARR_INIT_CAP, element_size) != 0)
     {
@@ -80,35 +80,50 @@ Array *array_init(size_t element_size)
     return a;
 }
 
-static int array_grow_to(Array *a, size_t start_capacity)
+static int array_capacity_grow(Array *a)
 {
     if(!a)
     {
         return EINVAL;
     }
 
-    if(a->capacity >= start_capacity)
-    {
-        return 0; // enough memory
-    }
-    
-    size_t new_capacity = a->capacity ? a->capacity : ARR_INIT_CAP;
-    while(start_capacity > new_capacity)
-    {
-        if(new_capacity > (MAX_ELEMENT_SIZE / 2))
-        {
-            return EOVERFLOW;
-        }
-        new_capacity *= 2;
-    }
-
-    size_t new_bytes;
-    if(multiply_overflow(&new_bytes, start_capacity, a->element_size))
+    if(a->size == SIZE_MAX)
     {
         return EOVERFLOW;
     }
-    
-    void * new_data = realloc(a->data, new_bytes);
+
+    if(a->capacity > a->size)
+    {
+        return 0; // enough memory
+    }
+
+    size_t new_capacity;
+
+    if(a->capacity == 0)
+    {
+        new_capacity = ARR_INIT_CAP;
+    }
+    else if(a->capacity > (SIZE_MAX / 2))
+    {
+        return EOVERFLOW;
+    }
+    else
+    {
+        new_capacity = a->capacity * 2;
+    }
+
+    if(new_capacity < (a->size + 1))
+    {
+        return EOVERFLOW;
+    }
+
+    size_t new_bytes;
+    if(multiply_overflow(&new_bytes, new_capacity, a->element_size) != 0)
+    {
+        return EOVERFLOW;
+    }
+
+    void *new_data = realloc(a->data, new_bytes);
     if(!new_data)
     {
         return ENOMEM;
@@ -179,41 +194,6 @@ void array_delete(Array *a)
     a = NULL;
 }
 
-static int array_capacity_grow_helper(Array *a)
-{
-    if(a == NULL)
-    {
-        return EINVAL;
-    }
-
-    // if enough capacity
-    if(a->size < a->capacity)
-    {
-        return 0;
-    }
-
-    size_t new_capacity;
-    if(a->capacity == 0)
-    {
-        new_capacity = ARR_INIT_CAP;
-    }
-    else if(a->capacity > (SIZE_MAX / 2))
-    {
-        return EOVERFLOW;
-    }
-    else
-    {
-        new_capacity = a->capacity * 2;
-    }
-
-    if(new_capacity < (a->size + 1))
-    {
-        return EOVERFLOW;
-    }
-
-    return array_grow_to(a, new_capacity);
-}
-
 /**
  * Inserts an element at given index
  *
@@ -241,7 +221,7 @@ int array_insert(Array *a, const void *value, size_t index)
     }
 
     // ensure capacity
-    int error = array_capacity_grow_helper(a);
+    int error = array_capacity_grow(a);
     if(error != 0)
     {
         return error;
@@ -262,11 +242,8 @@ int array_insert(Array *a, const void *value, size_t index)
 
     char *base = (char *)a->data;
 
-    memmove(
-        base + insert_offset + a->element_size,
-        base + insert_offset,
-        tail_bytes
-    );
+    memmove(base + insert_offset + a->element_size, base + insert_offset,
+            tail_bytes);
 
     memcpy(base + insert_offset, value, a->element_size);
 
@@ -315,8 +292,7 @@ int array_push_front(Array *a, const void *value)
     }
     if(a->size >= a->capacity)
     {
-        int error =
-            array_grow_to(a, a->capacity ? a->capacity * 2 : ARR_INIT_CAP);
+        int error = array_capacity_grow(a);
         if(error)
         {
             return error;
@@ -339,8 +315,7 @@ int array_push_back(Array *a, const void *value)
     }
     if(a->size >= a->capacity)
     {
-        int error =
-            array_grow_to(a, a->capacity ? a->capacity * 2 : ARR_INIT_CAP);
+        int error = array_capacity_grow(a);
         if(error)
         {
             return error;

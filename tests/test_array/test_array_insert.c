@@ -250,16 +250,17 @@ static void test_array_insert_no_change_enough_space(void)
     size_t init_cap = array_capacity(a);
 
     // fill leaving 3 free slots
-    for (size_t i = 0; i < init_cap - 3; ++i) {
+    for(size_t i = 0; i < init_cap - 3; ++i)
+    {
         assert(array_push_back(a, &i) == 0);
     }
 
     assert(array_capacity(a) == init_cap);
 
     int val = -1;
-    assert(array_insert(a, &val, 0) == 0); // front
+    assert(array_insert(a, &val, 0) == 0);             // front
     assert(array_insert(a, &val, array_size(a)) == 0); // back
-    assert(array_insert(a, &val, 5) == 0); // middle
+    assert(array_insert(a, &val, 5) == 0);             // middle
 
     assert(array_size(a) == init_cap - 3 + 3);
     assert(array_capacity(a) == init_cap); // no growth
