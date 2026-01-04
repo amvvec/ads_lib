@@ -135,9 +135,9 @@ static int array_capacity_grow(Array *a)
     return 0;
 }
 
-int array_shrink_to_fit(Array *a)
+int array_shrink_fit(Array *a)
 {
-    if(a == NULL)
+    if(!a)
     {
         return EINVAL;
     }
@@ -157,16 +157,16 @@ int array_shrink_to_fit(Array *a)
         return 0;
     }
 
-    size_t new_bytes = 0u;
+    size_t new_bytes= 0;
     if(multiply_overflow(&new_bytes, a->size, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
 
-    void *tmp = realloc(a->data, new_bytes);
-    if(tmp == NULL)
+    void * tmp = realloc(a->data, new_bytes);
+    if(!tmp)
     {
-        return ENOMEM; // TODO: ?
+        return ENOMEM;
     }
 
     a->data = tmp;
