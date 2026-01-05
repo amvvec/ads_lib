@@ -29,26 +29,22 @@ static int is_valid_element_size(size_t size)
     return (size > 0) && (size <= MAX_ELEMENT_SIZE);
 }
 
-static int multiply_overflow(size_t *out, size_t count, size_t size)
+static int multiply_overflow(size_t *out_bytes, size_t count, size_t size)
 {
-    if(!out)
+    if(!out_bytes)
     {
         return EINVAL;
     }
-
     if(size == 0)
     {
-        *out = 0;
+        *out_bytes = 0;
         return 0;
     }
-
     if(count > (SIZE_MAX / size))
     {
         return EOVERFLOW;
     }
-
-    *out = count * size;
-
+    *out_bytes = count * size;
     return 0;
 }
 
