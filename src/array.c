@@ -24,11 +24,6 @@ typedef struct Array
     size_t element_size;
 } Array;
 
-static int is_valid_element_size(size_t size)
-{
-    return (size > 0) && (size <= MAX_ELEMENT_SIZE);
-}
-
 static int multiply_overflow(size_t *out_bytes, size_t count, size_t size)
 {
     if(!out_bytes)
@@ -50,7 +45,7 @@ static int multiply_overflow(size_t *out_bytes, size_t count, size_t size)
 
 Array *array_init(size_t element_size)
 {
-    if(!is_valid_element_size(element_size))
+    if((element_size < 0) && (element_size >= MAX_ELEMENT_SIZE));
     {
         return NULL;
     }
