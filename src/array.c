@@ -6,7 +6,6 @@
 #include "array.h"
 
 static const size_t ARR_INIT_CAP = 8;
-static const size_t MAX_ELEMENT_SIZE = (SIZE_MAX / ARR_INIT_CAP);
 
 /**
  * Array invariants:
@@ -39,13 +38,13 @@ static int multiply_overflow(size_t *out_bytes, size_t count, size_t size)
     {
         return EOVERFLOW;
     }
-    *out_bytes = count * size;
+    *out_bytes = (count * size);
     return 0;
 }
 
 Array *array_init(size_t element_size)
 {
-    if((element_size < 0) && (element_size >= MAX_ELEMENT_SIZE));
+    if(element_size == 0)
     {
         return NULL;
     }
@@ -62,7 +61,7 @@ Array *array_init(size_t element_size)
         free(a);
         return NULL;
     }
-    a->data = malloc(element_size * ARR_INIT_CAP);
+    a->data = malloc(new_bytes);
 
     a->size = 0;
     a->capacity = ARR_INIT_CAP;
@@ -142,13 +141,13 @@ int array_shrink_fit(Array *a)
         return 0;
     }
 
-    size_t new_bytes= 0;
+    size_t new_bytes = 0;
     if(multiply_overflow(&new_bytes, a->size, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
 
-    void * tmp = realloc(a->data, new_bytes);
+    void *tmp = realloc(a->data, new_bytes);
     if(!tmp)
     {
         return ENOMEM;
@@ -162,20 +161,19 @@ int array_shrink_fit(Array *a)
 
 void array_delete(Array *a)
 {
-    if(a == NULL)
+    if(!a)
     {
         return;
     }
 
     free(a->data);
-
     a->data = NULL;
-    a->size = 0u;
-    a->capacity = 0u;
-    a->element_size = 0u;
+
+    a->capacity = 0;
+    a->element_size = 0;
+    a->size = 0;
 
     free(a);
-
     a = NULL;
 }
 
@@ -199,6 +197,7 @@ void array_delete(Array *a)
  */
 int array_insert(Array *a, const void *value, size_t index)
 {
+    // entry validation
     if(!a || !value || index > a->size)
     {
         return EINVAL;
@@ -231,8 +230,6 @@ int array_insert(Array *a, const void *value, size_t index)
 
     memcpy(base + insert_offset, value, a->element_size);
 
-    // overflow check before a.size increment
-    // calling function is responsible
     if(a->size == SIZE_MAX)
     {
         return EOVERFLOW;
