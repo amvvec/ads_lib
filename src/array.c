@@ -213,6 +213,7 @@ void array_delete(Array *a)
  * @pre a != NULL
  * @pre value != NULL
  * @pre index <= array_size(a)
+ * @pre a->element_size != 0
  *
  * @post On success:
  *       - a->size is increased by 1
