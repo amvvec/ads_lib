@@ -198,7 +198,7 @@ void array_delete(Array *a)
 int array_insert(Array *a, const void *value, size_t index)
 {
     // entry validation
-    if(!a || !value || index > a->size)
+    if(!a || !value || index > a->size || a->element_size == 0)
     {
         return EINVAL;
     }
