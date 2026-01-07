@@ -42,33 +42,43 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
     {
         return EINVAL;
     }
-
     if(a > (SIZE_MAX - b))
     {
         return EOVERFLOW;
     }
-
     *out = a + b;
-
     return 0;
 }
 
-static int multiply_overflow(size_t *out_bytes, size_t count, size_t size)
+/**
+ * Calculates multiplication overflow
+ * 
+ * @pre out != NULL
+ * 
+ * @post On success:
+ *       - *out = a * b
+ * 
+ * @post On failure:
+ *       - *out is not changed
+ * 
+ * @return 0 on success, error code otherwise
+ */
+static inline int multiply_overflow(size_t *out, size_t a, size_t b)
 {
-    if(!out_bytes)
+    if(!out)
     {
         return EINVAL;
     }
-    if(size == 0)
+    if(b == 0)
     {
-        *out_bytes = 0;
+        *out = 0;
         return 0;
     }
-    if(count > (SIZE_MAX / size))
+    if(a > (SIZE_MAX / b))
     {
         return EOVERFLOW;
     }
-    *out_bytes = (count * size);
+    *out = (a * b);
     return 0;
 }
 
