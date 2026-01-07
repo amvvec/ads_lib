@@ -23,6 +23,36 @@ typedef struct Array
     size_t element_size;
 } Array;
 
+/**
+ * Calculates addition overflow
+ *
+ * @pre out_bytes != NULL
+ *
+ * @post On success:
+ *       - *out_bytes == a + b
+ *
+ * @post On failure:
+ *       - *out_bytes is not changed
+ *
+ * @return 0 on success, error code otherwise
+ */
+static inline int add_overflow(size_t *out_bytes, size_t a, size_t b)
+{
+    if(!out_bytes)
+    {
+        return EINVAL;
+    }
+
+    if(a > (SIZE_MAX - b))
+    {
+        return EOVERFLOW;
+    }
+
+    *out_bytes = a + b;
+
+    return 0;
+}
+
 static int multiply_overflow(size_t *out_bytes, size_t count, size_t size)
 {
     if(!out_bytes)
@@ -230,11 +260,12 @@ int array_insert(Array *a, const void *value, size_t index)
 
     memcpy(base + insert_offset, value, a->element_size);
 
-    if(a->size == SIZE_MAX)
+    size_t new_size;
+    if(add_overflow(&new_size, a->size, 1))
     {
         return EOVERFLOW;
     }
-    a->size++;
+    a->size = new_size;
 
     return 0;
 }
