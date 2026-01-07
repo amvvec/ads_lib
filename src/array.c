@@ -26,19 +26,19 @@ typedef struct Array
 /**
  * Calculates addition overflow
  *
- * @pre out_bytes != NULL
+ * @pre out != NULL
  *
  * @post On success:
- *       - *out_bytes == a + b
+ *       - *out == a + b
  *
  * @post On failure:
- *       - *out_bytes is not changed
+ *       - *out is not changed
  *
  * @return 0 on success, error code otherwise
  */
-static inline int add_overflow(size_t *out_bytes, size_t a, size_t b)
+static inline int add_overflow(size_t *out, size_t a, size_t b)
 {
-    if(!out_bytes)
+    if(!out)
     {
         return EINVAL;
     }
@@ -48,7 +48,7 @@ static inline int add_overflow(size_t *out_bytes, size_t a, size_t b)
         return EOVERFLOW;
     }
 
-    *out_bytes = a + b;
+    *out = a + b;
 
     return 0;
 }
