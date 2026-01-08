@@ -52,15 +52,15 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
 
 /**
  * Calculates multiplication overflow
- * 
+ *
  * @pre out != NULL
- * 
+ *
  * @post On success:
  *       - *out = a * b
- * 
+ *
  * @post On failure:
  *       - *out is not changed
- * 
+ *
  * @return 0 on success, error code otherwise
  */
 static inline int multiply_overflow(size_t *out, size_t a, size_t b)
@@ -201,16 +201,16 @@ int array_shrink_fit(Array *a)
 
 /**
  * Delete and free array object
- * 
+ *
  * @pre a != NULL
- * 
+ *
  * @post On success:
  *       - *a = NULL
  *       - all object variables are zeroed
- * 
+ *
  * @post On failure:
  *       - *a is not changed
- * 
+ *
  * @return zeroed array, NULL otherwise
  */
 void array_delete(Array *a)
@@ -280,10 +280,19 @@ int array_insert(Array *a, const void *value, size_t index)
 
     char *base = (char *)a->data;
 
-    memmove(base + insert_offset + a->element_size, base + insert_offset,
-            tail_bytes);
+    memmove
+    (
+        base + insert_offset + a->element_size,
+        base + insert_offset,
+        tail_bytes
+    );
 
-    memcpy(base + insert_offset, value, a->element_size);
+    memcpy
+    (
+        base + insert_offset,
+        value,
+        a->element_size
+    );
 
     size_t new_size;
     if(add_overflow(&new_size, a->size, 1))
