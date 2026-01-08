@@ -199,6 +199,20 @@ int array_shrink_fit(Array *a)
     return 0;
 }
 
+/**
+ * Delete and free array object
+ * 
+ * @pre a != NULL
+ * 
+ * @post On success:
+ *       - *a = NULL
+ *       - all object variables are zeroed
+ * 
+ * @post On failure:
+ *       - *a is not changed
+ * 
+ * @return zeroed array, NULL otherwise
+ */
 void array_delete(Array *a)
 {
     if(!a)
