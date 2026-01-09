@@ -42,11 +42,14 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
     {
         return EINVAL;
     }
+
     if(a > (SIZE_MAX - b))
     {
         return EOVERFLOW;
     }
+
     *out = a + b;
+
     return 0;
 }
 
@@ -69,16 +72,20 @@ static inline int multiply_overflow(size_t *out, size_t a, size_t b)
     {
         return EINVAL;
     }
+
     if(b == 0)
     {
         *out = 0;
         return 0;
     }
+
     if(a > (SIZE_MAX / b))
     {
         return EOVERFLOW;
     }
+
     *out = (a * b);
+
     return 0;
 }
 
@@ -280,19 +287,12 @@ int array_insert(Array *a, const void *value, size_t index)
 
     char *base = (char *)a->data;
 
-    memmove
-    (
-        base + insert_offset + a->element_size,
-        base + insert_offset,
-        tail_bytes
-    );
+    void *dst = base + insert_offset + a->element_size;
+    void *src = base + insert_offset;
 
-    memcpy
-    (
-        base + insert_offset,
-        value,
-        a->element_size
-    );
+    memmove(dst, src, tail_bytes);
+
+    memcpy(src, value, a->element_size);
 
     size_t new_size;
     if(add_overflow(&new_size, a->size, 1))
@@ -306,7 +306,7 @@ int array_insert(Array *a, const void *value, size_t index)
 
 int array_erase(Array *a, size_t index)
 {
-    if(!a || index >= a->size)
+    if(!a || a->element_size == 0 || index >= a->size)
     {
         return EINVAL;
     }
@@ -323,12 +323,10 @@ int array_erase(Array *a, size_t index)
 
         char *base = (char *)a->data;
 
-        memmove
-        (
-            base + index * a->element_size,
-            base + (index + 1) * a->element_size,
-            bytes_to_move
-        );
+        void *dst = base + index * a->element_size;
+        void *src = base + (index + 1) * a->element_size;
+
+        memmove(dst, src, bytes_to_move);
 
         // TODO: add overflow check
         a->size--;
@@ -339,24 +337,48 @@ int array_erase(Array *a, size_t index)
 
 int array_push_front(Array *a, const void *value)
 {
-    if(!a || !value)
+    // entry validation
+    if(!a || !value || a->element_size == 0)
     {
         return EINVAL;
     }
-    if(a->size >= a->capacity)
+
+    // capacity ensurance
+    if(a->capacity == 0)
     {
         int error = array_capacity_grow(a);
-        if(error)
+        if(error != 0)
         {
             return error;
         }
     }
-    void *dest = (char *)a->data + 1 * a->element_size;
+
+    // invariant check after capacity grow
+    if(!a->data || a->capacity < a->size)
+    {
+        return EINVAL;
+    }
+
+    size_t bytes_to_move;
+    if(multiply_overflow(&bytes_to_move, a->size, a->element_size) != 0)
+    {
+        return EOVERFLOW;
+    }
+
+    // calculate first index
+    void *dst = (char *)a->data + 1 * a->element_size; // not safe
     void *src = (char *)a->data;
-    size_t bytes_to_move = a->size * a->element_size;
-    memmove(dest, src, bytes_to_move);
+
+    memmove(dst, src, bytes_to_move);
     memcpy(a->data, value, a->element_size);
-    a->size++;
+
+    size_t new_size;
+    if(add_overflow(&new_size, a->size, 1) != 0)
+    {
+        return EOVERFLOW;
+    }
+    a->size = new_size;
+
     return 0;
 }
 
@@ -374,8 +396,8 @@ int array_push_back(Array *a, const void *value)
             return error;
         }
     }
-    void *dest = (char *)a->data + a->size * a->element_size;
-    memcpy(dest, value, a->element_size);
+    void *dst = (char *)a->data + a->size * a->element_size; // not safe
+    memcpy(dst, value, a->element_size);
     a->size++;
     return 0;
 }
