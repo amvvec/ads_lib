@@ -306,12 +306,12 @@ int array_insert(Array *a, const void *value, size_t index)
 
 int array_erase(Array *a, size_t index)
 {
-    if(a == NULL || index >= a->size)
+    if(!a || index >= a->size)
     {
         return EINVAL;
     }
 
-    size_t tail_count = (a->size - index - 1);
+    const size_t tail_count = (a->size - index - 1);
 
     if(tail_count > 0)
     {
@@ -323,9 +323,14 @@ int array_erase(Array *a, size_t index)
 
         char *base = (char *)a->data;
 
-        memmove(base + index * a->element_size,
-                base + (index + 1) * a->element_size, bytes_to_move);
+        memmove
+        (
+            base + index * a->element_size,
+            base + (index + 1) * a->element_size,
+            bytes_to_move
+        );
 
+        // TODO: add overflow check
         a->size--;
     }
 
