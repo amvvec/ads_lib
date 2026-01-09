@@ -1,6 +1,7 @@
 CC		:= gcc
 CFLAGS +=	-fsanitize=address,undefined,leak \
 			-fsanitize-address-use-after-scope \
+			-Wanalyzer-use-after-free \
 			-Wcast-qual \
 			-Wcast-align=strict \
 			-Wstrict-aliasing=2 \
