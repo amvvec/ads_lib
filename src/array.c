@@ -384,11 +384,12 @@ int array_push_front(Array *a, const void *value)
 
 int array_push_back(Array *a, const void *value)
 {
-    if(!a && !value)
+    if(!a || !value)
     {
         return EINVAL;
     }
-    if(a->size >= a->capacity)
+
+    if(a->capacity <= a->size)
     {
         int error = array_capacity_grow(a);
         if(error)
@@ -396,9 +397,19 @@ int array_push_back(Array *a, const void *value)
             return error;
         }
     }
-    void *dst = (char *)a->data + a->size * a->element_size; // not safe
+
+    // absolutly not safe
+    void *dst = (char *)a->data + (a->size * a->element_size);
+
     memcpy(dst, value, a->element_size);
-    a->size++;
+
+    size_t new_size;
+    if(multiply_overflow(&new_size, a->size, 1) != 0)
+    {
+        return EOVERFLOW;
+    }
+    a->size = new_size;
+
     return 0;
 }
 
