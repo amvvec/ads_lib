@@ -467,10 +467,20 @@ int array_set(Array *a, size_t index, const void *value)
 
 size_t array_size(const Array *a)
 {
+    if(!a)
+    {
+        return EINVAL;
+    }
+
     return a ? a->size : 0;
 }
 
 size_t array_capacity(const Array *a)
 {
+    if(!a)
+    {
+        return EINVAL;
+    }
+
     return a ? a->capacity : 0;
 }
