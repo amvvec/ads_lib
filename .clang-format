@@ -5,3 +5,4 @@ BreakBeforeBraces: Allman
 AllowShortFunctionsOnASingleLine: None
 PointerAlignment: Right
 SpaceBeforeParens: Never
+SortIncludes: true
