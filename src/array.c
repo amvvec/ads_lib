@@ -239,47 +239,45 @@ void array_delete(Array *a)
 }
 
 /**
- * Inserts an element at given index
+ * Inserts element at position `index` and shifts subsequent elements right.
  *
- * @pre a != NULL
- * @pre value != NULL
- * @pre index <= array_size(a)
- * @pre a->element_size != 0
+ * Preconditions:
+ *   • a            != NULL
+ *   • value        != NULL
+ *   • index        <= array_size(a)
+ *   • element_size >  0
  *
- * @post On success:
- *       - a->size is increased by 1
- *       - elements at (index, old_size) are shifted right
- *       - element at index equals *value
+ * On success:
+ *   • array_size(a) increased by 1
+ *   • new element at index == *value
+ *   • elements [index+1, old_size] == old elements [index, old_size-1]
+ *   • relative order of other elements preserved
  *
- * @post On failure:
- *       - logical contents (size + elements) remain unchanged
- *       - capacity may increase
- *
- * @return 0 on success, error code otherwise
+ * On failure:
+ *   • array contents and size unchanged
+ *   • capacity may be increased
  */
 int array_insert(Array *a, const void *value, size_t index)
 {
-    // entry validation
     if(!a || !value || index > a->size || a->element_size == 0)
     {
         return EINVAL;
     }
 
-    // ensure capacity growth
     int error = array_capacity_grow(a);
     if(error != 0)
     {
         return error;
     }
 
-    size_t insert_offset;
+    size_t insert_offset; // first bytes before index
     if(multiply_overflow(&insert_offset, index, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
 
     size_t tail_bytes;
-    const size_t tail_count = (a->size - index);
+    const size_t tail_count = (a->size - index); // last bytes after index
     if(multiply_overflow(&tail_bytes, tail_count, a->element_size) != 0)
     {
         return EOVERFLOW;
