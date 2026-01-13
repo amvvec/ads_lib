@@ -256,8 +256,10 @@ void array_delete(Array *a)
  * On failure:
  *   • array contents and size unchanged
  *   • capacity may be increased
+ *
+ * @note Not thread-safe. Caller must ensure exclusive access.
  */
-int array_insert(Array *a, const void *value, size_t index)
+int array_insert(Array *a, const void *restrict value, size_t index)
 {
     if(!a || !value || index > a->size || a->element_size == 0)
     {
@@ -285,11 +287,28 @@ int array_insert(Array *a, const void *value, size_t index)
 
     char *base = (char *)a->data;
 
+    // early push_back return
+    if(tail_count == 0)
+    {
+        memcpy(base + insert_offset, value, a->element_size);
+
+        size_t new_size;
+        if(add_overflow(&new_size, a->size, 1))
+        {
+            return EOVERFLOW;
+        }
+        a->size = new_size;
+
+        return 0;
+    }
+
     void *dst = base + insert_offset + a->element_size;
     void *src = base + insert_offset;
 
+    // safe overlapping move
     memmove(dst, src, tail_bytes);
 
+    // insert new value into freed slot
     memcpy(src, value, a->element_size);
 
     size_t new_size;
