@@ -2,48 +2,46 @@
 
 CC := gcc
 
-CFLAGS := 								\
-    -std=c17                  			\
-    -O0                       			\
-    -g                        			\
-    -fno-omit-frame-pointer   			\
-    -Wall                     			\
-    -Wextra                   			\
-    -Wpedantic                			\
-    -Werror                   			\
-    -Wshadow                  			\
-    -Wconversion              			\
-    -Wsign-conversion         			\
-    -Wformat=2                			\
-    -Wformat-security         			\
-    -Wnull-dereference        			\
-    -Wdouble-promotion        			\
-    -Wstrict-prototypes       			\
-    -Wold-style-definition    			\
-    -Wswitch-enum             			\
-    -Wswitch-default          			\
-    -Wfloat-equal             			\
-    -Wundef                   			\
-    -Wimplicit-fallthrough    			\
-    -Wunused-parameter        			\
-    -Wmisleading-indentation  			\
-    -Wduplicated-cond         			\
-    -Wduplicated-branches     			\
-    -Wlogical-op              			\
-    -Wjump-misses-init        			\
-    -Wpacked                  			\
-    -Wredundant-decls         			\
-    -Wcast-qual               			\
-    -Wcast-align=strict       			\
-    -Wstrict-aliasing=2       			\
-    -Wanalyzer-use-after-free 			\
-    -fsanitize=address,undefined,leak 	\
-    -fsanitize-address-use-after-scope 	\
-    -fstack-protector-strong  			\
-    -D_FORTIFY_SOURCE=2       			\
+# Warnings
+WFLAGS := \
+    -Wall -Wextra -Wpedantic -Werror \
+    -Wshadow -Wconversion -Wsign-conversion \
+    -Wformat=2 -Wformat-security \
+    -Wnull-dereference -Wdouble-promotion \
+    -Wstrict-prototypes -Wold-style-definition \
+    -Wswitch-enum -Wswitch-default -Wfloat-equal \
+    -Wundef -Wimplicit-fallthrough \
+    -Wunused-parameter -Wmisleading-indentation \
+    -Wduplicated-cond -Wduplicated-branches \
+    -Wlogical-op -Wjump-misses-init \
+    -Wpacked -Wredundant-decls
+
+# Cast & aliasing
+CAFLAGS := \
+    -Wcast-qual -Wcast-align=strict \
+    -Wstrict-aliasing=2
+
+# Analyzer
+AFLAGS := \
+    -Wanalyzer-use-after-free
+
+# Sanitizers
+SANITIZERS := \
+    -fsanitize=address,undefined,leak \
+    -fsanitize-address-use-after-scope
+
+# Security & hardening
+SECFLAGS := \
+    -fstack-protector-strong \
+    -D_FORTIFY_SOURCE=2 \
     -fno-common
 
-LDFLAGS := -fsanitize=address,undefined,leak
+# Debug & standard
+DBGFLAGS := \
+    -std=c17 \
+    -O0 -g -fno-omit-frame-pointer
+
+CFLAGS := $(WFLAGS) $(CAFLAGS) $(AFLAGS) $(SANFLAGS) $(SECFLAGS) $(DBGFLAGS)
 
 # Directories & Files
 
