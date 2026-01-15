@@ -119,39 +119,48 @@ Array *array_init(size_t element_size)
 
 static int array_capacity_grow(Array *a)
 {
-    if(!a)
+    if(!a || a->element_size == 0)
     {
         return EINVAL;
     }
 
-    if(a->capacity > a->size)
+    size_t old_capacity = a->capacity;
+
+    if(a->capacity >= (a->size + 1))
     {
         return 0; // enough memory
     }
 
-    size_t new_capacity;
-    if(a->capacity == 0)
-    {
-        new_capacity = ARR_INIT_CAP;
-    }
-    else if(a->capacity > (SIZE_MAX / 2))
+    if(a->capacity > (SIZE_MAX / 2))
     {
         return EOVERFLOW;
     }
-    else
-    {
-        new_capacity = a->capacity * 2;
-    }
+
+    size_t new_capacity = a->capacity ? a->capacity * 2 : ARR_INIT_CAP;
 
     if(new_capacity < (a->size + 1))
     {
         return EOVERFLOW;
     }
 
+    if((new_capacity / 2) != old_capacity)
+    {
+        return EINVAL;
+    }
+
     size_t new_bytes;
     if(multiply_overflow(&new_bytes, new_capacity, a->element_size) != 0)
     {
         return EOVERFLOW;
+    }
+
+    if(new_bytes == 0)
+    {
+        free(a->data);
+        a->data = NULL;
+        a->capacity = 0;
+
+        return 0;
     }
 
     void *new_data = realloc(a->data, new_bytes);
