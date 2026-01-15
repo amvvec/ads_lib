@@ -1,5 +1,4 @@
 # Compiler & Flags
-
 CC := gcc
 
 # Warnings
@@ -14,7 +13,8 @@ WFLAGS := \
     -Wunused-parameter -Wmisleading-indentation \
     -Wduplicated-cond -Wduplicated-branches \
     -Wlogical-op -Wjump-misses-init \
-    -Wpacked -Wredundant-decls
+    -Wpacked -Wredundant-decls \
+    -Winline -Wdisabled-optimization -Wvla
 
 # Cast & aliasing
 CAFLAGS := \
@@ -28,7 +28,9 @@ AFLAGS := \
 # Sanitizers
 SANITIZERS := \
     -fsanitize=address,undefined,leak \
-    -fsanitize-address-use-after-scope
+    -fsanitize-address-use-after-scope \
+    -fsanitize=undefined-trap -fsanitize-undefined-trap=undefined \
+    -fsanitize=leak
 
 # Security & hardening
 SECFLAGS := \
@@ -44,7 +46,6 @@ DBGFLAGS := \
 CFLAGS := $(WFLAGS) $(CAFLAGS) $(AFLAGS) $(SANFLAGS) $(SECFLAGS) $(DBGFLAGS)
 
 # Directories & Files
-
 SRC_DIR   := src
 BUILD_DIR := build
 EXEC      := launcher
@@ -54,7 +55,6 @@ HEADERS   := $(shell find $(SRC_DIR) -type f -name '*.h')
 OBJECTS   := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 
 # Targets
-
 .PHONY: all clean
 
 all: $(EXEC)
