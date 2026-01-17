@@ -124,8 +124,6 @@ static int array_capacity_grow(Array *a)
         return EINVAL;
     }
 
-    size_t old_capacity = a->capacity;
-
     if(a->capacity >= (a->size + 1))
     {
         return 0; // enough memory
@@ -138,29 +136,10 @@ static int array_capacity_grow(Array *a)
 
     size_t new_capacity = a->capacity ? a->capacity * 2 : ARR_INIT_CAP;
 
-    if(new_capacity < (a->size + 1))
-    {
-        return EOVERFLOW;
-    }
-
-    if((new_capacity / 2) != old_capacity)
-    {
-        return EINVAL;
-    }
-
     size_t new_bytes;
     if(multiply_overflow(&new_bytes, new_capacity, a->element_size) != 0)
     {
         return EOVERFLOW;
-    }
-
-    if(new_bytes == 0)
-    {
-        free(a->data);
-        a->data = NULL;
-        a->capacity = 0;
-
-        return 0;
     }
 
     void *new_data = realloc(a->data, new_bytes);
