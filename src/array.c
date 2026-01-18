@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <errno.h>
 #include <memory.h>
 #include <stdio.h>
@@ -147,6 +148,9 @@ static int array_capacity_grow(Array *a)
     {
         return ENOMEM;
     }
+
+    assert(new_data != NULL);
+    assert(a->capacity >= a->size + 1);
 
     a->data = new_data;
     a->capacity = new_capacity;
