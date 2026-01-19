@@ -109,7 +109,13 @@ Array *array_init(size_t element_size)
         free(a);
         return NULL;
     }
+
     a->data = malloc(new_bytes);
+    if(!a->data)
+    {
+        free(a);
+        return NULL;
+    }
 
     a->size = 0;
     a->capacity = ARR_INIT_CAP;
