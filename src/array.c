@@ -124,6 +124,27 @@ Array *array_init(size_t element_size)
     return a;
 }
 
+/**
+ * @brief Grows array capacity if needed to fit at least one more element.
+ *
+ * Increases capacity (usually by factor of 2) using realloc.
+ * Safe to call even when capacity is already sufficient.
+ *
+ * @pre a != NULL
+ * @pre a->element_size > 0
+ *
+ * @post On success:
+ *          a->capacity >= a->size + 1
+ *          a->data may be reallocated (pointer may change)
+ *
+ * @post On failure:
+ *          array unchanged
+ *          capacity may increase
+ *
+ * @note Not thread-safe
+ *
+ * @return 0 on success, error code otherwise
+ */
 static int array_capacity_grow(Array *a)
 {
     if(!a || a->element_size == 0)
