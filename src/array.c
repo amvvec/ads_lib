@@ -431,7 +431,7 @@ int array_push_back(Array *a, const void *value)
     memcpy(dst, value, a->element_size);
 
     size_t new_size;
-    if(multiply_overflow(&new_size, a->size, 1) != 0)
+    if(add_overflow(&new_size, a->size, 1) != 0)
     {
         return EOVERFLOW;
     }
