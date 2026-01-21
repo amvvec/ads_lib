@@ -178,7 +178,6 @@ static int array_capacity_grow(Array *a)
 
     assert(new_data != NULL);
     assert(a->capacity >= a->size + 1);
-
     a->data = new_data;
     a->capacity = new_capacity;
 
@@ -226,7 +225,7 @@ int array_shrink_fit(Array *a)
 }
 
 /**
- * Delete and free array object
+ * Delete and free array object, sets pointer to NULL.
  *
  * @pre a != NULL
  *
@@ -235,22 +234,16 @@ int array_shrink_fit(Array *a)
  *
  * @return void
  */
-void array_delete(Array *a)
+void array_delete(Array **a)
 {
-    if(!a)
+    if(!a || !*a)
     {
         return;
     }
 
-    free(a->data);
-    a->data = NULL;
-
-    a->capacity = 0;
-    a->element_size = 0;
-    a->size = 0;
-
-    free(a);
-    a = NULL;
+    free((*a)->data);
+    free(*a);
+    *a = NULL;
 }
 
 /**

@@ -24,7 +24,7 @@ static void test_array_insert_empty_at_zero(void)
 
     assert(array_capacity(a) >= 1);
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_at_end_on_empty(void)
@@ -41,7 +41,7 @@ static void test_array_insert_at_end_on_empty(void)
     assert(array_get(a, 0, &got) == 0);
     assert(got == 777);
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_single_element_middle(void)
@@ -67,7 +67,7 @@ static void test_array_insert_single_element_middle(void)
         assert(got == expected[i]);
     }
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_front_on_nonempty(void)
@@ -95,7 +95,7 @@ static void test_array_insert_front_on_nonempty(void)
         assert(got == expected[i]);
     }
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_back_equivalent_to_push(void)
@@ -120,7 +120,7 @@ static void test_array_insert_back_equivalent_to_push(void)
         assert(val == i);
     }
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_middle_single(void)
@@ -152,7 +152,7 @@ static void test_array_insert_middle_single(void)
         assert(val == expected[i]);
     }
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_at_last_position(void)
@@ -180,7 +180,7 @@ static void test_array_insert_at_last_position(void)
         assert(got == expected[i]);
     }
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_when_full_capacity(void)
@@ -214,7 +214,7 @@ static void test_array_insert_when_full_capacity(void)
     assert(array_get(a, cap, &got) == 0);
     assert(got == (int)(cap - 1));
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_triggers_realloc(void)
@@ -239,7 +239,7 @@ static void test_array_insert_triggers_realloc(void)
     assert(array_size(a) == init_cap + 1);
     assert(array_capacity(a) > init_cap);
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_no_change_enough_space(void)
@@ -265,7 +265,7 @@ static void test_array_insert_no_change_enough_space(void)
     assert(array_size(a) == init_cap - 3 + 3);
     assert(array_capacity(a) == init_cap); // no growth
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_back(void)
@@ -296,7 +296,7 @@ static void test_array_insert_back(void)
     // capacity must have grown beyond initial value
     assert(array_capacity(a) > initial_capacity);
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 static void test_array_insert_front(void)
@@ -331,7 +331,7 @@ static void test_array_insert_front(void)
     // capacity should not shrink (at least initial)
     assert(array_capacity(a) >= initial_capacity);
 
-    array_delete(a);
+    array_delete(&a);
 }
 
 void run_array_insert_tests(void)
