@@ -230,14 +230,10 @@ int array_shrink_fit(Array *a)
  *
  * @pre a != NULL
  *
- * @post On success:
- *       - *a = NULL
- *       - all object variables are zeroed
+ * @post *a = NULL
+ * @post all variables freed
  *
- * @post On failure:
- *       - *a is not changed
- *
- * @return zeroed array, NULL otherwise
+ * @return void
  */
 void array_delete(Array *a)
 {
