@@ -98,7 +98,7 @@ static void test_array_insert_invalid_index(void)
     array_delete(&a);
 }
 
-void run_array_tests(void)
+void run_array_smoke_tests(void)
 {
     test_array_init_and_delete();
     test_array_init_zero_size();
