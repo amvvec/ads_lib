@@ -176,8 +176,6 @@ static int array_capacity_grow(Array *a)
         return ENOMEM;
     }
 
-    assert(new_data != NULL);
-    assert(a->capacity >= a->size + 1);
     a->data = new_data;
     a->capacity = new_capacity;
 
