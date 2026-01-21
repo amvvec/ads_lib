@@ -245,25 +245,29 @@ void array_delete(Array **a)
 }
 
 /**
- * Inserts element at position `index` and shifts subsequent elements right.
+ * Inserts element at position `index`, shifts rest right.
  *
- * Preconditions:
- *   • a            != NULL
- *   • value        != NULL
- *   • index        <= array_size(a)
- *   • element_size >  0
+ * @invariant a->size <= a->capacity
+ * @invariant a->data != NULL if capacity > 0
  *
- * On success:
- *   • array_size(a) increased by 1
- *   • new element at index == *value
- *   • elements [index+1, old_size] == old elements [index, old_size-1]
- *   • relative order of other elements preserved
+ * @pre a != NULL
+ * @pre value != NULL
+ * @pre index <= array_size(a)
+ * @pre element_size > 0
  *
- * On failure:
- *   • array contents and size unchanged
- *   • capacity may be increased
+ * @post On success:
+ *          - size increased by 1
+ *          - element at index == *value
+ *          - elements [index+1, new_size-1] == old [index, old_size-1]
+ *          - relative order preserved
  *
- * @note Not thread-safe. Caller must ensure exclusive access.
+ * @post On failure:
+ *          - size and contents unchanged
+ *          - capacity may increase
+ *
+ * @note Not thread-safe.
+ *
+ * @return 0 at success, error code otherwise.
  */
 int array_insert(Array *a, const void *restrict value, size_t index)
 {
