@@ -338,24 +338,36 @@ int array_erase(Array *a, size_t index)
         return EINVAL;
     }
 
-    const size_t tail_count = (a->size - index - 1);
+    const size_t tail_bytes_count = (a->size - index) - 1;
 
-    if(tail_count > 0)
+    if(tail_bytes_count > 0)
     {
         size_t bytes_to_move;
-        if(multiply_overflow(&bytes_to_move, tail_count, a->element_size) != 0)
+        if(multiply_overflow(&bytes_to_move, tail_bytes_count,
+                             a->element_size) != 0)
+        {
+            return EOVERFLOW;
+        }
+
+        size_t dst_offset;
+        if(multiply_overflow(&dst_offset, index, a->element_size) != 0)
+        {
+            return EOVERFLOW;
+        }
+
+        size_t src_offset;
+        if(multiply_overflow(&src_offset, (index + 1), a->element_size) != 0)
         {
             return EOVERFLOW;
         }
 
         char *base = (char *)a->data;
 
-        void *dst = base + index * a->element_size;
-        void *src = base + (index + 1) * a->element_size;
+        void *dst = base + dst_offset;
+        void *src = base + src_offset;
 
         memmove(dst, src, bytes_to_move);
 
-        // TODO: add overflow check
         a->size--;
     }
 
@@ -364,7 +376,7 @@ int array_erase(Array *a, size_t index)
 
 int array_push_front(Array *a, const void *value)
 {
-    // entry validation
+    // entry check
     if(!a || !value || a->element_size == 0)
     {
         return EINVAL;
