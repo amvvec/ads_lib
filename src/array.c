@@ -25,7 +25,7 @@ typedef struct Array
 } Array;
 
 /**
- * Calculates addition overflow
+ * @brief Calculates addition overflow
  *
  * @pre out != NULL
  *
@@ -55,7 +55,39 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
 }
 
 /**
- * Calculates multiplication overflow
+ * @brief Calculates subtraction overflow
+ *
+ * @pre out != NULL
+ *
+ * @post On success:
+ *          - *out == a - b
+ *
+ * @post On failure:
+ *          - *out is not changed
+ *
+ * @note Subtraction for size_t is safe. No need to check SIZE_MAX
+ *
+ * @return 0 on success, error code otherwise
+ */
+static inline int sub_overflow(size_t *out, size_t a, size_t b)
+{
+    if(!out)
+    {
+        return EINVAL;
+    }
+
+    if(a < b)
+    {
+        return EOVERFLOW;
+    }
+
+    *out = a - b;
+
+    return 0;
+}
+
+/**
+ * @brief Calculates multiplication overflow
  *
  * @pre out != NULL
  *
@@ -67,7 +99,7 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
  *
  * @return 0 on success, error code otherwise
  */
-static inline int multiply_overflow(size_t *out, size_t a, size_t b)
+static inline int mul_overflow(size_t *out, size_t a, size_t b)
 {
     if(!out)
     {
@@ -104,7 +136,7 @@ Array *array_init(size_t element_size)
     }
 
     size_t new_bytes;
-    if(multiply_overflow(&new_bytes, ARR_INIT_CAP, element_size) != 0)
+    if(mul_overflow(&new_bytes, ARR_INIT_CAP, element_size) != 0)
     {
         free(a);
         return NULL;
@@ -165,7 +197,7 @@ static int array_capacity_grow(Array *a)
     size_t new_capacity = a->capacity ? a->capacity * 2 : ARR_INIT_CAP;
 
     size_t new_bytes;
-    if(multiply_overflow(&new_bytes, new_capacity, a->element_size) != 0)
+    if(mul_overflow(&new_bytes, new_capacity, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
@@ -205,7 +237,7 @@ int array_shrink_fit(Array *a)
     }
 
     size_t new_bytes = 0;
-    if(multiply_overflow(&new_bytes, a->size, a->element_size) != 0)
+    if(mul_overflow(&new_bytes, a->size, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
@@ -283,14 +315,14 @@ int array_insert(Array *a, const void *restrict value, size_t index)
     }
 
     size_t insert_offset; // first bytes before index
-    if(multiply_overflow(&insert_offset, index, a->element_size) != 0)
+    if(mul_overflow(&insert_offset, index, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
 
     size_t tail_bytes;
     const size_t tail_count = (a->size - index); // last bytes after index
-    if(multiply_overflow(&tail_bytes, tail_count, a->element_size) != 0)
+    if(mul_overflow(&tail_bytes, tail_count, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
@@ -343,20 +375,19 @@ int array_erase(Array *a, size_t index)
     if(tail_bytes_count > 0)
     {
         size_t bytes_to_move;
-        if(multiply_overflow(&bytes_to_move, tail_bytes_count,
-                             a->element_size) != 0)
+        if(mul_overflow(&bytes_to_move, tail_bytes_count, a->element_size) != 0)
         {
             return EOVERFLOW;
         }
 
         size_t dst_offset;
-        if(multiply_overflow(&dst_offset, index, a->element_size) != 0)
+        if(mul_overflow(&dst_offset, index, a->element_size) != 0)
         {
             return EOVERFLOW;
         }
 
         size_t src_offset;
-        if(multiply_overflow(&src_offset, (index + 1), a->element_size) != 0)
+        if(mul_overflow(&src_offset, (index + 1), a->element_size) != 0)
         {
             return EOVERFLOW;
         }
@@ -399,7 +430,7 @@ int array_push_front(Array *a, const void *value)
     }
 
     size_t bytes_to_move;
-    if(multiply_overflow(&bytes_to_move, a->size, a->element_size) != 0)
+    if(mul_overflow(&bytes_to_move, a->size, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
