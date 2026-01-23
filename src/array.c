@@ -399,7 +399,12 @@ int array_erase(Array *a, size_t index)
 
         memmove(dst, src, bytes_to_move);
 
-        a->size--;
+        size_t new_size;
+        if(sub_overflow(&new_size, a->size, 1) != 0)
+        {
+            return EOVERFLOW;
+        }
+        a->size = new_size;
     }
 
     return 0;
@@ -493,7 +498,13 @@ void array_pop_front(Array *a)
     // size_t bytes_to_move = (size_t)(a->size - 1) * (size_t)a->capacity;
     size_t bytes_to_move = (a->size - 1) * a->capacity;
     memmove(a->data, (char *)a->data + a->element_size, bytes_to_move);
-    a->size--;
+
+    size_t new_size;
+    if(sub_overflow(&new_size, a->size, 1) != 0)
+    {
+        return;
+    }
+    a->size = new_size;
 }
 
 void array_pop_back(Array *a)
@@ -506,7 +517,14 @@ void array_pop_back(Array *a)
     {
         return;
     }
-    a->size--;
+
+    size_t new_size;
+    if(sub_overflow(&new_size, a->size, 1) != 0)
+    {
+        return;
+    }
+    a->size = new_size;
+
     void *dest = (char *)a->data + a->size * a->element_size;
     memset(dest, 0, a->element_size);
 }
