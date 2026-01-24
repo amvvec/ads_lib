@@ -284,13 +284,13 @@ void array_delete(Array **a)
  *
  * @pre a != NULL
  * @pre value != NULL
- * @pre index <= array_size(a)
+ * @pre index <= a->size
  * @pre element_size > 0
  *
  * @post On success:
  *          - size increased by 1
  *          - element at index == *value
- *          - elements [index+1, new_size-1] == old [index, old_size-1]
+ *          - elements [index+1, new_size-1] == old[index, old_size-1]
  *          - relative order preserved
  *
  * @post On failure:
@@ -298,8 +298,7 @@ void array_delete(Array **a)
  *          - capacity may increase
  *
  * @note Not thread-safe.
- *
- * @return 0 at success, error code otherwise.
+ * @return 0 on success, error code otherwise.
  */
 int array_insert(Array *a, const void *restrict value, size_t index)
 {
@@ -363,13 +362,33 @@ int array_insert(Array *a, const void *restrict value, size_t index)
     return 0;
 }
 
+/**
+ * @brief Erases element at position 'index', shifts rest left.
+ *
+ * @pre a != NULL
+ * @pre index <= a->size
+ *
+ * @post On success:
+ *          - size decreased by 1
+ *          - element at index == a->size[n+1]
+ *          - elements [index-1, new_size+1] == old[index+1, old_size+1]
+ *          - relative order preserved
+ *
+ * @post On failure:
+ *          - size and contents unchanged
+ *
+ * @note Not thread-safe.
+ * @return 0 on success, error code otherwise.
+ */
 int array_erase(Array *a, size_t index)
 {
+    // entry check
     if(!a || a->element_size == 0 || index >= a->size)
     {
         return EINVAL;
     }
 
+    // calculate bytes after index
     const size_t tail_bytes_count = (a->size - index) - 1;
 
     if(tail_bytes_count > 0)
