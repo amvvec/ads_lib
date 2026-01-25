@@ -460,8 +460,16 @@ int array_push_front(Array *a, const void *value)
     }
 
     // calculate first index
-    void *dst = (char *)a->data + 1 * a->element_size; // not safe
-    void *src = (char *)a->data;
+    size_t dst_offset;
+    if(mul_overflow(&dst_offset, a->size, a->element_size) != 0)
+    {
+        return EOVERFLOW;
+    }
+
+    char *base = (char *)a->data;
+
+    void *dst = base + dst_offset;
+    void *src = base;
 
     memmove(dst, src, bytes_to_move);
     memcpy(a->data, value, a->element_size);
