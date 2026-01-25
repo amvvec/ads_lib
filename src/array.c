@@ -255,7 +255,7 @@ int array_shrink_fit(Array *a)
 }
 
 /**
- * Delete and free array object, sets pointer to NULL.
+ * @brief Delete and free array object, sets pointer to NULL.
  *
  * @pre a != NULL
  *
@@ -277,24 +277,24 @@ void array_delete(Array **a)
 }
 
 /**
- * Inserts element at position `index`, shifts rest right.
+ * @brief Inserts value at position `index`, shifts rest right.
  *
- * @invariant a->size <= a->capacity
  * @invariant a->data != NULL if capacity > 0
+ * @invariant a->size <= a->capacity
+ * @invariant a->element_size > 0
  *
  * @pre a != NULL
  * @pre value != NULL
  * @pre index <= a->size
- * @pre element_size > 0
  *
  * @post On success:
  *          - size increased by 1
  *          - element at index == *value
  *          - elements [index+1, new_size-1] == old[index, old_size-1]
- *          - relative order preserved
+ *          - relative order is preserved
  *
  * @post On failure:
- *          - size and contents unchanged
+ *          - contents and size unchanged
  *          - capacity may increase
  *
  * @note Not thread-safe.
@@ -429,6 +429,25 @@ int array_erase(Array *a, size_t index)
     return 0;
 }
 
+/**
+ * @brief Pushes value to the first index, shifts rest right.
+ *
+ * @pre a != NULL
+ * @pre a->element_size > 0
+ * @pre value != NULL
+ *
+ * @post On success:
+ *          - value at index == *value
+ *          - size increased by 1
+ *          - relative order is preserved
+ *
+ * @post On failure:
+ *          - contents and size unchanged
+ *          - capacity may increase
+ *
+ * @note Not thread-safe.
+ * @return 0 on success, error code otherwise.
+ */
 int array_push_front(Array *a, const void *value)
 {
     // entry check
@@ -486,7 +505,7 @@ int array_push_front(Array *a, const void *value)
 
 int array_push_back(Array *a, const void *value)
 {
-    if(!a || !value)
+    if(!a || !value || a->element_size == 0)
     {
         return EINVAL;
     }
@@ -500,8 +519,15 @@ int array_push_back(Array *a, const void *value)
         }
     }
 
-    // absolutly not safe
-    void *dst = (char *)a->data + (a->size * a->element_size);
+    size_t dst_offset;
+    if(mul_overflow(&dst_offset, a->size, a->element_size) != 0)
+    {
+        return EOVERFLOW;
+    }
+
+    char *base = (char *)a->data;
+
+    void *dst = base + dst_offset;
 
     memcpy(dst, value, a->element_size);
 
