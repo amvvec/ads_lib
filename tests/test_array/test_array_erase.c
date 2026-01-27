@@ -7,10 +7,8 @@ static void test_array_erase_back(void)
     Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
-    for(int i = 0; i < 20; ++i)
-    {
+    for(int i = 0; i < 10; ++i)
         assert(array_push_back(a, &i) == 0);
-    }
 
     assert(array_size(a) == 10);
 
@@ -25,7 +23,12 @@ static void test_array_erase_back(void)
     assert(array_erase(a, 8) == 0);
     assert(array_size(a) == 8);
 
-    assert(array_capacity(a) == cap); // no shrink to fit
+    assert(array_capacity(a) == cap); // no shrink
 
     array_delete(&a);
+}
+
+void run_array_erase_tests(void)
+{
+    test_array_erase_back();
 }

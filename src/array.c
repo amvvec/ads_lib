@@ -389,7 +389,7 @@ int array_erase(Array *a, size_t index)
     }
 
     // calculate bytes after index
-    const size_t tail_bytes_count = (a->size - index) - 1;
+    const size_t tail_bytes_count = a->size - (index - 1);
 
     if(tail_bytes_count > 0)
     {
