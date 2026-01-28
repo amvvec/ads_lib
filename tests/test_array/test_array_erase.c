@@ -50,8 +50,33 @@ static void test_array_erase_middle(void)
     array_delete(&a);
 }
 
+static void test_array_erase_front(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    const int values[] = {10, 20, 30, 40};
+    const int n = sizeof(values) / sizeof(values[0]);
+
+    for(int i = 0; i < n; ++i)
+    {
+        assert(array_push_back(a, &values[i]) == 0);
+    }
+
+    assert(array_erase(a, 0) == 0);
+    assert(array_size(a) == 3);
+
+    int v = -1;
+    assert(array_get(a, 0, &v) == 0);
+
+    assert(v == 20);
+
+    array_delete(&a);
+}
+
 void run_array_erase_tests(void)
 {
     test_array_erase_back();
     test_array_erase_middle();
+    test_array_erase_front();
 }
