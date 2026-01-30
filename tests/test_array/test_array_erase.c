@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <errno.h>
 
 #include "../src/array.h"
 
@@ -74,9 +75,24 @@ static void test_array_erase_front(void)
     array_delete(&a);
 }
 
+static void test_array_erase_invalid(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    assert(array_push_back(a, &(int){42}) == 0);
+
+    assert(array_erase(a, 1) == EINVAL);
+    assert(array_erase(a, SIZE_MAX) == EINVAL);
+    assert(array_size(a) == 1);
+
+    array_delete(&a);
+}
+
 void run_array_erase_tests(void)
 {
     test_array_erase_back();
     test_array_erase_middle();
     test_array_erase_front();
+    test_array_erase_invalid();
 }
