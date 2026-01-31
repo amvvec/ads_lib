@@ -89,10 +89,22 @@ static void test_array_erase_invalid(void)
     array_delete(&a);
 }
 
+static void test_array_erase_empty(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    assert(array_erase(a, 0) == EINVAL);
+    assert(array_size(a) == 0);
+
+    array_delete(&a);
+}
+
 void run_array_erase_tests(void)
 {
     test_array_erase_back();
     test_array_erase_middle();
     test_array_erase_front();
     test_array_erase_invalid();
+    test_array_erase_empty();
 }
