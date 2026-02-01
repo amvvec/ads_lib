@@ -25,17 +25,30 @@ typedef struct Array
 } Array;
 
 /**
- * @brief Calculates addition overflow
+ * @brief Computes a + b with overflow detection for size_t.
+ *
+ * Domain:
+ *      a, b ∈ [0, SIZE_MAX]
  *
  * @pre out != NULL
  *
- * @post On success:
- *       - *out == a + b
+ * @post On success (return == 0):
+ *          - a + b ≤ SIZE_MAX
+ *          - *out == a + b
  *
- * @post On failure:
- *       - *out is not changed
+ * @post On overflow (return == EOVERFLOW):
+ *          - a + b > SIZE_MAX
+ *          - *out is unchanged
  *
- * @return 0 on success, error code otherwise
+ * @post On invalid argument (return == EINVAL):
+ *          - out == NULL
+ *
+ * @return 0 on success,
+ *         EOVERFLOW if addition would overflow,
+ *         EINVAL if out == NULL.
+ *
+ * @note The function guarantees absence of unsigned wraparound when returning
+ * success.
  */
 static inline int add_overflow(size_t *out, size_t a, size_t b)
 {
@@ -44,12 +57,17 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
         return EINVAL;
     }
 
-    if(a > (SIZE_MAX - b))
+    if(b > SIZE_MAX - a)
     {
         return EOVERFLOW;
     }
 
-    *out = a + b;
+    size_t result = a + b;
+
+    // Proven: no unsigned wrap occurred
+    assert(result >= a);
+
+    *out = result;
 
     return 0;
 }
