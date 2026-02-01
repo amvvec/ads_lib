@@ -72,21 +72,31 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
 }
 
 /**
- * @brief Calculates subtraction overflow
+ * @brief Computes a - b with underflow detection for size_t
+ *
+ * Domain: a, b -> [0, SIZE_MAX]
  *
  * @pre out != NULL
  *
- * @post On success:
+ * @post On success (return == 0):
+ *          - a >= b
  *          - *out == a - b
  *
- * @post On failure:
- *          - *out is not changed
+ * @post On underflow (return == EOVERFLOW)
+ *          - a < b
+ *          - *out is unchanged
  *
- * @note Subtraction for size_t is safe. No need to check SIZE_MAX
+ * @post On invalid argument (return == EINVAL)
+ *          - out == NULL
  *
- * @return 0 on success, error code otherwise
+ * @return 0 on success
+ *         EINVAL    if out == NULL
+ *         EOVERFLOW if subtraction would underflow
+ *
+ * @note The function guarantees absence of unsigned wraparound when returning
+ * success.
  */
-static inline int sub_overflow(size_t *out, size_t a, size_t b)
+static inline int sub_underflow(size_t *out, size_t a, size_t b)
 {
     if(!out)
     {
@@ -98,7 +108,12 @@ static inline int sub_overflow(size_t *out, size_t a, size_t b)
         return EOVERFLOW;
     }
 
-    *out = a - b;
+    size_t result = a - b;
+
+    // Proven: no unsigned wrap occurred
+    assert(result <= a);
+
+    *out = result;
 
     return 0;
 }
@@ -436,7 +451,7 @@ int array_erase(Array *a, size_t index)
         memmove(dst, src, bytes_to_move);
 
         size_t new_size;
-        if(sub_overflow(&new_size, a->size, 1) != 0)
+        if(sub_underflow(&new_size, a->size, 1) != 0)
         {
             return EOVERFLOW;
         }
@@ -570,7 +585,7 @@ void array_pop_front(Array *a)
     memmove(a->data, (char *)a->data + a->element_size, bytes_to_move);
 
     size_t new_size;
-    if(sub_overflow(&new_size, a->size, 1) != 0)
+    if(sub_underflow(&new_size, a->size, 1) != 0)
     {
         return;
     }
@@ -589,7 +604,7 @@ void array_pop_back(Array *a)
     }
 
     size_t new_size;
-    if(sub_overflow(&new_size, a->size, 1) != 0)
+    if(sub_underflow(&new_size, a->size, 1) != 0)
     {
         return;
     }
