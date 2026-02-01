@@ -27,13 +27,12 @@ typedef struct Array
 /**
  * @brief Computes a + b with overflow detection for size_t.
  *
- * Domain:
- *      a, b ∈ [0, SIZE_MAX]
+ * Domain: a, b -> [0, SIZE_MAX]
  *
  * @pre out != NULL
  *
  * @post On success (return == 0):
- *          - a + b ≤ SIZE_MAX
+ *          - a + b <= SIZE_MAX
  *          - *out == a + b
  *
  * @post On overflow (return == EOVERFLOW):
@@ -43,9 +42,9 @@ typedef struct Array
  * @post On invalid argument (return == EINVAL):
  *          - out == NULL
  *
- * @return 0 on success,
- *         EOVERFLOW if addition would overflow,
- *         EINVAL if out == NULL.
+ * @return 0 on success
+ *         EINVAL    if out == NULL
+ *         EOVERFLOW if addition would overflow
  *
  * @note The function guarantees absence of unsigned wraparound when returning
  * success.
