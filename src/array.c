@@ -154,6 +154,25 @@ static inline int mul_overflow(size_t *out, size_t a, size_t b)
     return 0;
 }
 
+/**
+ * @brief Allocates and initializes a dynamic array.
+ *
+ * Domain: element_size -> [1, SIZE_MAX]
+ *
+ * @pre element_size > 0
+ *
+ * @post On success (return != NULL):
+ *          - a->size == 0
+ *          - a->capacity == ARR_INIT_CAP
+ *          - a->element_size == element_size
+ *          - a->data != NULL
+ *          - ARR_INIT_CAP * element_size <= SIZE_MAX
+ *
+ * @post On failure (return == NULL):
+ *          - no memory is leaked
+ *
+ * @note Guarantees that the returned object satisfies all Array invariants.
+ */
 Array *array_init(size_t element_size)
 {
     if(element_size == 0)
