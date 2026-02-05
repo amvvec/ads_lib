@@ -9,12 +9,15 @@
 static const size_t ARR_INIT_CAP = 8;
 
 /**
- * Array invariants:
- *  - a != NULL
- *  - a->element_size > 0
- *  - a->capacity >= a->size
- *  - a->data != NULL iff a->capacity > 0
- *  - size * element_size does not overflow size_t
+ * @invariant:
+ *          a != NULL
+ *          a->data != NULL
+ *          a->size == 0
+ *          a->capacity == ARR_INIT_CAP
+ *          a->capacity * a->element_size <= SIZE_MAX
+ *          a->element_size == element_size
+ *          a->capacity > 0
+ *          a->size <= a->capacity
  */
 typedef struct Array
 {
@@ -180,31 +183,31 @@ Array *array_init(size_t element_size)
         return NULL;
     }
 
-    Array *a = malloc(sizeof(*a));
-    if(!a)
-    {
-        return NULL;
-    }
-
     size_t new_bytes;
     if(mul_overflow(&new_bytes, ARR_INIT_CAP, element_size) != 0)
     {
-        free(a);
         return NULL;
     }
 
-    a->data = malloc(new_bytes);
-    if(!a->data)
+    Array *tmp = malloc(sizeof(*tmp));
+    if(!tmp)
     {
-        free(a);
         return NULL;
     }
 
-    a->size = 0;
-    a->capacity = ARR_INIT_CAP;
-    a->element_size = element_size;
+    void *data = malloc(new_bytes);
+    if(!data)
+    {
+        free(tmp);
+        return NULL;
+    }
 
-    return a;
+    tmp->data = data;
+    tmp->size = 0;
+    tmp->element_size = element_size;
+    tmp->capacity = ARR_INIT_CAP;
+
+    return tmp;
 }
 
 /**
