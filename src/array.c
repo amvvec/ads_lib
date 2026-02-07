@@ -27,6 +27,41 @@ typedef struct Array
     size_t element_size;
 } Array;
 
+static inline int array_invariant(const Array *a)
+{
+    if(!a)
+    {
+        return 0;
+    }
+
+    if(a->element_size == 0)
+    {
+        return 0;
+    }
+
+    if(a->size > a->capacity)
+    {
+        return 0;
+    }
+
+    if(a->capacity == 0 && a->data != NULL)
+    {
+        return 0;
+    }
+
+    if(a->capacity == 0 && a->data == NULL)
+    {
+        return 0;
+    }
+
+    if(a->element_size != 0 && a->capacity > SIZE_MAX / a->element_size)
+    {
+        return 0;
+    }
+
+    return 1;
+}
+
 /**
  * @brief Computes a + b with overflow detection for size_t.
  *
