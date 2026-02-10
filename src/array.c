@@ -10,22 +10,20 @@ static const size_t ARR_INIT_CAP = 8;
 
 /**
  * @invariant:
- *          a != NULL
- *          a->data != NULL
- *          a->size == 0
- *          a->capacity == ARR_INIT_CAP
- *          a->capacity * a->element_size <= SIZE_MAX
- *          a->element_size == element_size
- *          a->capacity > 0
- *          a->size <= a->capacity
+ *      a != NULL
+ *      a->element_size > 0
+ *      a->size <= a->capacity
+ *      a->capacity > 0
+ *      a->data != NULL
+ *      a->capacity <= SIZE_MAX / a->element_size
  */
-typedef struct Array
+struct Array
 {
     void *data;
     size_t size;
     size_t capacity;
     size_t element_size;
-} Array;
+};
 
 static inline int array_invariant(const Array *a)
 {
