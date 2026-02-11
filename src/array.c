@@ -97,12 +97,7 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
         return EOVERFLOW;
     }
 
-    size_t result = a + b;
-
-    // Proven: no unsigned wrap occurred
-    assert(result >= a);
-
-    *out = result;
+    *out = a + b;
 
     return 0;
 }
