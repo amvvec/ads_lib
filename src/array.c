@@ -127,7 +127,7 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
  * @note The function guarantees absence of unsigned wraparound when returning
  * success.
  */
-static inline int sub_underflow(size_t *out, size_t a, size_t b)
+static inline int sub_overflow(size_t *out, size_t a, size_t b)
 {
     if(!out)
     {
@@ -139,12 +139,7 @@ static inline int sub_underflow(size_t *out, size_t a, size_t b)
         return EOVERFLOW;
     }
 
-    size_t result = a - b;
-
-    // Proven: no unsigned wrap occurred
-    assert(result <= a);
-
-    *out = result;
+    *out = a - b;
 
     return 0;
 }
