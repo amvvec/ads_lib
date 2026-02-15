@@ -87,7 +87,7 @@ static inline int array_invariant(const Array *a)
  */
 static inline int add_overflow(size_t *out, size_t a, size_t b)
 {
-    if(!out)
+    if(out == NULL)
     {
         return EINVAL;
     }
@@ -103,7 +103,7 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
 }
 
 /**
- * @brief Computes a - b with underflow detection for size_t
+ * @brief Computes a - b with overflow detection for size_t
  *
  * Domain: a, b -> [0, SIZE_MAX]
  *
@@ -113,7 +113,7 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
  *          - a >= b
  *          - *out == a - b
  *
- * @post On underflow (return == EOVERFLOW)
+ * @post On overflow (return == EOVERFLOW)
  *          - a < b
  *          - *out is unchanged
  *
@@ -122,14 +122,14 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
  *
  * @return 0 on success
  *         EINVAL    if out == NULL
- *         EOVERFLOW if subtraction would underflow
+ *         EOVERFLOW if subtraction would overflow
  *
  * @note The function guarantees absence of unsigned wraparound when returning
  * success.
  */
 static inline int sub_overflow(size_t *out, size_t a, size_t b)
 {
-    if(!out)
+    if(out == NULL)
     {
         return EINVAL;
     }
@@ -145,37 +145,44 @@ static inline int sub_overflow(size_t *out, size_t a, size_t b)
 }
 
 /**
- * @brief Calculates multiplication overflow
+ * @brief Computes a * b with overflow detection for size_t
+ *
+ * Domain: a, b -> [0, SIZE_MAX]
  *
  * @pre out != NULL
  *
- * @post On success:
- *       - *out = a * b
+ * @post On success (return == 0):
+ *          - b != 0
+ *          - a * b <= SIZE_MAX
+ *          - *out = a * b
  *
- * @post On failure:
- *       - *out is not changed
+ * @post On overflow (return == EOVERFLOW):
+ *          - a * b > SIZE_MAX
+ *          - *out is unchanged
  *
- * @return 0 on success, error code otherwise
+ * @post On invalid argument (return == EINVAL):
+ *          - out == NULL
+ *
+ * @return 0 on success
+ *         EINVAL    if out == NULL
+ *         EOVERFLOW if subtraction would overflow
+ *
+ * @note The function guarantees absence of unsigned wraparound when returning
+ * success.
  */
 static inline int mul_overflow(size_t *out, size_t a, size_t b)
 {
-    if(!out)
+    if(out == NULL)
     {
         return EINVAL;
     }
 
-    if(b == 0)
-    {
-        *out = 0;
-        return 0;
-    }
-
-    if(a > (SIZE_MAX / b))
+    if(a != 0 && b > SIZE_MAX / a)
     {
         return EOVERFLOW;
     }
 
-    *out = (a * b);
+    *out = a * b;
 
     return 0;
 }
@@ -496,7 +503,7 @@ int array_erase(Array *a, size_t index)
         memmove(dst, src, bytes_to_move);
 
         size_t new_size;
-        if(sub_underflow(&new_size, a->size, 1) != 0)
+        if(sub_overflow(&new_size, a->size, 1) != 0)
         {
             return EOVERFLOW;
         }
@@ -630,7 +637,7 @@ void array_pop_front(Array *a)
     memmove(a->data, (char *)a->data + a->element_size, bytes_to_move);
 
     size_t new_size;
-    if(sub_underflow(&new_size, a->size, 1) != 0)
+    if(sub_overflow(&new_size, a->size, 1) != 0)
     {
         return;
     }
@@ -649,7 +656,7 @@ void array_pop_back(Array *a)
     }
 
     size_t new_size;
-    if(sub_underflow(&new_size, a->size, 1) != 0)
+    if(sub_overflow(&new_size, a->size, 1) != 0)
     {
         return;
     }
