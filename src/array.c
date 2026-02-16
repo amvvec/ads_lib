@@ -6,7 +6,7 @@
 
 #include "array.h"
 
-static const size_t ARR_INIT_CAP = 8;
+static const size_t ARRAY_INITIAL_CAPACITY = 8;
 
 /**
  * @invariant:
@@ -196,10 +196,10 @@ static inline int mul_overflow(size_t *out, size_t a, size_t b)
  *
  * @post On success (return != NULL):
  *          - a->size == 0
- *          - a->capacity == ARR_INIT_CAP
+ *          - a->capacity == ARRAY_INITIAL_CAPACITY
  *          - a->element_size == element_size
  *          - a->data != NULL
- *          - ARR_INIT_CAP * element_size <= SIZE_MAX
+ *          - ARRAY_INITIAL_CAPACITY * element_size <= SIZE_MAX
  *
  * @post On failure (return == NULL):
  *          - no memory is leaked
@@ -213,8 +213,10 @@ Array *array_init(size_t element_size)
         return NULL;
     }
 
+    assert(ARRAY_INITIAL_CAPACITY > 0);
+
     size_t new_bytes;
-    if(mul_overflow(&new_bytes, ARR_INIT_CAP, element_size) != 0)
+    if(mul_overflow(&new_bytes, ARRAY_INITIAL_CAPACITY, element_size) != 0)
     {
         return NULL;
     }
@@ -235,7 +237,7 @@ Array *array_init(size_t element_size)
     tmp->data = data;
     tmp->size = 0;
     tmp->element_size = element_size;
-    tmp->capacity = ARR_INIT_CAP;
+    tmp->capacity = ARRAY_INITIAL_CAPACITY;
 
     return tmp;
 }
@@ -278,7 +280,8 @@ static int array_capacity_grow(Array *a)
         return EOVERFLOW;
     }
 
-    size_t new_capacity = a->capacity ? a->capacity * 2 : ARR_INIT_CAP;
+    size_t new_capacity =
+        a->capacity ? a->capacity * 2 : ARRAY_INITIAL_CAPACITY;
 
     size_t new_bytes;
     if(mul_overflow(&new_bytes, new_capacity, a->element_size) != 0)
