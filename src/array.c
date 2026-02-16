@@ -219,7 +219,7 @@ Array *array_init(size_t element_size)
         return NULL;
     }
 
-    Array *tmp = malloc(sizeof(*tmp));
+    Array *tmp = calloc(1, sizeof(*tmp));
     if(!tmp)
     {
         return NULL;
