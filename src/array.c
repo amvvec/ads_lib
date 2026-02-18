@@ -296,12 +296,18 @@ void array_delete(Array **a)
  */
 static int array_capacity_grow(Array *a)
 {
-    if(!a || a->element_size == 0)
+    if(a == NULL)
     {
         return EINVAL;
     }
 
-    if(a->capacity >= (a->size + 1))
+    size_t new_size;
+    if(add_overflow(&new_size, a->size, 1) != 0)
+    {
+        return EOVERFLOW;
+    }
+
+    if(a->capacity >= new_size)
     {
         return 0; // enough memory
     }
@@ -311,8 +317,12 @@ static int array_capacity_grow(Array *a)
         return EOVERFLOW;
     }
 
+    assert(ARRAY_INITIAL_CAPACITY > 0);
+
     size_t new_capacity =
-        a->capacity ? a->capacity * 2 : ARRAY_INITIAL_CAPACITY;
+        a->capacity ? (a->capacity * 2) : ARRAY_INITIAL_CAPACITY;
+
+    assert(a->element_size > 0);
 
     size_t new_bytes;
     if(mul_overflow(&new_bytes, new_capacity, a->element_size) != 0)
