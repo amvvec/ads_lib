@@ -243,6 +243,34 @@ Array *array_init(size_t element_size)
 }
 
 /**
+ * @brief Destroys the array and releases all owned memory.
+ *
+ * Domain: a may be NULL, *a may be NULL.
+ *
+ * @post If a != NULL and *a != NULL:
+ *          - the internal buffer is freed
+ *          - the Array object is freed
+ *          - *a is set to NULL
+ *
+ * @post If a == NULL or *a == NULL:
+ *          - no action is performed
+ *
+ * @note This function is idempotent when called with the same pointer.
+ */
+
+void array_delete(Array **a)
+{
+    if(!a || !*a)
+    {
+        return;
+    }
+
+    free((*a)->data);
+    free(*a);
+    *a = NULL;
+}
+
+/**
  * @brief Grows array capacity if needed to fit at least one more element.
  *
  * Increases capacity (usually by factor of 2) using realloc.
@@ -339,28 +367,6 @@ int array_shrink_fit(Array *a)
     a->capacity = a->size;
 
     return 0;
-}
-
-/**
- * @brief Delete and free array object, sets pointer to NULL.
- *
- * @pre a != NULL
- *
- * @post *a = NULL
- * @post all variables freed
- *
- * @return void
- */
-void array_delete(Array **a)
-{
-    if(!a || !*a)
-    {
-        return;
-    }
-
-    free((*a)->data);
-    free(*a);
-    *a = NULL;
 }
 
 /**
