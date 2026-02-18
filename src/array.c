@@ -257,17 +257,20 @@ Array *array_init(size_t element_size)
  *
  * @note This function is idempotent when called with the same pointer.
  */
-
 void array_delete(Array **a)
 {
-    if(!a || !*a)
+    if(a == NULL)
     {
         return;
     }
 
-    free((*a)->data);
-    free(*a);
-    *a = NULL;
+    if(*a)
+    {
+        free((*a)->data);
+        free(*a);
+
+        *a = NULL;
+    }
 }
 
 /**
