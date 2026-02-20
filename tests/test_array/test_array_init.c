@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../src/array.h"
+#include "../include/array.h"
 
 static void test_array_init_overflow(void)
 {

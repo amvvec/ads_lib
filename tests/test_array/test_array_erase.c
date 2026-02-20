@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <errno.h>
 
-#include "../src/array.h"
+#include "../include/array.h"
 
 static void test_array_erase_back(void)
 {

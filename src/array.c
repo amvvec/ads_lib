@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "array.h"
+#include "../include/array.h"
 
 static const size_t ARRAY_INITIAL_CAPACITY = 8;
 

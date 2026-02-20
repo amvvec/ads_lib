@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "../src/array.h"
+#include "../include/array.h"
 
 static void assert_array_invariants(const Array *a)
 {
