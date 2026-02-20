@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../src/array.h"
+#include "../include/array.h"
 
 static void test_array_init_and_delete(void)
 {

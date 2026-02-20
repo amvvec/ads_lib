@@ -51,7 +51,6 @@ BUILD_DIR := build
 EXEC      := launcher
 
 SOURCES   := $(shell find $(SRC_DIR) -type f -name '*.c')
-HEADERS   := $(shell find $(SRC_DIR) -type f -name '*.h')
 OBJECTS   := $(patsubst $(SRC_DIR)/%.c, $(BUILD_DIR)/%.o, $(SOURCES))
 
 # Targets
@@ -62,7 +61,7 @@ all: $(EXEC)
 $(EXEC): $(OBJECTS) | $(BUILD_DIR) # build launcher
 	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c $(HEADERS) | $(BUILD_DIR) # build files and objects
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c | $(BUILD_DIR) # build files and objects
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -I$(SRC_DIR) -c $< -o $@
 
