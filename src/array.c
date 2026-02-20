@@ -382,6 +382,17 @@ int array_shrink_fit(Array *a)
     return 0;
 }
 
+static int array_insert_entry_validation(Array *a, const void *restrict value,
+                                         size_t index)
+{
+    if(!a || !value || index > a->size || a->element_size == 0)
+    {
+        return EINVAL;
+    }
+
+    return 0;
+}
+
 /**
  * @brief Inserts value at position `index`, shifts rest right.
  *
@@ -408,9 +419,10 @@ int array_shrink_fit(Array *a)
  */
 int array_insert(Array *a, const void *restrict value, size_t index)
 {
-    if(!a || !value || index > a->size || a->element_size == 0)
+    int err = array_insert_entry_validation(a, value, index);
+    if(err)
     {
-        return EINVAL;
+        return err;
     }
 
     int error = array_capacity_grow(a);
@@ -495,6 +507,8 @@ int array_erase(Array *a, size_t index)
     }
 
     // calculate bytes after index
+    // WARNING: off by one (valgrind check)
+    // tests did not detect this
     const size_t tail_bytes_count = a->size - (index - 1);
 
     if(tail_bytes_count > 0)
