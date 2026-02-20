@@ -25,40 +25,56 @@ struct Array
     size_t element_size;
 };
 
-static inline int array_invariant(const Array *a)
+static inline int array_invariant_check(const Array *a)
 {
     if(!a)
     {
-        return 0;
+        return EINVAL;
     }
-
     if(a->element_size == 0)
     {
-        return 0;
+        return EINVAL;
     }
-
     if(a->size > a->capacity)
     {
-        return 0;
+        return EINVAL;
     }
 
-    if(a->capacity == 0 && a->data != NULL)
+    if(a->capacity == 0)
     {
-        return 0;
+        if(a->data != NULL)
+        {
+            return EINVAL;
+        }
     }
-
-    if(a->capacity == 0 && a->data == NULL)
+    else
     {
-        return 0;
+        if(a->data == NULL)
+        {
+            return EINVAL;
+        }
     }
 
-    if(a->element_size != 0 && a->capacity > SIZE_MAX / a->element_size)
+    if(a->capacity > SIZE_MAX / a->element_size)
     {
-        return 0;
+        return EOVERFLOW;
     }
 
-    return 1;
+    return 0;
 }
+
+#ifdef ARRAY_DEBUG
+#define ARRAY_ASSERT(a)                                                        \
+    do                                                                         \
+    {                                                                          \
+        if(array_invariant_check(a) != 0)                                      \
+        {                                                                      \
+            abort();                                                           \
+        }                                                                      \
+    } while(0)
+#else
+#define ARRAY_ASSERT(a) ((void)0)
+#endif
 
 /**
  * @brief Computes a + b with overflow detection for size_t.
@@ -82,8 +98,8 @@ static inline int array_invariant(const Array *a)
  *         EINVAL    if out == NULL
  *         EOVERFLOW if addition would overflow
  *
- * @note The function guarantees absence of unsigned wraparound when returning
- * success.
+ * @note The function guarantees absence of unsigned wraparound when
+ * returning success.
  */
 static inline int add_overflow(size_t *out, size_t a, size_t b)
 {
@@ -124,8 +140,8 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
  *         EINVAL    if out == NULL
  *         EOVERFLOW if subtraction would overflow
  *
- * @note The function guarantees absence of unsigned wraparound when returning
- * success.
+ * @note The function guarantees absence of unsigned wraparound when
+ * returning success.
  */
 static inline int sub_overflow(size_t *out, size_t a, size_t b)
 {
@@ -167,8 +183,8 @@ static inline int sub_overflow(size_t *out, size_t a, size_t b)
  *         EINVAL    if out == NULL
  *         EOVERFLOW if subtraction would overflow
  *
- * @note The function guarantees absence of unsigned wraparound when returning
- * success.
+ * @note The function guarantees absence of unsigned wraparound when
+ * returning success.
  */
 static inline int mul_overflow(size_t *out, size_t a, size_t b)
 {
@@ -419,6 +435,8 @@ static int array_insert_entry_validation(Array *a, const void *restrict value,
  */
 int array_insert(Array *a, const void *restrict value, size_t index)
 {
+    ARRAY_ASSERT(a);
+
     int err = array_insert_entry_validation(a, value, index);
     if(err)
     {
@@ -476,6 +494,8 @@ int array_insert(Array *a, const void *restrict value, size_t index)
         return EOVERFLOW;
     }
     a->size = new_size;
+
+    ARRAY_ASSERT(a);
 
     return 0;
 }
