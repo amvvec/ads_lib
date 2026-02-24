@@ -398,10 +398,15 @@ int array_shrink_fit(Array *a)
     return 0;
 }
 
-static int array_insert_entry_validation(Array *a, const void *restrict value,
-                                         size_t index)
+static inline int
+array_insert_check_entry(const Array *a, const void *restrict value, size_t index)
 {
-    if(!a || !value || index > a->size || a->element_size == 0)
+    if(a == NULL || value == NULL)
+    {
+        return EINVAL;
+    }
+
+    if(index > a->size)
     {
         return EINVAL;
     }
@@ -410,90 +415,76 @@ static int array_insert_entry_validation(Array *a, const void *restrict value,
 }
 
 /**
- * @brief Inserts value at position `index`, shifts rest right.
- *
- * @invariant a->data != NULL if capacity > 0
- * @invariant a->size <= a->capacity
- * @invariant a->element_size > 0
- *
- * @pre a != NULL
- * @pre value != NULL
- * @pre index <= a->size
- *
- * @post On success:
- *          - size increased by 1
- *          - element at index == *value
- *          - elements [index+1, new_size-1] == old[index, old_size-1]
- *          - relative order is preserved
- *
- * @post On failure:
- *          - contents and size unchanged
- *          - capacity may increase
- *
- * @note Not thread-safe.
- * @return 0 on success, error code otherwise.
+ * @note value must not point inside the array storage.
  */
-int array_insert(Array *a, const void *restrict value, size_t index)
+static inline int
+array_do_insert(Array *a, const void *restrict value, size_t index)
 {
-    ARRAY_ASSERT(a);
-
-    int err = array_insert_entry_validation(a, value, index);
-    if(err)
-    {
-        return err;
-    }
-
-    int error = array_capacity_grow(a);
-    if(error != 0)
-    {
-        return error;
-    }
-
-    size_t insert_offset; // first bytes before index
-    if(mul_overflow(&insert_offset, index, a->element_size) != 0)
+    size_t start_bytes = 0;
+    if(mul_overflow(&start_bytes, index, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
 
-    size_t tail_bytes;
-    const size_t tail_count = (a->size - index); // last bytes after index
-    if(mul_overflow(&tail_bytes, tail_count, a->element_size) != 0)
+    size_t end_bytes = 0;
+    if(mul_overflow(&end_bytes, (a->size - index), a->element_size) != 0)
     {
         return EOVERFLOW;
     }
 
     char *base = (char *)a->data;
 
-    // early push_back return
-    if(tail_count == 0)
-    {
-        memcpy(base + insert_offset, value, a->element_size);
+    void *dst = base + start_bytes + a->element_size;
+    void *src = base + start_bytes;
 
-        size_t new_size;
-        if(add_overflow(&new_size, a->size, 1))
-        {
-            return EOVERFLOW;
-        }
-        a->size = new_size;
+    memmove(dst, src, end_bytes);
 
-        return 0;
-    }
-
-    void *dst = base + insert_offset + a->element_size;
-    void *src = base + insert_offset;
-
-    // safe overlapping move
-    memmove(dst, src, tail_bytes);
-
-    // insert new value into freed slot
     memcpy(src, value, a->element_size);
 
-    size_t new_size;
-    if(add_overflow(&new_size, a->size, 1))
+    return 0;
+}
+
+static inline int
+array_insert_new_size(Array *a)
+{
+    size_t new_size = 0;
+    if(add_overflow(&new_size, a->size, 1) != 0)
     {
         return EOVERFLOW;
     }
     a->size = new_size;
+
+    return 0;
+}
+
+int
+array_insert(Array *a, const void *restrict value, size_t index)
+{
+    ARRAY_ASSERT(a);
+
+    int error = array_insert_check_entry(a, value, index);
+    if(error)
+    {
+        return error;
+    }
+
+    error = array_capacity_grow(a);
+    if(error != 0)
+    {
+        return error;
+    }
+
+    error = array_do_insert(a, value, index);
+    if(error)
+    {
+        return error;
+    }
+
+    error = array_insert_new_size(a);
+    if(error)
+    {
+        return error;
+    }
 
     ARRAY_ASSERT(a);
 
