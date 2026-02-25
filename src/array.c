@@ -10,12 +10,12 @@ static const size_t ARRAY_INITIAL_CAPACITY = 8;
 
 /**
  * @invariant:
- *      a != NULL
- *      a->element_size > 0
- *      a->size <= a->capacity
- *      a->capacity > 0
- *      a->data != NULL
- *      a->capacity <= SIZE_MAX / a->element_size
+ *          - a != NULL
+ *          - a->element_size > 0
+ *          - a->size <= a->capacity
+ *          - a->capacity > 0
+ *          - a->data != NULL
+ *          - a->capacity <= SIZE_MAX / a->element_size
  */
 struct Array
 {
@@ -94,9 +94,7 @@ static inline int array_invariant_check(const Array *a)
  * @post On invalid argument (return == EINVAL):
  *          - out == NULL
  *
- * @return 0 on success
- *         EINVAL    if out == NULL
- *         EOVERFLOW if addition would overflow
+ * @return 0 on success, error code otherwise
  *
  * @note The function guarantees absence of unsigned wraparound when
  * returning success.
@@ -136,9 +134,7 @@ static inline int add_overflow(size_t *out, size_t a, size_t b)
  * @post On invalid argument (return == EINVAL)
  *          - out == NULL
  *
- * @return 0 on success
- *         EINVAL    if out == NULL
- *         EOVERFLOW if subtraction would overflow
+ * @return 0 on success, error code otherwise
  *
  * @note The function guarantees absence of unsigned wraparound when
  * returning success.
@@ -179,9 +175,7 @@ static inline int sub_overflow(size_t *out, size_t a, size_t b)
  * @post On invalid argument (return == EINVAL):
  *          - out == NULL
  *
- * @return 0 on success
- *         EINVAL    if out == NULL
- *         EOVERFLOW if subtraction would overflow
+ * @return 0 on success, error code otherwise
  *
  * @note The function guarantees absence of unsigned wraparound when
  * returning success.
@@ -299,19 +293,21 @@ void array_delete(Array **a)
  * @pre a->element_size > 0
  *
  * @post On success:
- *          a->capacity >= a->size + 1
- *          a->data may be reallocated (pointer may change)
+ *          - a->capacity >= a->size + 1
+ *          - a->data may be reallocated (pointer may change)
  *
  * @post On failure:
- *          array unchanged
- *          capacity may increase
- *
- * @note Not thread-safe
+ *          - array unchanged
+ *          - capacity may increase
  *
  * @return 0 on success, error code otherwise
+ * 
+ * @note Not thread-safe
  */
-static int array_capacity_grow(Array *a)
+static inline int array_capacity_grow(Array *a)
 {
+    ARRAY_ASSERT(a);
+
     if(a == NULL)
     {
         return EINVAL;
@@ -355,10 +351,12 @@ static int array_capacity_grow(Array *a)
     a->data = new_data;
     a->capacity = new_capacity;
 
+    ARRAY_ASSERT(a);
+
     return 0;
 }
 
-int array_shrink_fit(Array *a)
+static inline int array_shrink_fit(Array *a)
 {
     if(!a)
     {
@@ -415,10 +413,27 @@ array_insert_check_entry(const Array *a, const void *restrict value, size_t inde
 }
 
 /**
- * @note value must not point inside the array storage.
+ * Inserts element at index, shifts subsequent elements right.
+ *
+ * @pre a != NULL && a->element_size > 0
+ * @pre value != NULL
+ * @pre index <= array_size(a)
+ *
+ * @post On success:
+ *          - size += 1, element at index == *value
+ * 
+ * @post On success:
+ *          - elements [index+1, new_size-1] == old [index, old_size-1]
+ * 
+ * @post On failure:
+ *          - size and contents unchanged (capacity may grow)
+ *
+ * @return 0 on success, error code otherwise
+ * 
+ * @note value must not point into array storage
  */
 static inline int
-array_do_insert(Array *a, const void *restrict value, size_t index)
+array_do_insert(Array * restrict a, const void *restrict value, size_t index)
 {
     size_t start_bytes = 0;
     if(mul_overflow(&start_bytes, index, a->element_size) != 0)
@@ -427,7 +442,8 @@ array_do_insert(Array *a, const void *restrict value, size_t index)
     }
 
     size_t end_bytes = 0;
-    if(mul_overflow(&end_bytes, (a->size - index), a->element_size) != 0)
+    size_t end_bytes_count = a->size - index;
+    if(mul_overflow(&end_bytes, end_bytes_count, a->element_size) != 0)
     {
         return EOVERFLOW;
     }
