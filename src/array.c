@@ -301,7 +301,7 @@ void array_delete(Array **a)
  *          - capacity may increase
  *
  * @return 0 on success, error code otherwise
- * 
+ *
  * @note Not thread-safe
  */
 static inline int array_capacity_grow(Array *a)
@@ -396,8 +396,9 @@ static inline int array_shrink_fit(Array *a)
     return 0;
 }
 
-static inline int
-array_insert_check_entry(const Array *a, const void *restrict value, size_t index)
+static inline int array_insert_check_entry(const Array *a,
+                                           const void *restrict value,
+                                           size_t index)
 {
     if(a == NULL || value == NULL)
     {
@@ -421,19 +422,19 @@ array_insert_check_entry(const Array *a, const void *restrict value, size_t inde
  *
  * @post On success:
  *          - size += 1, element at index == *value
- * 
+ *
  * @post On success:
  *          - elements [index+1, new_size-1] == old [index, old_size-1]
- * 
+ *
  * @post On failure:
  *          - size and contents unchanged (capacity may grow)
  *
  * @return 0 on success, error code otherwise
- * 
+ *
  * @note value must not point into array storage
  */
-static inline int
-array_do_insert(Array * restrict a, const void *restrict value, size_t index)
+static inline int array_do_insert(Array *restrict a, const void *restrict value,
+                                  size_t index)
 {
     size_t start_bytes = 0;
     if(mul_overflow(&start_bytes, index, a->element_size) != 0)
@@ -460,8 +461,7 @@ array_do_insert(Array * restrict a, const void *restrict value, size_t index)
     return 0;
 }
 
-static inline int
-array_insert_new_size(Array *a)
+static inline int array_insert_new_size(Array *a)
 {
     size_t new_size = 0;
     if(add_overflow(&new_size, a->size, 1) != 0)
@@ -473,8 +473,7 @@ array_insert_new_size(Array *a)
     return 0;
 }
 
-int
-array_insert(Array *a, const void *restrict value, size_t index)
+int array_insert(Array *a, const void *restrict value, size_t index)
 {
     ARRAY_ASSERT(a);
 
