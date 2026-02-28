@@ -1,8 +1,8 @@
 # .gitignore
 
-.vscode/
-*.o
-launcher
-.vs/
 build/
-tmp.txt
+.vs/
+.vscode/
+
+launcher
+temp.txt
