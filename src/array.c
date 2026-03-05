@@ -396,110 +396,130 @@ static inline int array_shrink_fit(Array *a)
     return 0;
 }
 
-static inline int array_insert_check_entry(const Array *a,
-                                           const void *restrict value,
-                                           size_t index)
+/**
+ * Validates preconditions for array_insert.
+ *
+ * @pre a != NULL
+ * @pre value != NULL
+ * @pre index <= a.size
+ *
+ * @return 0 on success, error code otherwise
+ */
+static inline int
+array_insert_check_entry(const Array *a, const void *restrict value, size_t index)
 {
-    if(a == NULL || value == NULL)
-    {
-        return EINVAL;
-    }
-
-    if(index > a->size)
-    {
-        return EINVAL;
-    }
-
+    // no a.element_size check 
+    // because there is ARRAY_ASSERT macro with invariant check
+    if(!a || !value || index > a->size) return EINVAL;
+    
     return 0;
 }
 
 /**
- * Inserts element at index, shifts subsequent elements right.
+ * Performs the core insertion: shifts tail right and copies value.
  *
- * @pre a != NULL && a->element_size > 0
- * @pre value != NULL
- * @pre index <= array_size(a)
- *
- * @post On success:
- *          - size += 1, element at index == *value
+ * @pre a != NULL && a.element_size > 0
+ * @pre value != NULL && value does not point into a->data
+ * @pre index <= a.size
+ * @pre enough capacity already reserved (a.capacity > a.size)
  *
  * @post On success:
- *          - elements [index+1, new_size-1] == old [index, old_size-1]
+ *          - elements [index+1, a->size] == old elements [index, a.size-1]
+ *          - element at index == *value
+ *          - a.size unchanged
  *
  * @post On failure:
- *          - size and contents unchanged (capacity may grow)
+ *          - array contents unchanged
  *
  * @return 0 on success, error code otherwise
- *
- * @note value must not point into array storage
  */
-static inline int array_do_insert(Array *restrict a, const void *restrict value,
-                                  size_t index)
+static inline int
+array_do_insert(Array *restrict a, const void *restrict value, size_t index)
 {
-    size_t start_bytes = 0;
-    if(mul_overflow(&start_bytes, index, a->element_size) != 0)
-    {
-        return EOVERFLOW;
-    }
+    size_t insert_offset;
+    if(mul_overflow(&insert_offset, index, a->element_size)) return EOVERFLOW;
 
-    size_t end_bytes = 0;
-    size_t end_bytes_count = a->size - index;
-    if(mul_overflow(&end_bytes, end_bytes_count, a->element_size) != 0)
-    {
-        return EOVERFLOW;
-    }
+    size_t tail_offset;
+    const size_t tail_count = (a->size - index); // safe: index <= size validated by caller
+    if(mul_overflow(&tail_offset, tail_count, a->element_size)) return EOVERFLOW;
 
     char *base = (char *)a->data;
 
-    void *dst = base + start_bytes + a->element_size;
-    void *src = base + start_bytes;
+    void *dst = base + insert_offset + a->element_size;
+    void *src = base + insert_offset;
 
-    memmove(dst, src, end_bytes);
+    memmove(dst, src, tail_offset);
 
     memcpy(src, value, a->element_size);
 
     return 0;
 }
 
-static inline int array_insert_new_size(Array *a)
+/**
+ * Increments array size with overflow check.
+ *
+ * @pre a != NULL && a.element_size > 0
+ * @pre a.size < SIZE_MAX
+ *
+ * @post On success:
+ *          - a.size increased by 1
+ *
+ * @post On failure:
+ *          - a.size unchanged
+ *
+ * @return 0 on success, error code otherwise
+ */
+static inline int
+array_insert_new_size(Array *a)
 {
     size_t new_size = 0;
-    if(add_overflow(&new_size, a->size, 1) != 0)
-    {
-        return EOVERFLOW;
-    }
+    if(add_overflow(&new_size, a->size, 1)) return EOVERFLOW;
+
     a->size = new_size;
 
     return 0;
 }
 
-int array_insert(Array *a, const void *restrict value, size_t index)
+/**
+ * Inserts an element at the specified index, shifting subsequent elements right.
+ *
+ * @pre a != NULL
+ * @pre value != NULL
+ * @pre index <= a.size
+ * @pre a.element_size > 0
+ *
+ * @post On success:
+ *       - a.size is increased by 1
+ *       - element at position index equals *value
+ *       - elements from index+1 to new size-1 equal old elements from index to old size-1
+ *       - relative order of remaining elements is preserved
+ *
+ * @post On failure:
+ *       - array size and contents remain unchanged
+ *       - capacity may increase
+ *
+ * @return 0 on success, error code otherwise
+ *
+ * @note The value pointer must not point into the array's storage
+ */
+int
+array_insert(Array *a, const void *restrict value, size_t index)
 {
     ARRAY_ASSERT(a);
 
-    int error = array_insert_check_entry(a, value, index);
-    if(error)
-    {
-        return error;
-    }
+    int error; // contain error return from function.
+
+    error = array_insert_check_entry(a, value, index);
+    if(error) return error;
 
     error = array_capacity_grow(a);
-    if(error != 0)
-    {
-        return error;
-    }
+    if(error) return error;
 
     error = array_do_insert(a, value, index);
-    if(error)
-    {
-        return error;
-    }
+    if(error) return error;
 
     error = array_insert_new_size(a);
-    if(error)
-    {
-        return error;
-    }
+    if(error) return error;
 
     ARRAY_ASSERT(a);
 
