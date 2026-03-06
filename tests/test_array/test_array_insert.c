@@ -2,6 +2,26 @@
 
 #include "../include/array.h"
 
+static void
+test_array_insert_into_empty(void)
+{
+    Array * a = array_init(sizeof(int));
+    assert(a);
+
+    int value = 10;
+
+    int error = array_insert(a, &value, 0);
+
+    assert(error == 0);
+    assert(array_size(a) == 1);
+
+    int out = 0;
+    assert(array_get(a, 0, &out) == 0);
+    assert(out == value);
+
+    array_delete(&a);
+}
+
 static void assert_array_invariants(const Array *a)
 {
     assert(a != NULL);
@@ -336,6 +356,7 @@ static void test_array_insert_front(void)
 
 void run_array_insert_tests(void)
 {
+    test_array_insert_into_empty();
     test_array_insert_empty_at_zero();
     test_array_insert_at_end_on_empty();
     test_array_insert_single_element_middle();
