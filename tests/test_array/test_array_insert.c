@@ -10,14 +10,50 @@ test_array_insert_into_empty(void)
 
     int value = 10;
 
-    int error = array_insert(a, &value, 0);
+    assert(array_insert(a, &value, 0) == 0);
 
-    assert(error == 0);
     assert(array_size(a) == 1);
 
-    int out = 0;
+    int out;
     assert(array_get(a, 0, &out) == 0);
     assert(out == value);
+
+    array_delete(&a);
+}
+
+static void
+test_array_insert_into_front(void)
+{
+    Array * a = array_init(sizeof(int));
+    assert(a);
+
+    int v;
+    v = 2; assert(array_insert(a, &v, 0) == 0);
+    v = 3; assert(array_insert(a, &v, 1) == 0);
+    v = 4; assert(array_insert(a, &v, 2) == 0);
+    v = 5; assert(array_insert(a, &v, 3) == 0);
+
+    int insert = 1;
+    assert(array_insert(a, &insert, 0) == 0);
+
+    int out;
+    assert(array_get(a, 0, &out) == 0);
+    assert(out == insert);
+
+    insert = 100;
+    assert(array_insert(a, &insert, 0) == 0);
+
+    assert(array_get(a, 0, &out) == 0);
+    assert(out == insert);
+
+    assert(array_get(a, 1, &out) == 0);
+    assert(out == 1);
+    assert(array_get(a, 2, &out) == 0);
+    assert(out == 2);
+    assert(array_get(a, 3, &out) == 0);
+    assert(out == 3);
+    assert(array_get(a, 4, &out) == 0);
+    assert(out == 4);
 
     array_delete(&a);
 }
@@ -357,6 +393,7 @@ static void test_array_insert_front(void)
 void run_array_insert_tests(void)
 {
     test_array_insert_into_empty();
+    test_array_insert_into_front();
     test_array_insert_empty_at_zero();
     test_array_insert_at_end_on_empty();
     test_array_insert_single_element_middle();
