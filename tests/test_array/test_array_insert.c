@@ -40,6 +40,8 @@ test_array_insert_at_front(void)
 
     // act
     int value = 100;
+
+    // assert size increase
     assert(array_insert(a, &value, 0) == 0);
 
     // assert
@@ -50,11 +52,45 @@ test_array_insert_at_front(void)
 
     for(size_t i = 0; i < expect_n; ++i)
     {
-        int out = 0;
+        int out;
         assert(array_get(a, i, &out) == 0);
         assert(out == expect[i]);
     }
 
+    array_delete(&a);
+}
+
+static void
+test_array_insert_in_middle(void)
+{
+    Array * a = array_init(sizeof(int));
+    assert(a);
+
+    const int initial[] = {1,2,3,4,5};
+    const size_t initial_n = sizeof(initial) / sizeof(initial[0]);
+
+    for(size_t i = 0; i < initial_n; ++i)
+    {
+        assert(array_insert(a, &initial[i], i) == 0);
+    }
+
+    const size_t size_before = array_size(a);
+    
+    int value = 100;
+    assert(array_insert(a, &value, 3) == 0);
+
+    const int expect[] = {1,2,3,100,4,5};
+    const size_t expect_n = sizeof(expect) / sizeof(expect[0]);
+
+    assert(array_size(a) == size_before + 1);
+
+    for(size_t i = 0; i < expect_n; ++i)
+    {
+        int out;
+        assert(array_get(a, i, &out) == 0);
+        assert(out == expect[i]);
+    }
+    
     array_delete(&a);
 }
 
@@ -394,6 +430,7 @@ void run_array_insert_tests(void)
 {
     test_array_insert_into_empty();
     test_array_insert_at_front();
+    test_array_insert_in_middle();
     test_array_insert_empty_at_zero();
     test_array_insert_at_end_on_empty();
     test_array_insert_single_element_middle();
