@@ -404,12 +404,12 @@ static inline int array_shrink_fit(Array *a)
  * @pre index <= a.size
  *
  * @return 0 on success, error code otherwise
+ * 
+ * @note No a.element_size check (ARRAY_ASSERT invariant check macro)
  */
 static inline int
 array_insert_check_entry(const Array *a, const void *restrict value, size_t index)
 {
-    // no a.element_size check 
-    // because there is ARRAY_ASSERT macro with invariant check
     if(!a || !value || index > a->size) return EINVAL;
     
     return 0;
@@ -443,6 +443,11 @@ array_do_insert(Array *restrict a, const void *restrict value, size_t index)
     const size_t tail_count = (a->size - index); // safe: index <= size validated by caller
     if(mul_overflow(&tail_offset, tail_count, a->element_size)) return EOVERFLOW;
 
+    // value must not point to the a.data
+    // here are the checks
+    // if(value >= a->data) return EINVAL;
+    // if(value < ((char *)a->data + insert_offset)) return EINVAL;
+
     char *base = (char *)a->data;
 
     void *dst = base + insert_offset + a->element_size;
@@ -451,31 +456,6 @@ array_do_insert(Array *restrict a, const void *restrict value, size_t index)
     memmove(dst, src, tail_offset);
 
     memcpy(src, value, a->element_size);
-
-    return 0;
-}
-
-/**
- * Increments array size with overflow check.
- *
- * @pre a != NULL && a.element_size > 0
- * @pre a.size < SIZE_MAX
- *
- * @post On success:
- *          - a.size increased by 1
- *
- * @post On failure:
- *          - a.size unchanged
- *
- * @return 0 on success, error code otherwise
- */
-static inline int
-array_insert_new_size(Array *a)
-{
-    size_t new_size = 0;
-    if(add_overflow(&new_size, a->size, 1)) return EOVERFLOW;
-
-    a->size = new_size;
 
     return 0;
 }
@@ -518,8 +498,7 @@ array_insert(Array *a, const void *restrict value, size_t index)
     error = array_do_insert(a, value, index);
     if(error) return error;
 
-    error = array_insert_new_size(a);
-    if(error) return error;
+    a->size++;
 
     ARRAY_ASSERT(a);
 
