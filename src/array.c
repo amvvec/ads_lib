@@ -408,9 +408,11 @@ static inline int array_shrink_fit(Array *a)
  * @note No a.element_size check (ARRAY_ASSERT invariant check macro)
  */
 static inline int
-array_insert_check_entry(const Array *a, const void *restrict value, size_t index)
+check_array_insert_entry(const Array *a, const void *restrict value, size_t index)
 {
-    if(!a || !value || index > a->size) return EINVAL;
+    if(!a || !value) return EINVAL;
+
+    if(index > a->size) return EINVAL;
     
     return 0;
 }
@@ -434,7 +436,7 @@ array_insert_check_entry(const Array *a, const void *restrict value, size_t inde
  * @return 0 on success, error code otherwise
  */
 static inline int
-array_do_insert(Array *restrict a, const void *restrict value, size_t index)
+do_insert(Array *restrict a, const void *restrict value, size_t index)
 {
     size_t insert_offset;
     if(mul_overflow(&insert_offset, index, a->element_size)) return EOVERFLOW;
@@ -489,13 +491,13 @@ array_insert(Array *a, const void *restrict value, size_t index)
 
     int error; // contain error return from function.
 
-    error = array_insert_check_entry(a, value, index);
+    error = check_array_insert_entry(a, value, index);
     if(error) return error;
 
     error = array_capacity_grow(a);
     if(error) return error;
 
-    error = array_do_insert(a, value, index);
+    error = do_insert(a, value, index);
     if(error) return error;
 
     a->size++;
