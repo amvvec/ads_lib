@@ -89,44 +89,17 @@ add_overflow(size_t * out, size_t a, size_t b)
 #endif
 }
 
-/**
- * @brief Computes a - b with overflow detection for size_t
- *
- * Domain: a, b -> [0, SIZE_MAX]
- *
- * @pre out != NULL
- *
- * @post On success (return == 0):
- *          - a >= b
- *          - *out == a - b
- *
- * @post On overflow (return == EOVERFLOW)
- *          - a < b
- *          - *out is unchanged
- *
- * @post On invalid argument (return == EINVAL)
- *          - out == NULL
- *
- * @return 0 on success, error code otherwise
- *
- * @note The function guarantees absence of unsigned wraparound when
- * returning success.
- */
-static inline int sub_overflow(size_t *out, size_t a, size_t b)
+static inline int
+sub_overflow(size_t * out, size_t a, size_t b)
 {
-    if(out == NULL)
-    {
-        return EINVAL;
-    }
-
-    if(a < b)
-    {
-        return EOVERFLOW;
-    }
-
-    *out = a - b;
-
+    if(!out) return EINVAL;
+#if defined(__GNUC__) || defined(__clang__)
+    return __builtin_sub_overflow(a, b, out);
+#else
+    if(a < b) return EOVERFLOW;
+    * out = a - b;
     return 0;
+#endif
 }
 
 /**
