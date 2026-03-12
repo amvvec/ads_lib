@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <errno.h>
 #include <memory.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -201,73 +202,82 @@ void array_delete(Array **a)
     }
 }
 
-/**
- * @brief Grows array capacity if needed to fit at least one more element.
- *
- * Increases capacity (usually by factor of 2) using realloc.
- * Safe to call even when capacity is already sufficient.
- *
- * @pre a != NULL
- * @pre a->element_size > 0
- *
- * @post On success:
- *          - a->capacity >= a->size + 1
- *          - a->data may be reallocated (pointer may change)
- *
- * @post On failure:
- *          - array unchanged
- *          - capacity may increase
- *
- * @return 0 on success, error code otherwise
- *
- * @note Not thread-safe
- */
-static inline int array_capacity_grow(Array *a)
+static inline int
+check_pointer(Array *ptr)
+{
+    if(!ptr) return EINVAL;
+
+    return 0;
+}
+
+static inline int
+array_required_size(const Array *a, size_t *out)
+{
+    if(add_overflow(out, a->size, 1)) return EOVERFLOW;
+
+    return 0;
+}
+
+static inline int
+array_next_capacity(const Array *a, size_t *out)
+{
+    if(a->capacity > SIZE_MAX / 2) return EOVERFLOW;
+
+    assert(ARRAY_INITIAL_CAPACITY > 1);
+    
+    size_t new_capacity = a->capacity ? (a->capacity * 2) : ARRAY_INITIAL_CAPACITY;
+
+    *out = new_capacity;
+
+    return 0;
+}
+
+static inline int
+array_capacity_bytes(const Array *restrict a, size_t *restrict out, size_t capacity)
+{
+    if(mul_overflow(out, capacity, a->element_size)) return EOVERFLOW;
+
+    return 0;
+}
+
+static inline int
+array_reallocate(Array *a, size_t bytes, size_t new_capacity)
+{
+    void * p = realloc(a->data, bytes);
+
+    if(!p) return ENOMEM;
+
+    a->data = p;
+    a->capacity = new_capacity;
+
+    return 0;
+}
+
+int
+array_reserve(Array *a)
 {
     ARRAY_ASSERT(a);
 
-    if(a == NULL)
-    {
-        return EINVAL;
-    }
+    int error;
+
+    error = check_pointer(a);
+    if(error) return error;
 
     size_t new_size;
-    if(add_overflow(&new_size, a->size, 1) != 0)
-    {
-        return EOVERFLOW;
-    }
+    error = array_required_size(a, &new_size);
+    if(error) return error;
 
-    if(a->capacity >= new_size)
-    {
-        return 0; // enough memory
-    }
+    if(a->capacity >= new_size) return 0;
 
-    if(a->capacity > (SIZE_MAX / 2))
-    {
-        return EOVERFLOW;
-    }
+    size_t new_capacity;
+    error = array_next_capacity(a, &new_capacity);
+    if(error) return error;
 
-    assert(ARRAY_INITIAL_CAPACITY > 0);
+    size_t bytes;
+    error = array_capacity_bytes(a, &bytes, new_capacity);
 
-    size_t new_capacity =
-        a->capacity ? (a->capacity * 2) : ARRAY_INITIAL_CAPACITY;
-
-    assert(a->element_size > 0);
-
-    size_t new_bytes;
-    if(mul_overflow(&new_bytes, new_capacity, a->element_size) != 0)
-    {
-        return EOVERFLOW;
-    }
-
-    void *new_data = realloc(a->data, new_bytes);
-    if(!new_data)
-    {
-        return ENOMEM;
-    }
-
-    a->data = new_data;
-    a->capacity = new_capacity;
+    error = array_reallocate(a, bytes, new_capacity);
+    if(error) return error;
 
     ARRAY_ASSERT(a);
 
@@ -412,7 +422,7 @@ array_insert(Array *a, const void *restrict value, size_t index)
     error = check_array_insert_entry(a, value, index);
     if(error) return error;
 
-    error = array_capacity_grow(a);
+    error = array_reserve(a);
     if(error) return error;
 
     error = do_insert(a, value, index);
@@ -524,7 +534,7 @@ int array_push_front(Array *a, const void *value)
     // capacity ensurance
     if(a->capacity == 0)
     {
-        int error = array_capacity_grow(a);
+        int error = array_reserve(a);
         if(error != 0)
         {
             return error;
@@ -577,7 +587,7 @@ int array_push_back(Array *a, const void *value)
 
     if(a->capacity <= a->size)
     {
-        int error = array_capacity_grow(a);
+        int error = array_reserve(a);
         if(error)
         {
             return error;
