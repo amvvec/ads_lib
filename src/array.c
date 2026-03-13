@@ -461,15 +461,12 @@ int array_erase(Array *a, size_t index)
         return EINVAL;
     }
 
-    // calculate bytes after index
-    // WARNING: off by one (valgrind check)
-    // tests did not detect this
-    const size_t tail_bytes_count = a->size - (index - 1);
+    const size_t tail = a->size - index;
 
-    if(tail_bytes_count > 0)
+    if(tail > 0)
     {
         size_t bytes_to_move;
-        if(mul_overflow(&bytes_to_move, tail_bytes_count, a->element_size) != 0)
+        if(mul_overflow(&bytes_to_move, tail, a->element_size) != 0)
         {
             return EOVERFLOW;
         }
