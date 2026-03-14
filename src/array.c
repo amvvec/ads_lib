@@ -203,82 +203,34 @@ void array_delete(Array **a)
 }
 
 static inline int
-check_pointer(Array *ptr)
+array_reserve(Array *a)
 {
-    if(!ptr) return EINVAL;
+    ARRAY_ASSERT(a);
+    
+    if(!a) return EINVAL;
 
-    return 0;
-}
+    size_t requiered_size;
+    if(add_overflow(&requiered_size, a->size, 1)) return EOVERFLOW;
 
-static inline int
-array_required_size(const Array *a, size_t *out)
-{
-    if(add_overflow(out, a->size, 1)) return EOVERFLOW;
+    if(a->capacity >= requiered_size) return 0; // enough capacity
 
-    return 0;
-}
-
-static inline int
-array_next_capacity(const Array *a, size_t *out)
-{
     if(a->capacity > SIZE_MAX / 2) return EOVERFLOW;
 
     assert(ARRAY_INITIAL_CAPACITY > 1);
     
     size_t new_capacity = a->capacity ? (a->capacity * 2) : ARRAY_INITIAL_CAPACITY;
 
-    *out = new_capacity;
+    assert(a->element_size > 0);
+    
+    size_t new_bytes;
+    if(mul_overflow(&new_bytes, new_capacity, a->element_size)) return EOVERFLOW;
 
-    return 0;
-}
+    void *new_data = realloc(a->data, new_bytes);
+    if(!new_data) return ENOMEM;
 
-static inline int
-array_capacity_bytes(const Array *restrict a, size_t *restrict out, size_t capacity)
-{
-    if(mul_overflow(out, capacity, a->element_size)) return EOVERFLOW;
-
-    return 0;
-}
-
-static inline int
-array_reallocate(Array *a, size_t bytes, size_t new_capacity)
-{
-    void * p = realloc(a->data, bytes);
-
-    if(!p) return ENOMEM;
-
-    a->data = p;
+    a->data = new_data;
     a->capacity = new_capacity;
-
-    return 0;
-}
-
-int
-array_reserve(Array *a)
-{
-    ARRAY_ASSERT(a);
-
-    int error;
-
-    error = check_pointer(a);
-    if(error) return error;
-
-    size_t new_size;
-    error = array_required_size(a, &new_size);
-    if(error) return error;
-
-    if(a->capacity >= new_size) return 0;
-
-    size_t new_capacity;
-    error = array_next_capacity(a, &new_capacity);
-    if(error) return error;
-
-    size_t bytes;
-    error = array_capacity_bytes(a, &bytes, new_capacity);
-
-    error = array_reallocate(a, bytes, new_capacity);
-    if(error) return error;
-
+    
     ARRAY_ASSERT(a);
 
     return 0;
