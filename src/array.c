@@ -405,50 +405,59 @@ array_insert(Array *a, const void *restrict value, size_t index)
  * @note Not thread-safe.
  * @return 0 on success, error code otherwise.
  */
-int array_erase(Array *a, size_t index)
-{
-    // entry check
-    if(!a || a->element_size == 0 || index >= a->size)
-    {
-        return EINVAL;
-    }
 
-    const size_t tail = a->size - index;
+static inline int
+check_array_erase_entry(Array *a, size_t index)
+{
+    if(!a) return EINVAL;
+
+    if(index >= a->size) return EINVAL;
+
+    return 0;
+}
+
+static inline int
+do_erase(Array *a, size_t index)
+{
+    const size_t tail = (a->size - index);
 
     if(tail > 0)
     {
-        size_t bytes_to_move;
-        if(mul_overflow(&bytes_to_move, tail, a->element_size) != 0)
-        {
-            return EOVERFLOW;
-        }
+        size_t bytes;
+        if(mul_overflow(&bytes, tail, a->element_size)) return EOVERFLOW;
 
         size_t dst_offset;
-        if(mul_overflow(&dst_offset, index, a->element_size) != 0)
-        {
-            return EOVERFLOW;
-        }
+        if(mul_overflow(&dst_offset, index, a->element_size)) return EOVERFLOW;
 
         size_t src_offset;
-        if(mul_overflow(&src_offset, (index + 1), a->element_size) != 0)
-        {
-            return EOVERFLOW;
-        }
+        if(mul_overflow(&src_offset, (index + 1), a->element_size)) return EOVERFLOW;
 
-        char *base = (char *)a->data;
+        char *base = (char*)a->data;
 
-        void *dst = base + dst_offset;
-        void *src = base + src_offset;
+        void * dst = base + dst_offset;
+        void * src = base + src_offset;
 
-        memmove(dst, src, bytes_to_move);
-
-        size_t new_size;
-        if(sub_overflow(&new_size, a->size, 1) != 0)
-        {
-            return EOVERFLOW;
-        }
-        a->size = new_size;
+        memmove(dst, src, bytes);
     }
+
+    a->size--;
+
+    return 0;
+}
+ 
+int array_erase(Array *a, size_t index)
+{
+    ARRAY_ASSERT(a);
+
+    int error;
+
+    error = check_array_erase_entry(a, index);
+    if(error) return error;
+
+    error = do_erase(a, index);
+    if(error) return error;
+    
+    ARRAY_ASSERT(a);
 
     return 0;
 }
