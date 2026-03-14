@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <errno.h>
 
 #include "../include/array.h"
 
@@ -125,6 +126,24 @@ test_array_insert_at_back(void)
         assert(out == expect[i]);
     }
     
+    array_delete(&a);
+}
+
+static void
+test_array_insert_self_insertion(void)
+{
+    Array *a = array_init(sizeof(int));
+    assert(a);
+
+    int value = 1;
+    assert(array_insert(a, &value, 0) == 0);
+
+    const int *p = array_data(a);
+
+    int error = array_insert(a, p, 0);
+
+    assert(error == EINVAL);
+
     array_delete(&a);
 }
 
@@ -466,6 +485,7 @@ void run_array_insert_tests(void)
     test_array_insert_at_front();
     test_array_insert_in_middle();
     test_array_insert_at_back();
+    test_array_insert_self_insertion();
     test_array_insert_empty_at_zero();
     test_array_insert_at_end_on_empty();
     test_array_insert_single_element_middle();
