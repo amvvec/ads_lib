@@ -24,4 +24,6 @@ int array_get(const Array *array, size_t index, void *out_value);
 size_t array_capacity(const Array *array);
 size_t array_size(const Array *array);
 
+const void *array_data(Array *a);
+
 #endif // !ARRAY_H

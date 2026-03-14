@@ -301,7 +301,7 @@ check_array_insert_entry(const Array *a, const void *restrict value, size_t inde
  * Performs the core insertion: shifts tail right and copies value.
  *
  * @pre a != NULL && a.element_size > 0
- * @pre value != NULL && value does not point into a->data
+ * @pre value != NULL
  * @pre index <= a.size
  * @pre enough capacity already reserved (a.capacity > a.size)
  *
@@ -322,13 +322,8 @@ do_insert(Array *restrict a, const void *restrict value, size_t index)
     if(mul_overflow(&insert_offset, index, a->element_size)) return EOVERFLOW;
 
     size_t tail_offset;
-    const size_t tail_count = (a->size - index); // safe: index <= size validated by caller
+    const size_t tail_count = (a->size - index); // safe: index <= a->size validated by caller
     if(mul_overflow(&tail_offset, tail_count, a->element_size)) return EOVERFLOW;
-
-    // value must not point to the a.data
-    // here are the checks
-    // if(value >= a->data) return EINVAL;
-    // if(value < ((char *)a->data + insert_offset)) return EINVAL;
 
     char *base = (char *)a->data;
 
@@ -361,8 +356,6 @@ do_insert(Array *restrict a, const void *restrict value, size_t index)
  *       - capacity may increase
  *
  * @return 0 on success, error code otherwise
- *
- * @note The value pointer must not point into the array's storage
  */
 int
 array_insert(Array *a, const void *restrict value, size_t index)
@@ -657,4 +650,9 @@ size_t array_capacity(const Array *a)
     }
 
     return a ? a->capacity : 0;
+}
+
+const void *array_data(Array *a)
+{
+    return a ? a->data : NULL;
 }
