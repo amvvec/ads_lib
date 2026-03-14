@@ -325,6 +325,16 @@ do_insert(Array *restrict a, const void *restrict value, size_t index)
     const size_t tail_count = (a->size - index); // safe: index <= a->size validated by caller
     if(mul_overflow(&tail_offset, tail_count, a->element_size)) return EOVERFLOW;
 
+    const char *v = (const char *)value;
+    const char *start = (const char *)a->data;
+
+    size_t bytes;
+    if(mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
+
+    const char *end = start + bytes;
+
+    if(v < end && v >= start) return EINVAL;
+
     char *base = (char *)a->data;
 
     void *dst = base + insert_offset + a->element_size;
