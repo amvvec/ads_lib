@@ -465,76 +465,62 @@ int array_erase(Array *a, size_t index)
     return 0;
 }
 
-/**
- * @brief Pushes value to the first index, shifts rest right.
- *
- * @pre a != NULL
- * @pre a->element_size > 0
- * @pre value != NULL
- *
- * @post On success:
- *          - value at index == *value
- *          - size increased by 1
- *          - relative order is preserved
- *
- * @post On failure:
- *          - contents and size unchanged
- *          - capacity may increase
- *
- * @note Not thread-safe.
- * @return 0 on success, error code otherwise.
- */
-int array_push_front(Array *a, const void *value)
+static inline int
+array_push_front_ensure_capacity(Array *a)
 {
-    // entry check
-    if(!a || !value || a->element_size == 0)
-    {
-        return EINVAL;
-    }
-
-    // capacity ensurance
-    if(a->capacity == 0)
+    if(a->capacity == a->size)
     {
         int error = array_reserve(a);
-        if(error != 0)
-        {
-            return error;
-        }
+        if(error) return error;
     }
 
-    // invariant check after capacity grow
-    if(!a->data || a->capacity < a->size)
-    {
-        return EINVAL;
-    }
+    return 0;
+}
 
-    size_t bytes_to_move;
-    if(mul_overflow(&bytes_to_move, a->size, a->element_size) != 0)
-    {
-        return EOVERFLOW;
-    }
+static inline int
+do_push_front(Array *restrict a, const void *restrict value)
+{
+    size_t bytes;
+    if(mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
 
-    // calculate first index
-    size_t dst_offset;
-    if(mul_overflow(&dst_offset, a->size, a->element_size) != 0)
-    {
-        return EOVERFLOW;
-    }
+    char *base = (char*)a->data;
 
-    char *base = (char *)a->data;
+    void *dst = base + a->element_size;
 
-    void *dst = base + dst_offset;
-    void *src = base;
+    memmove(dst, base, bytes);
+    
+    memcpy(base, value, a->element_size);
 
-    memmove(dst, src, bytes_to_move);
-    memcpy(a->data, value, a->element_size);
+    return 0;
+}
 
-    size_t new_size;
-    if(add_overflow(&new_size, a->size, 1) != 0)
-    {
-        return EOVERFLOW;
-    }
-    a->size = new_size;
+/**
+ * @brief Inserts value to first index, shifts rest right.
+ * 
+ * @post On success:
+ * 
+ * @post On failure:
+ * 
+ * @return 0 on succeess, error code otherwise.
+ */
+int
+array_push_front(Array *restrict a, const void *restrict value)
+{
+    ARRAY_ASSERT(a);
+
+    if(!a || !value) return EINVAL;
+
+    int error;
+
+    error = array_push_front_ensure_capacity(a);
+    if(error) return error;
+
+    error = do_push_front(a, value);
+    if(error) return error;
+
+    a->size++;
+
+    ARRAY_ASSERT(a);
 
     return 0;
 }
