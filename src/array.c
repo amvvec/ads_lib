@@ -437,6 +437,16 @@ static inline int do_push_front(Array *restrict a, const void *restrict value) {
   size_t bytes;
   if (mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
 
+  const char *v = (const char *)value;
+  const char *start = (const char *)a->data;
+
+  size_t _bytes;
+  if (mul_overflow(&_bytes, a->size, a->element_size)) return EOVERFLOW;
+
+  const char *end = start + _bytes;
+
+  if (v < end && v >= start) return EINVAL;
+
   char *base = (char *)a->data;
 
   void *dst = base + a->element_size;
