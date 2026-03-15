@@ -95,6 +95,18 @@ static inline int mul_overflow(size_t *out, size_t a, size_t b) {
 #endif
 }
 
+static inline int array_self_insertion_safety(const Array *a,
+                                              const void *value) {
+  size_t _bytes;
+  if (mul_overflow(&_bytes, a->size, a->element_size)) return EOVERFLOW;
+
+  const char *v = value;
+  const char *start = (const char *)a->data;
+  const char *end = start + _bytes;
+
+  return v < end && v >= start;
+}
+
 /**
  * @brief Allocates and initializes a dynamic array.
  *
@@ -289,15 +301,7 @@ static inline int do_insert(Array *restrict a, const void *restrict value,
       (a->size - index);  // safe: index <= a->size validated by caller
   if (mul_overflow(&tail_offset, tail_count, a->element_size)) return EOVERFLOW;
 
-  const char *v = (const char *)value;
-  const char *start = (const char *)a->data;
-
-  size_t bytes;
-  if (mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
-
-  const char *end = start + bytes;
-
-  if (v < end && v >= start) return EINVAL;
+  if(array_self_insertion_safety(a, value)) return EINVAL;
 
   char *base = (char *)a->data;
 
@@ -437,15 +441,7 @@ static inline int do_push_front(Array *restrict a, const void *restrict value) {
   size_t bytes;
   if (mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
 
-  const char *v = (const char *)value;
-  const char *start = (const char *)a->data;
-
-  size_t _bytes;
-  if (mul_overflow(&_bytes, a->size, a->element_size)) return EOVERFLOW;
-
-  const char *end = start + _bytes;
-
-  if (v < end && v >= start) return EINVAL;
+  if(array_self_insertion_safety(a, value)) return EINVAL;
 
   char *base = (char *)a->data;
 
