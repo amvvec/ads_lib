@@ -1,11 +1,11 @@
+#include "../include/array.h"
+
 #include <assert.h>
 #include <errno.h>
 #include <memory.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include "../include/array.h"
 
 static const size_t ARRAY_INITIAL_CAPACITY = 8;
 
@@ -18,101 +18,80 @@ static const size_t ARRAY_INITIAL_CAPACITY = 8;
  *          - a->data != NULL
  *          - a->capacity <= SIZE_MAX / a->element_size
  */
-struct Array
-{
-    void *data;
-    size_t size;
-    size_t capacity;
-    size_t element_size;
+struct Array {
+  void *data;
+  size_t size;
+  size_t capacity;
+  size_t element_size;
 };
 
-static inline int array_invariant_check(const Array *a)
-{
-    if(!a)
-    {
-        return EINVAL;
-    }
-    if(a->element_size == 0)
-    {
-        return EINVAL;
-    }
-    if(a->size > a->capacity)
-    {
-        return EINVAL;
-    }
+static inline int array_invariant_check(const Array *a) {
+  if (!a) {
+    return EINVAL;
+  }
 
-    if(a->capacity == 0)
-    {
-        if(a->data != NULL)
-        {
-            return EINVAL;
-        }
-    }
-    else
-    {
-        if(a->data == NULL)
-        {
-            return EINVAL;
-        }
-    }
+  if (a->element_size == 0) {
+    return EINVAL;
+  }
 
-    if(a->capacity > SIZE_MAX / a->element_size)
-    {
-        return EOVERFLOW;
-    }
+  if (a->size > a->capacity) {
+    return EINVAL;
+  }
 
-    return 0;
+  if (a->capacity == 0) {
+    if (a->data != NULL) {
+      return EINVAL;
+    }
+  } else if (a->data == NULL) {
+    return EINVAL;
+  }
+
+  if (a->capacity > SIZE_MAX / a->element_size) {
+    return EOVERFLOW;
+  }
+
+  return 0;
 }
 
 #ifdef ARRAY_DEBUG
-#define ARRAY_ASSERT(a)                                                        \
-    do                                                                         \
-    {                                                                          \
-        if(array_invariant_check(a) != 0)                                      \
-        {                                                                      \
-            abort();                                                           \
-        }                                                                      \
-    } while(0)
+#define ARRAY_ASSERT(a)                    \
+  do {                                     \
+    if (array_invariant_check(a)) abort(); \
+  } while (0)
 #else
 #define ARRAY_ASSERT(a) ((void)0)
 #endif
 
-static inline int
-add_overflow(size_t *out, size_t a, size_t b)
-{
-    if(!out) return EINVAL;
+static inline int add_overflow(size_t *out, size_t a, size_t b) {
+  if (!out) return EINVAL;
 #if defined(__GNUC__) || defined(__clang__)
-    return __builtin_add_overflow(a, b, out);
+  return __builtin_add_overflow(a, b, out);
 #else
-    if(a > SIZE_MAX - b) return EOVERFLOW;
-    *out = a + b;
-    return 0;
+  if (a > SIZE_MAX - b) return EOVERFLOW;
+  *out = a + b;
+  return 0;
 #endif
 }
 
-static inline int
-sub_overflow(size_t *out, size_t a, size_t b)
-{
-    if(!out) return EINVAL;
+static inline int sub_overflow(size_t *out, size_t a, size_t b) {
+  if (!out) return EINVAL;
 #if defined(__GNUC__) || defined(__clang__)
-    return __builtin_sub_overflow(a, b, out);
+  return __builtin_sub_overflow(a, b, out);
 #else
-    if(a < b) return EOVERFLOW;
-    *out = a - b;
-    return 0;
+  if (a < b) return EOVERFLOW;
+  *out = a - b;
+  return 0;
 #endif
 }
 
-static inline int
-mul_overflow(size_t *out, size_t a, size_t b)
-{
-    if(!out) return EINVAL;
+static inline int mul_overflow(size_t *out, size_t a, size_t b) {
+  if (!out) return EINVAL;
 #if defined(__GNUC__) || defined(__clang__)
-    return __builtin_mul_overflow(a, b, out);
+  return __builtin_mul_overflow(a, b, out);
 #else
-    if(b != 0 || a > SIZE_MAX / b) return EOVERFLOW;
-    *out = a * b;
-    return 0;
+  if (b != 0 || a > SIZE_MAX / b) return EOVERFLOW;
+  *out = a * b;
+  return 0;
 #endif
 }
 
@@ -135,40 +114,35 @@ mul_overflow(size_t *out, size_t a, size_t b)
  *
  * @note Guarantees that the returned object satisfies all Array invariants.
  */
-Array *array_init(size_t element_size)
-{
-    if(element_size == 0)
-    {
-        return NULL;
-    }
+Array *array_init(size_t element_size) {
+  if (element_size == 0) {
+    return NULL;
+  }
 
-    assert(ARRAY_INITIAL_CAPACITY > 0);
+  assert(ARRAY_INITIAL_CAPACITY > 0);
 
-    size_t new_bytes;
-    if(mul_overflow(&new_bytes, ARRAY_INITIAL_CAPACITY, element_size) != 0)
-    {
-        return NULL;
-    }
+  size_t new_bytes;
+  if (mul_overflow(&new_bytes, ARRAY_INITIAL_CAPACITY, element_size) != 0) {
+    return NULL;
+  }
 
-    Array *tmp = calloc(1, sizeof(*tmp));
-    if(!tmp)
-    {
-        return NULL;
-    }
+  Array *tmp = calloc(1, sizeof(*tmp));
+  if (!tmp) {
+    return NULL;
+  }
 
-    void *data = malloc(new_bytes);
-    if(!data)
-    {
-        free(tmp);
-        return NULL;
-    }
+  void *data = malloc(new_bytes);
+  if (!data) {
+    free(tmp);
+    return NULL;
+  }
 
-    tmp->data = data;
-    tmp->size = 0;
-    tmp->element_size = element_size;
-    tmp->capacity = ARRAY_INITIAL_CAPACITY;
+  tmp->data = data;
+  tmp->size = 0;
+  tmp->element_size = element_size;
+  tmp->capacity = ARRAY_INITIAL_CAPACITY;
 
-    return tmp;
+  return tmp;
 }
 
 /**
@@ -186,94 +160,84 @@ Array *array_init(size_t element_size)
  *
  * @note This function is idempotent when called with the same pointer.
  */
-void array_delete(Array **a)
-{
-    if(a == NULL)
-    {
-        return;
-    }
+void array_delete(Array **a) {
+  if (a == NULL) {
+    return;
+  }
 
-    if(*a)
-    {
-        free((*a)->data);
-        free(*a);
+  if (*a) {
+    free((*a)->data);
+    free(*a);
 
-        *a = NULL;
-    }
+    *a = NULL;
+  }
 }
 
-static inline int
-array_reserve(Array *a)
-{
-    ARRAY_ASSERT(a);
-    
-    if(!a) return EINVAL;
+static inline int array_reserve(Array *a) {
+  ARRAY_ASSERT(a);
 
-    size_t requiered_size;
-    if(add_overflow(&requiered_size, a->size, 1)) return EOVERFLOW;
+  if (!a) return EINVAL;
 
-    if(a->capacity >= requiered_size) return 0; // enough capacity
+  size_t requiered_size;
+  if (add_overflow(&requiered_size, a->size, 1)) return EOVERFLOW;
 
-    if(a->capacity > SIZE_MAX / 2) return EOVERFLOW;
+  if (a->capacity >= requiered_size) return 0;  // enough capacity
 
-    assert(ARRAY_INITIAL_CAPACITY > 1);
-    
-    size_t new_capacity = a->capacity ? (a->capacity * 2) : ARRAY_INITIAL_CAPACITY;
+  if (a->capacity > SIZE_MAX / 2) return EOVERFLOW;
 
-    assert(a->element_size > 0);
-    
-    size_t new_bytes;
-    if(mul_overflow(&new_bytes, new_capacity, a->element_size)) return EOVERFLOW;
+  assert(ARRAY_INITIAL_CAPACITY > 1);
 
-    void *new_data = realloc(a->data, new_bytes);
-    if(!new_data) return ENOMEM;
+  size_t new_capacity =
+      a->capacity ? (a->capacity * 2) : ARRAY_INITIAL_CAPACITY;
 
-    a->data = new_data;
-    a->capacity = new_capacity;
-    
-    ARRAY_ASSERT(a);
+  assert(a->element_size > 0);
 
-    return 0;
+  size_t new_bytes;
+  if (mul_overflow(&new_bytes, new_capacity, a->element_size)) return EOVERFLOW;
+
+  void *new_data = realloc(a->data, new_bytes);
+  if (!new_data) return ENOMEM;
+
+  a->data = new_data;
+  a->capacity = new_capacity;
+
+  ARRAY_ASSERT(a);
+
+  return 0;
 }
 
-static inline int array_shrink_fit(Array *a)
-{
-    if(!a)
-    {
-        return EINVAL;
-    }
+static inline int array_shrink_fit(Array *a) {
+  if (!a) {
+    return EINVAL;
+  }
 
-    if(a->size == a->capacity)
-    {
-        return 0; // enough memory
-    }
+  if (a->size == a->capacity) {
+    return 0;  // enough memory
+  }
 
-    if(a->size == 0)
-    {
-        free(a->data);
+  if (a->size == 0) {
+    free(a->data);
 
-        a->data = NULL;
-        a->capacity = 0;
-
-        return 0;
-    }
-
-    size_t new_bytes = 0;
-    if(mul_overflow(&new_bytes, a->size, a->element_size) != 0)
-    {
-        return EOVERFLOW;
-    }
-
-    void *tmp = realloc(a->data, new_bytes);
-    if(!tmp)
-    {
-        return ENOMEM;
-    }
-
-    a->data = tmp;
-    a->capacity = a->size;
+    a->data = NULL;
+    a->capacity = 0;
 
     return 0;
+  }
+
+  size_t new_bytes = 0;
+  if (mul_overflow(&new_bytes, a->size, a->element_size) != 0) {
+    return EOVERFLOW;
+  }
+
+  void *tmp = realloc(a->data, new_bytes);
+  if (!tmp) {
+    return ENOMEM;
+  }
+
+  a->data = tmp;
+  a->capacity = a->size;
+
+  return 0;
 }
 
 /**
@@ -284,17 +248,17 @@ static inline int array_shrink_fit(Array *a)
  * @pre index <= a.size
  *
  * @return 0 on success, error code otherwise
- * 
+ *
  * @note No a.element_size check (ARRAY_ASSERT invariant check macro)
  */
-static inline int
-check_array_insert_entry(const Array *a, const void *restrict value, size_t index)
-{
-    if(!a || !value) return EINVAL;
+static inline int check_array_insert_entry(const Array *a,
+                                           const void *restrict value,
+                                           size_t index) {
+  if (!a || !value) return EINVAL;
 
-    if(index > a->size) return EINVAL;
-    
-    return 0;
+  if (index > a->size) return EINVAL;
+
+  return 0;
 }
 
 /**
@@ -315,40 +279,41 @@ check_array_insert_entry(const Array *a, const void *restrict value, size_t inde
  *
  * @return 0 on success, error code otherwise
  */
-static inline int
-do_insert(Array *restrict a, const void *restrict value, size_t index)
-{
-    size_t insert_offset;
-    if(mul_overflow(&insert_offset, index, a->element_size)) return EOVERFLOW;
+static inline int do_insert(Array *restrict a, const void *restrict value,
+                            size_t index) {
+  size_t insert_offset;
+  if (mul_overflow(&insert_offset, index, a->element_size)) return EOVERFLOW;
 
-    size_t tail_offset;
-    const size_t tail_count = (a->size - index); // safe: index <= a->size validated by caller
-    if(mul_overflow(&tail_offset, tail_count, a->element_size)) return EOVERFLOW;
+  size_t tail_offset;
+  const size_t tail_count =
+      (a->size - index);  // safe: index <= a->size validated by caller
+  if (mul_overflow(&tail_offset, tail_count, a->element_size)) return EOVERFLOW;
 
-    const char *v = (const char *)value;
-    const char *start = (const char *)a->data;
+  const char *v = (const char *)value;
+  const char *start = (const char *)a->data;
 
-    size_t bytes;
-    if(mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
+  size_t bytes;
+  if (mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
 
-    const char *end = start + bytes;
+  const char *end = start + bytes;
 
-    if(v < end && v >= start) return EINVAL;
+  if (v < end && v >= start) return EINVAL;
 
-    char *base = (char *)a->data;
+  char *base = (char *)a->data;
 
-    void *dst = base + insert_offset + a->element_size;
-    void *src = base + insert_offset;
+  void *dst = base + insert_offset + a->element_size;
+  void *src = base + insert_offset;
 
-    memmove(dst, src, tail_offset);
+  memmove(dst, src, tail_offset);
 
-    memcpy(src, value, a->element_size);
+  memcpy(src, value, a->element_size);
 
-    return 0;
+  return 0;
 }
 
 /**
- * Inserts an element at the specified index, shifting subsequent elements right.
+ * Inserts an element at the specified index, shifting subsequent elements
+ * right.
  *
  * @pre a != NULL
  * @pre value != NULL
@@ -358,7 +323,8 @@ do_insert(Array *restrict a, const void *restrict value, size_t index)
  * @post On success:
  *       - a.size is increased by 1
  *       - element at position index equals *value
- *       - elements from index+1 to new size-1 equal old elements from index to old size-1
+ *       - elements from index+1 to new size-1 equal old elements from index to
+ * old size-1
  *       - relative order of remaining elements is preserved
  *
  * @post On failure:
@@ -367,27 +333,25 @@ do_insert(Array *restrict a, const void *restrict value, size_t index)
  *
  * @return 0 on success, error code otherwise
  */
-int
-array_insert(Array *a, const void *restrict value, size_t index)
-{
-    ARRAY_ASSERT(a);
+int array_insert(Array *a, const void *restrict value, size_t index) {
+  ARRAY_ASSERT(a);
 
-    int error; // contain error return from function.
+  int error;  // contain error return from function.
 
-    error = check_array_insert_entry(a, value, index);
-    if(error) return error;
+  error = check_array_insert_entry(a, value, index);
+  if (error) return error;
 
-    error = array_reserve(a);
-    if(error) return error;
+  error = array_reserve(a);
+  if (error) return error;
 
-    error = do_insert(a, value, index);
-    if(error) return error;
+  error = do_insert(a, value, index);
+  if (error) return error;
 
-    a->size++;
+  a->size++;
 
-    ARRAY_ASSERT(a);
+  ARRAY_ASSERT(a);
 
-    return 0;
+  return 0;
 }
 
 /**
@@ -409,246 +373,210 @@ array_insert(Array *a, const void *restrict value, size_t index)
  * @return 0 on success, error code otherwise.
  */
 
-static inline int
-check_array_erase_entry(Array *a, size_t index)
-{
-    if(!a) return EINVAL;
+static inline int check_array_erase_entry(Array *a, size_t index) {
+  if (!a) return EINVAL;
 
-    if(index >= a->size) return EINVAL;
+  if (index >= a->size) return EINVAL;
 
-    return 0;
+  return 0;
 }
 
-static inline int
-do_erase(Array *a, size_t index)
-{
-    const size_t tail = (a->size - index);
+static inline int do_erase(Array *a, size_t index) {
+  const size_t tail = (a->size - index);
 
-    if(tail > 0)
-    {
-        size_t bytes;
-        if(mul_overflow(&bytes, tail, a->element_size)) return EOVERFLOW;
-
-        size_t dst_offset;
-        if(mul_overflow(&dst_offset, index, a->element_size)) return EOVERFLOW;
-
-        size_t src_offset;
-        if(mul_overflow(&src_offset, (index + 1), a->element_size)) return EOVERFLOW;
-
-        char *base = (char*)a->data;
-
-        void * dst = base + dst_offset;
-        void * src = base + src_offset;
-
-        memmove(dst, src, bytes);
-    }
-
-    a->size--;
-
-    return 0;
-}
- 
-int array_erase(Array *a, size_t index)
-{
-    ARRAY_ASSERT(a);
-
-    int error;
-
-    error = check_array_erase_entry(a, index);
-    if(error) return error;
-
-    error = do_erase(a, index);
-    if(error) return error;
-    
-    ARRAY_ASSERT(a);
-
-    return 0;
-}
-
-static inline int
-array_push_front_ensure_capacity(Array *a)
-{
-    if(a->capacity == a->size)
-    {
-        int error = array_reserve(a);
-        if(error) return error;
-    }
-
-    return 0;
-}
-
-static inline int
-do_push_front(Array *restrict a, const void *restrict value)
-{
+  if (tail > 0) {
     size_t bytes;
-    if(mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
-
-    char *base = (char*)a->data;
-
-    void *dst = base + a->element_size;
-
-    memmove(dst, base, bytes);
-    
-    memcpy(base, value, a->element_size);
-
-    return 0;
-}
-
-/**
- * @brief Inserts value to first index, shifts rest right.
- * 
- * @post On success:
- * 
- * @post On failure:
- * 
- * @return 0 on succeess, error code otherwise.
- */
-int
-array_push_front(Array *restrict a, const void *restrict value)
-{
-    ARRAY_ASSERT(a);
-
-    if(!a || !value) return EINVAL;
-
-    int error;
-
-    error = array_push_front_ensure_capacity(a);
-    if(error) return error;
-
-    error = do_push_front(a, value);
-    if(error) return error;
-
-    a->size++;
-
-    ARRAY_ASSERT(a);
-
-    return 0;
-}
-
-int array_push_back(Array *a, const void *value)
-{
-    if(!a || !value || a->element_size == 0)
-    {
-        return EINVAL;
-    }
-
-    if(a->capacity <= a->size)
-    {
-        int error = array_reserve(a);
-        if(error)
-        {
-            return error;
-        }
-    }
+    if (mul_overflow(&bytes, tail, a->element_size)) return EOVERFLOW;
 
     size_t dst_offset;
-    if(mul_overflow(&dst_offset, a->size, a->element_size) != 0)
-    {
-        return EOVERFLOW;
-    }
+    if (mul_overflow(&dst_offset, index, a->element_size)) return EOVERFLOW;
+
+    size_t src_offset;
+    if (mul_overflow(&src_offset, (index + 1), a->element_size))
+      return EOVERFLOW;
 
     char *base = (char *)a->data;
 
     void *dst = base + dst_offset;
+    void *src = base + src_offset;
 
-    memcpy(dst, value, a->element_size);
+    memmove(dst, src, bytes);
+  }
 
-    size_t new_size;
-    if(add_overflow(&new_size, a->size, 1) != 0)
-    {
-        return EOVERFLOW;
-    }
-    a->size = new_size;
+  a->size--;
 
-    return 0;
+  return 0;
 }
 
-void array_pop_front(Array *a)
-{
-    if(!a || a->size == 0)
-    {
-        return;
-    }
-    // WARNING: something is wrong here
-    // size_t bytes_to_move = (size_t)(a->size - 1) * (size_t)a->capacity;
-    size_t bytes_to_move = (a->size - 1) * a->capacity;
-    memmove(a->data, (char *)a->data + a->element_size, bytes_to_move);
+int array_erase(Array *a, size_t index) {
+  ARRAY_ASSERT(a);
 
-    size_t new_size;
-    if(sub_overflow(&new_size, a->size, 1) != 0)
-    {
-        return;
-    }
-    a->size = new_size;
+  int error;
+
+  error = check_array_erase_entry(a, index);
+  if (error) return error;
+
+  error = do_erase(a, index);
+  if (error) return error;
+
+  ARRAY_ASSERT(a);
+
+  return 0;
 }
 
-void array_pop_back(Array *a)
-{
-    if(!a)
-    {
-        return;
-    }
-    if(a->size == 0)
-    {
-        return;
-    }
+static inline int array_push_front_ensure_capacity(Array *a) {
+  if (a->capacity == a->size) {
+    int error = array_reserve(a);
+    if (error) return error;
+  }
 
-    size_t new_size;
-    if(sub_overflow(&new_size, a->size, 1) != 0)
-    {
-        return;
-    }
-    a->size = new_size;
-
-    void *dest = (char *)a->data + a->size * a->element_size;
-    memset(dest, 0, a->element_size);
+  return 0;
 }
 
-int array_get(const Array *a, size_t index, void *out_value)
-{
-    if(!a || !out_value || index >= a->size)
-    {
-        return EINVAL;
+static inline int do_push_front(Array *restrict a, const void *restrict value) {
+  size_t bytes;
+  if (mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
+
+  char *base = (char *)a->data;
+
+  void *dst = base + a->element_size;
+
+  memmove(dst, base, bytes);
+
+  memcpy(base, value, a->element_size);
+
+  return 0;
+}
+
+/**
+ * @brief Inserts value to first index, shifts rest right.
+ *
+ * @post On success:
+ *
+ * @post On failure:
+ *
+ * @return 0 on succeess, error code otherwise.
+ */
+int array_push_front(Array *restrict a, const void *restrict value) {
+  ARRAY_ASSERT(a);
+
+  if (!a || !value) return EINVAL;
+
+  int error;
+
+  error = array_push_front_ensure_capacity(a);
+  if (error) return error;
+
+  error = do_push_front(a, value);
+  if (error) return error;
+
+  a->size++;
+
+  ARRAY_ASSERT(a);
+
+  return 0;
+}
+
+int array_push_back(Array *a, const void *value) {
+  if (!a || !value || a->element_size == 0) {
+    return EINVAL;
+  }
+
+  if (a->capacity <= a->size) {
+    int error = array_reserve(a);
+    if (error) {
+      return error;
     }
-    const char *base = a->data;
-    const void *src = base + index * a->element_size;
-    memcpy(out_value, src, a->element_size);
-    return 0;
+  }
+
+  size_t dst_offset;
+  if (mul_overflow(&dst_offset, a->size, a->element_size) != 0) {
+    return EOVERFLOW;
+  }
+
+  char *base = (char *)a->data;
+
+  void *dst = base + dst_offset;
+
+  memcpy(dst, value, a->element_size);
+
+  size_t new_size;
+  if (add_overflow(&new_size, a->size, 1) != 0) {
+    return EOVERFLOW;
+  }
+  a->size = new_size;
+
+  return 0;
 }
 
-int array_set(Array *a, size_t index, const void *value)
-{
-    if(!a || !value || index >= a->size)
-    {
-        return EINVAL;
-    }
-    char *base = a->data;
-    void *dest = base + index * a->element_size;
-    memcpy(dest, value, a->element_size);
-    return 0;
+void array_pop_front(Array *a) {
+  if (!a || a->size == 0) {
+    return;
+  }
+  // WARNING: something is wrong here
+  // size_t bytes_to_move = (size_t)(a->size - 1) * (size_t)a->capacity;
+  size_t bytes_to_move = (a->size - 1) * a->capacity;
+  memmove(a->data, (char *)a->data + a->element_size, bytes_to_move);
+
+  size_t new_size;
+  if (sub_overflow(&new_size, a->size, 1) != 0) {
+    return;
+  }
+  a->size = new_size;
 }
 
-size_t array_size(const Array *a)
-{
-    if(!a)
-    {
-        return EINVAL;
-    }
+void array_pop_back(Array *a) {
+  if (!a) {
+    return;
+  }
+  if (a->size == 0) {
+    return;
+  }
 
-    return a ? a->size : 0;
+  size_t new_size;
+  if (sub_overflow(&new_size, a->size, 1) != 0) {
+    return;
+  }
+  a->size = new_size;
+
+  void *dest = (char *)a->data + a->size * a->element_size;
+  memset(dest, 0, a->element_size);
 }
 
-size_t array_capacity(const Array *a)
-{
-    if(!a)
-    {
-        return EINVAL;
-    }
-
-    return a ? a->capacity : 0;
+int array_get(const Array *a, size_t index, void *out_value) {
+  if (!a || !out_value || index >= a->size) {
+    return EINVAL;
+  }
+  const char *base = a->data;
+  const void *src = base + index * a->element_size;
+  memcpy(out_value, src, a->element_size);
+  return 0;
 }
 
-const void *array_data(Array *a)
-{
-    return a ? a->data : NULL;
+int array_set(Array *a, size_t index, const void *value) {
+  if (!a || !value || index >= a->size) {
+    return EINVAL;
+  }
+  char *base = a->data;
+  void *dest = base + index * a->element_size;
+  memcpy(dest, value, a->element_size);
+  return 0;
 }
+
+size_t array_size(const Array *a) {
+  if (!a) {
+    return EINVAL;
+  }
+
+  return a ? a->size : 0;
+}
+
+size_t array_capacity(const Array *a) {
+  if (!a) {
+    return EINVAL;
+  }
+
+  return a ? a->capacity : 0;
+}
+
+const void *array_data(Array *a) { return a ? a->data : NULL; }

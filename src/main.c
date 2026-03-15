@@ -5,9 +5,8 @@
 
 #include "../tests/test_runner.c"
 
-int main(void)
-{
-    srand((unsigned)time(NULL));
-    test_runner();
-    return 0;
+int main(void) {
+  srand((unsigned)time(NULL));
+  test_runner();
+  return 0;
 }

@@ -1,8 +1,32 @@
-BasedOnStyle: LLVM
-IndentWidth: 4
-ColumnLimit: 80
-BreakBeforeBraces: Allman
-AllowShortFunctionsOnASingleLine: None
-PointerAlignment: Right
-SpaceBeforeParens: Never
-SortIncludes: true
+BasedOnStyle: Google # rethink
+
+
+
+# AllowShortIfStatementsOnASingleLine: Always # rethink
+# AllowShortLoopsOnASingleLine: # rethink
+# AlwaysBreakAfterDefinitionReturnType: # rethink
+# AlwaysBreakAfterReturnType: # rethink
+# BinPackArguments: false # rethink
+# BinPackParameters: false # rethink
+# BreakBeforeBinaryOperators: None # The way to wrap binary operators
+# BreakBeforeBraces: Allman # The brace breaking style to use
+# BreakBeforeTernaryOperators: false
+# ColumnLimit: 0
+# IncludeBlocks: Regroup # Dependent on the value, multiple #include blocks can be sorted as one and divided based on category
+# IndentCaseLabels: true # Indent case labels one level from the switch statement
+# IndentWidth: 4 # The number of columns to use for indentation
+# IndentWrappedFunctionNames: false
+# PointerAlignment: Middle # Pointer and reference alignment style
+# ReflowComments: true # rethink
+# SortIncludes: true
+# SpaceAfterCStyleCast: false
+# SpaceAfterLogicalNot: false
+# SpaceBeforeAssignmentOperators: true
+# SpaceBeforeParens: Never
+# SpaceInEmptyParentheses: false
+# SpacesInAngles: false
+# SpacesInCStyleCastParentheses: false
+# SpacesInContainerLiterals: true
+# SpacesInParentheses: false
+# SpacesInSquareBrackets: false
+# UseTab: Never
