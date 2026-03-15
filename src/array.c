@@ -252,6 +252,16 @@ static inline int array_shrink_fit(Array *a) {
   return 0;
 }
 
+static inline int array_ensure_capacity(Array *a, size_t extra) {
+  size_t required_capacity;
+
+  if (add_overflow(&required_capacity, a->size, extra)) return EOVERFLOW;
+
+  if (required_capacity <= a->capacity) return 0;  // enough capacity
+
+  return array_reserve(a);
+}
+
 /**
  * Validates preconditions for array_insert.
  *
@@ -489,11 +499,9 @@ int array_push_back(Array *a, const void *value) {
   if (!a || !value) return EINVAL;
 
   assert(a->capacity >= a->size);
-  
-  if (a->size == a->capacity) {
-    int error = array_reserve(a);
-    if (error) return error;
-  }
+
+  int error = array_ensure_capacity(a, 1);
+  if (error) return error;
 
   size_t dst_offset;
   if (mul_overflow(&dst_offset, a->size, a->element_size)) return EOVERFLOW;
