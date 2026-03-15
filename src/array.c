@@ -301,7 +301,7 @@ static inline int do_insert(Array *restrict a, const void *restrict value,
       (a->size - index);  // safe: index <= a->size validated by caller
   if (mul_overflow(&tail_offset, tail_count, a->element_size)) return EOVERFLOW;
 
-  if(array_self_insertion_safety(a, value)) return EINVAL;
+  if (array_self_insertion_safety(a, value)) return EINVAL;
 
   char *base = (char *)a->data;
 
@@ -441,7 +441,7 @@ static inline int do_push_front(Array *restrict a, const void *restrict value) {
   size_t bytes;
   if (mul_overflow(&bytes, a->size, a->element_size)) return EOVERFLOW;
 
-  if(array_self_insertion_safety(a, value)) return EINVAL;
+  if (array_self_insertion_safety(a, value)) return EINVAL;
 
   char *base = (char *)a->data;
 
@@ -484,21 +484,19 @@ int array_push_front(Array *restrict a, const void *restrict value) {
 }
 
 int array_push_back(Array *a, const void *value) {
-  if (!a || !value || a->element_size == 0) {
-    return EINVAL;
-  }
+  ARRAY_ASSERT(a);
 
-  if (a->capacity <= a->size) {
+  if (!a || !value) return EINVAL;
+
+  assert(a->capacity >= a->size);
+  
+  if (a->size == a->capacity) {
     int error = array_reserve(a);
-    if (error) {
-      return error;
-    }
+    if (error) return error;
   }
 
   size_t dst_offset;
-  if (mul_overflow(&dst_offset, a->size, a->element_size) != 0) {
-    return EOVERFLOW;
-  }
+  if (mul_overflow(&dst_offset, a->size, a->element_size)) return EOVERFLOW;
 
   char *base = (char *)a->data;
 
@@ -506,11 +504,9 @@ int array_push_back(Array *a, const void *value) {
 
   memcpy(dst, value, a->element_size);
 
-  size_t new_size;
-  if (add_overflow(&new_size, a->size, 1) != 0) {
-    return EOVERFLOW;
-  }
-  a->size = new_size;
+  a->size++;
+
+  ARRAY_ASSERT(a);
 
   return 0;
 }
