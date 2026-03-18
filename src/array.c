@@ -108,7 +108,7 @@ static inline int array_self_insertion_safety(const Array *a,
 }
 
 /**
- * @brief Allocates and initializes a dynamic array.
+ * @brief Allocates and initializes a dynamic a.
  *
  * Domain: element_size -> [1, SIZE_MAX]
  *
@@ -158,7 +158,7 @@ Array *array_init(size_t element_size) {
 }
 
 /**
- * @brief Destroys the array and releases all owned memory.
+ * @brief Destroys the a and releases all owned memory.
  *
  * Domain: a may be NULL, *a may be NULL.
  *
@@ -297,7 +297,7 @@ static inline int check_array_insert_entry(const Array *a,
  *          - a.size unchanged
  *
  * @post On failure:
- *          - array contents unchanged
+ *          - a contents unchanged
  *
  * @return 0 on success, error code otherwise
  */
@@ -342,7 +342,7 @@ static inline int do_insert(Array *restrict a, const void *restrict value,
  *       - relative order of remaining elements is preserved
  *
  * @post On failure:
- *       - array size and contents remain unchanged
+ *       - a size and contents remain unchanged
  *       - capacity may increase
  *
  * @return 0 on success, error code otherwise
@@ -566,23 +566,37 @@ void array_pop_back(Array *a) {
   a->size--;
 }
 
-int array_get(const Array *a, size_t index, void *out_value) {
-  if (!a || !out_value || index >= a->size) {
-    return EINVAL;
-  }
-  const char *base = a->data;
-  const void *src = base + index * a->element_size;
-  memcpy(out_value, src, a->element_size);
+int array_get(const Array* a, size_t index, void* value) {
+  ARRAY_ASSERT(a);
+
+  if (!a || !value) return EINVAL;
+
+  if (index >= a->size) return EINVAL;
+
+  const char *base = (const char *)a->data;
+
+  memcpy(value, base + index * a->element_size, a->element_size);
+
+  ARRAY_ASSERT(a);
+
   return 0;
 }
 
-int array_set(Array *a, size_t index, const void *value) {
-  if (!a || !value || index >= a->size) {
-    return EINVAL;
-  }
-  char *base = a->data;
-  void *dest = base + index * a->element_size;
-  memcpy(dest, value, a->element_size);
+int array_set(Array* a, size_t index, const void* value) {
+  ARRAY_ASSERT(a);
+
+  if (!a || !value) return EINVAL;
+
+  if (index >= a->size) return EINVAL;
+
+  char *base = (char *)a->data;
+
+  void *dst = base + index * a->element_size;
+
+  memcpy(dst, value, a->element_size);
+
+  ARRAY_ASSERT(a);
+
   return 0;
 }
 
