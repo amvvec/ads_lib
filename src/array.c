@@ -493,16 +493,7 @@ int array_push_front(Array *restrict a, const void *restrict value) {
   return 0;
 }
 
-int array_push_back(Array *a, const void *value) {
-  ARRAY_ASSERT(a);
-
-  if (!a || !value) return EINVAL;
-
-  assert(a->capacity >= a->size);
-
-  int error = array_ensure_capacity(a, 1);
-  if (error) return error;
-
+static inline int do_push_back(Array *a, const void *value) {
   size_t dst_offset;
   if (mul_overflow(&dst_offset, a->size, a->element_size)) return EOVERFLOW;
 
@@ -511,6 +502,22 @@ int array_push_back(Array *a, const void *value) {
   void *dst = base + dst_offset;
 
   memcpy(dst, value, a->element_size);
+
+  return 0;
+}
+
+int array_push_back(Array *a, const void *value) {
+  ARRAY_ASSERT(a);
+
+  if (!a || !value) return EINVAL;
+
+  int error;
+
+  error = array_ensure_capacity(a, 1);
+  if (error) return error;
+
+  error = do_push_back(a, value);
+  if (error) return error;
 
   a->size++;
 
