@@ -526,20 +526,31 @@ int array_push_back(Array *a, const void *value) {
   return 0;
 }
 
-void array_pop_front(Array *a) {
-  if (!a || a->size == 0) {
-    return;
-  }
-  // WARNING: something is wrong here
-  // size_t bytes_to_move = (size_t)(a->size - 1) * (size_t)a->capacity;
-  size_t bytes_to_move = (a->size - 1) * a->capacity;
-  memmove(a->data, (char *)a->data + a->element_size, bytes_to_move);
+static inline int
+do_pop_front(Array * a)
+{
+  size_t bytes;
+  if(mul_overflow(&bytes, (a->size - 1), a->element_size)) return EOVERFLOW;
 
-  size_t new_size;
-  if (sub_overflow(&new_size, a->size, 1) != 0) {
-    return;
-  }
-  a->size = new_size;
+  char * base = (char * )a->data;
+
+  void * dst = base;
+  void * src = base + a->element_size;
+
+  memmove(dst, src, bytes);
+
+  return 0;
+}
+
+void array_pop_front(Array *a) {
+  ARRAY_ASSERT(a);
+  
+  if(!a) return;
+
+  int error = do_pop_front(a);
+  if (error) return;
+
+  a->size--;
 }
 
 void array_pop_back(Array *a) {
