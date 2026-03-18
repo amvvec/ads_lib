@@ -526,16 +526,14 @@ int array_push_back(Array *a, const void *value) {
   return 0;
 }
 
-static inline int
-do_pop_front(Array * a)
-{
+static inline int do_pop_front(Array *a) {
   size_t bytes;
-  if(mul_overflow(&bytes, (a->size - 1), a->element_size)) return EOVERFLOW;
+  if (mul_overflow(&bytes, (a->size - 1), a->element_size)) return EOVERFLOW;
 
-  char * base = (char * )a->data;
+  char *base = (char *)a->data;
 
-  void * dst = base;
-  void * src = base + a->element_size;
+  void *dst = base;
+  void *src = base + a->element_size;
 
   memmove(dst, src, bytes);
 
@@ -544,8 +542,8 @@ do_pop_front(Array * a)
 
 void array_pop_front(Array *a) {
   ARRAY_ASSERT(a);
-  
-  if(!a) return;
+
+  if (!a) return;
 
   int error = do_pop_front(a);
   if (error) return;
@@ -554,21 +552,18 @@ void array_pop_front(Array *a) {
 }
 
 void array_pop_back(Array *a) {
-  if (!a) {
-    return;
-  }
-  if (a->size == 0) {
-    return;
-  }
+  if (!a) return;
 
-  size_t new_size;
-  if (sub_overflow(&new_size, a->size, 1) != 0) {
-    return;
-  }
-  a->size = new_size;
+  char *base = (char *)a->data;
 
-  void *dest = (char *)a->data + a->size * a->element_size;
-  memset(dest, 0, a->element_size);
+  size_t bytes;
+  if (mul_overflow(&bytes, a->size, a->element_size)) return;
+
+  void *dst = base + bytes;
+
+  memset(dst, 0, a->element_size);
+
+  a->size--;
 }
 
 int array_get(const Array *a, size_t index, void *out_value) {
