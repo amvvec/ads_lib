@@ -127,23 +127,17 @@ static inline int array_self_insertion_safety(const Array *a,
  * @note Guarantees that the returned object satisfies all Array invariants.
  */
 Array *array_init(size_t element_size) {
-  if (element_size == 0) {
-    return NULL;
-  }
+  if (element_size == 0) return NULL;
 
   assert(ARRAY_INITIAL_CAPACITY > 0);
 
-  size_t new_bytes;
-  if (mul_overflow(&new_bytes, ARRAY_INITIAL_CAPACITY, element_size) != 0) {
-    return NULL;
-  }
+  size_t _bytes;
+  if (mul_overflow(&_bytes, ARRAY_INITIAL_CAPACITY, element_size)) return NULL;
 
   Array *tmp = calloc(1, sizeof(*tmp));
-  if (!tmp) {
-    return NULL;
-  }
+  if (!tmp) return NULL;
 
-  void *data = malloc(new_bytes);
+  void *data = malloc(_bytes);
   if (!data) {
     free(tmp);
     return NULL;
@@ -566,7 +560,7 @@ void array_pop_back(Array *a) {
   a->size--;
 }
 
-int array_get(const Array* a, size_t index, void* value) {
+int array_get(const Array *a, size_t index, void *value) {
   ARRAY_ASSERT(a);
 
   if (!a || !value) return EINVAL;
@@ -582,7 +576,7 @@ int array_get(const Array* a, size_t index, void* value) {
   return 0;
 }
 
-int array_set(Array* a, size_t index, const void* value) {
+int array_set(Array *a, size_t index, const void *value) {
   ARRAY_ASSERT(a);
 
   if (!a || !value) return EINVAL;
