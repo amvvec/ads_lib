@@ -3,6 +3,12 @@
 
 #include "../include/array.h"
 
+#ifdef __GNUC__
+  #define MAYBE_UNUSED __attribute__((unused))
+#else
+  #define MAYBE_UNUSED
+#endif
+
 static void test_array_erase_back(void) {
   Array* a = array_init(sizeof(int));
   assert(a != NULL);
@@ -11,11 +17,11 @@ static void test_array_erase_back(void) {
 
   assert(array_size(a) == 10);
 
-  size_t cap = array_capacity(a);
+  const size_t cap MAYBE_UNUSED = array_capacity(a);
 
   assert(array_erase(a, 9) == 0);
   assert(array_size(a) == 9);
-  int v = -1;
+  int v MAYBE_UNUSED = -1;
   assert(array_get(a, 8, &v) == 0);
   assert(v == 8);
 
@@ -36,9 +42,9 @@ static void test_array_erase_middle(void) {
   assert(array_erase(a, 3) == 0);
   assert(array_size(a) == 6);
 
-  int expected[] = {0, 1, 2, 4, 5, 6};
+  int expected[] MAYBE_UNUSED = {0, 1, 2, 4, 5, 6};
   for (size_t i = 0; i < 6; ++i) {
-    int v = -1;
+    int v MAYBE_UNUSED = -1;
     assert(array_get(a, i, &v) == 0);
     assert(v == expected[i]);
   }
@@ -60,7 +66,7 @@ static void test_array_erase_front(void) {
   assert(array_erase(a, 0) == 0);
   assert(array_size(a) == 3);
 
-  int v = -1;
+  int v MAYBE_UNUSED = -1;
   assert(array_get(a, 0, &v) == 0);
 
   assert(v == 20);

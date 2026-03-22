@@ -4,6 +4,12 @@
 
 #include "../include/array.h"
 
+#ifdef __GNUC__
+  #define MAYBE_UNUSED __attribute__((unused))
+#else
+  #define MAYBE_UNUSED
+#endif
+
 static void test_array_init_and_delete(void) {
   Array* a = array_init(sizeof(int));
   assert(a != NULL);
@@ -48,8 +54,8 @@ static void test_array_insert_empty_array(void) {
   Array* a = array_init(sizeof(int));
   assert(a != NULL);
 
-  int value1 = 1;
-  size_t out = 0u;
+  int value1 MAYBE_UNUSED = 1;
+  size_t out MAYBE_UNUSED = 0u;
 
   assert(array_insert(a, &value1, 0) == 0);
   assert(array_size(a) == 1);
@@ -60,7 +66,7 @@ static void test_array_insert_empty_array(void) {
 }
 
 static void test_array_insert_null_array(void) {
-  int v = 1;
+  int v MAYBE_UNUSED = 1;
 
   assert(array_insert(NULL, &v, 0) != 0);  // NULL array
 }
@@ -78,7 +84,7 @@ static void test_array_insert_invalid_index(void) {
   Array* a = array_init(sizeof(int));
   assert(a != NULL);
 
-  int v = 1;
+  int v MAYBE_UNUSED = 1;
 
   assert(array_insert(a, &v, 1) != 0);  // index > size (array is empty)
   assert(array_insert(a, &v, 0) == 0);
