@@ -12,11 +12,11 @@ INCLUDE_DIR := include
 
 BUILD_DIR := build/$(BUILD)
 OBJECT_DIR := $(BUILD_DIR)/obj
-BIN_DIR := $(BUILD_DIR)/bin
+BINARY_DIR := $(BUILD_DIR)/bin
 
 # binary
 TARGET_EXE := launcher
 ### TEST_EXE := test_runner
 
-BINARY := $(BIN_DIR)/$(TARGET_EXE)
-### TEST_BINARY := $(BIN_DIR)/$(TEST_EXE)
+BINARIES := $(BINARY_DIR)/$(TARGET_EXE)
+### TEST_BINARY := $(BINARY_DIR)/$(TEST_EXE)

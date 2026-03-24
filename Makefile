@@ -3,9 +3,11 @@ include mk/flags.mk
 include mk/src.mk
 include mk/rules.mk
 
-.PHONY: all clean print print-config
+.PHONY: all clean rebuild
 
-all: $(BINARY)
+all: $(BINARIES)
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf build
+
+rebuild: clean all

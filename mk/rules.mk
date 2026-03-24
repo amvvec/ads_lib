@@ -1,12 +1,12 @@
-# linkage
-$(BINARY): $(OBJECTS)
-	@mkdir -p $(BIN_DIR)
-	$(COMPILER) $^ -o $@
-
-# compilation
+# compilation rule
 $(OBJECT_DIR)/src/%.o: $(SOURCE_DIR)/%.c
 	@mkdir -p $(dir $@)
 	$(COMPILER) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-# dependency
+# linkage
+$(BINARIES): $(OBJECTS)
+	@mkdir -p $(BINARY_DIR)
+	$(COMPILER) $^ -o $@
+
+# include dependencies
 -include $(OBJECTS:.o=.d)
