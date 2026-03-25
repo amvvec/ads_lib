@@ -518,29 +518,22 @@ int array_push_back(Array *a, const void *value) {
   return 0;
 }
 
-static inline int do_pop_front(Array *a) {
-  size_t bytes;
-  if (mul_overflow((a->size - 1), a->element_size, &bytes)) return EOVERFLOW;
-
-  char *base = (char *)a->data;
-
-  void *dst = base;
-  void *src = base + a->element_size;
-
-  memmove(dst, src, bytes);
-
-  return 0;
-}
-
 void array_pop_front(Array *a) {
   ARRAY_ASSERT(a);
 
   if (!a) return;
 
-  int error = do_pop_front(a);
-  if (error) return;
+  size_t _bytes;
+  if (mul_overflow((a->size - 1), a->element_size, &_bytes)) return;
+
+  char *base = (char *)a->data;
+  void *dst = base;
+  void *src = base + a->element_size;
+  memmove(dst, src, _bytes);
 
   a->size--;
+
+  ARRAY_ASSERT(a);
 }
 
 void array_pop_back(Array *a) {
