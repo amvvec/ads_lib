@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static const size_t ARRAY_INITIAL_CAPACITY = 8;
+static const size_t ARR_INIT_CAP = 8;
 
 /**
  * @invariant:
@@ -108,7 +108,7 @@ static inline int array_self_insertion_safety(const Array *a,
 }
 
 /**
- * @brief Allocates and initializes a dynamic a.
+ * @brief Allocates and initializes a dynamic array.
  *
  * Domain: element_size -> [1, SIZE_MAX]
  *
@@ -116,10 +116,10 @@ static inline int array_self_insertion_safety(const Array *a,
  *
  * @post On success (return != NULL):
  *          - a->size == 0
- *          - a->capacity == ARRAY_INITIAL_CAPACITY
+ *          - a->capacity == ARR_INIT_CAP
  *          - a->element_size == element_size
  *          - a->data != NULL
- *          - ARRAY_INITIAL_CAPACITY * element_size <= SIZE_MAX
+ *          - ARR_INIT_CAP * element_size <= SIZE_MAX
  *
  * @post On failure (return == NULL):
  *          - no memory is leaked
@@ -129,10 +129,10 @@ static inline int array_self_insertion_safety(const Array *a,
 Array *array_init(size_t element_size) {
   if (element_size == 0) return NULL;
 
-  assert(ARRAY_INITIAL_CAPACITY > 0);
+  assert(ARR_INIT_CAP > 0);
 
   size_t _bytes;
-  if (mul_overflow(ARRAY_INITIAL_CAPACITY, element_size, &_bytes)) return NULL;
+  if (mul_overflow(ARR_INIT_CAP, element_size, &_bytes)) return NULL;
 
   Array *tmp = calloc(1, sizeof(*tmp));
   if (!tmp) return NULL;
@@ -146,15 +146,15 @@ Array *array_init(size_t element_size) {
   tmp->data = data;
   tmp->size = 0;
   tmp->element_size = element_size;
-  tmp->capacity = ARRAY_INITIAL_CAPACITY;
+  tmp->capacity = ARR_INIT_CAP;
 
   return tmp;
 }
 
 /**
- * @brief Destroys the a and releases all owned memory.
+ * @brief Destroys the dynamic array and releases all owned memory.
  *
- * Domain: a may be NULL, *a may be NULL.
+ * Domain: a and *a may be NULL.
  *
  * @post If a != NULL and *a != NULL:
  *          - the internal buffer is freed
@@ -167,9 +167,7 @@ Array *array_init(size_t element_size) {
  * @note This function is idempotent when called with the same pointer.
  */
 void array_delete(Array **a) {
-  if (a == NULL) {
-    return;
-  }
+  if(!a) return;
 
   if (*a) {
     free((*a)->data);
@@ -191,10 +189,10 @@ static inline int array_reserve(Array *a) {
 
   if (a->capacity > SIZE_MAX / 2) return EOVERFLOW;
 
-  assert(ARRAY_INITIAL_CAPACITY > 1);
+  assert(ARR_INIT_CAP > 1);
 
   size_t new_capacity =
-      a->capacity ? (a->capacity * 2) : ARRAY_INITIAL_CAPACITY;
+      a->capacity ? (a->capacity * 2) : ARR_INIT_CAP;
 
   assert(a->element_size > 0);
 
