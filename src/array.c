@@ -544,18 +544,20 @@ void array_pop_front(Array *a) {
 }
 
 void array_pop_back(Array *a) {
+  ARRAY_ASSERT(a);
+  
   if (!a) return;
-
-  char *base = (char *)a->data;
 
   size_t bytes;
   if (mul_overflow(a->size, a->element_size, &bytes)) return;
-
+  
+  char *base = (char *)a->data;
   void *dst = base + bytes;
-
   memset(dst, 0, a->element_size);
 
   a->size--;
+
+  ARRAY_ASSERT(a);
 }
 
 int array_get(const Array *a, size_t index, void *value) {
