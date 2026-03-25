@@ -562,7 +562,6 @@ int array_get(const Array *a, size_t index, void *value) {
   ARRAY_ASSERT(a);
 
   if (!a || !value) return EINVAL;
-
   if (index >= a->size) return EINVAL;
 
   const char *base = (const char *)a->data;
@@ -578,7 +577,6 @@ int array_set(Array *a, size_t index, const void *value) {
   ARRAY_ASSERT(a);
 
   if (!a || !value) return EINVAL;
-
   if (index >= a->size) return EINVAL;
 
   char *base = (char *)a->data;
@@ -593,19 +591,13 @@ int array_set(Array *a, size_t index, const void *value) {
 }
 
 size_t array_size(const Array *a) {
-  if (!a) {
-    return EINVAL;
-  }
-
   return a ? a->size : 0;
 }
 
 size_t array_capacity(const Array *a) {
-  if (!a) {
-    return EINVAL;
-  }
-
   return a ? a->capacity : 0;
 }
 
-const void *array_data(Array *a) { return a ? a->data : NULL; }
+const void *array_data(Array *a) {
+  return a ? a->data : NULL;
+}
