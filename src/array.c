@@ -490,9 +490,7 @@ static inline int do_push_back(Array *a, const void *value) {
   if (mul_overflow(a->size, a->element_size, &dst_offset)) return EOVERFLOW;
 
   char *base = (char *)a->data;
-
   void *dst = base + dst_offset;
-
   memcpy(dst, value, a->element_size);
 
   return 0;
