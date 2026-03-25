@@ -211,15 +211,14 @@ static inline int array_reserve(Array *a) {
 }
 
 static inline int array_shrink_fit(Array *a) {
-  if (!a) {
-    return EINVAL;
-  }
+  ARRAY_ASSERT(a);
 
-  if (a->size == a->capacity) {
-    return 0;  // enough memory
-  }
+  if(!a) return EINVAL;
 
-  if (a->size == 0) {
+  if(a->capacity == a->size) return 0; // enough memory
+
+  if(a->size == 0)
+  {
     free(a->data);
 
     a->data = NULL;
@@ -228,18 +227,16 @@ static inline int array_shrink_fit(Array *a) {
     return 0;
   }
 
-  size_t new_bytes = 0;
-  if (mul_overflow(a->size, a->element_size, &new_bytes) != 0) {
-    return EOVERFLOW;
-  }
-
-  void *tmp = realloc(a->data, new_bytes);
-  if (!tmp) {
-    return ENOMEM;
-  }
+  size_t _bytes;
+  if(mul_overflow(a->size, a->element_size, &_bytes)) return EOVERFLOW;
+  
+  void * tmp = realloc(a->data, _bytes);
+  if(!tmp) return ENOMEM;
 
   a->data = tmp;
   a->capacity = a->size;
+
+  ARRAY_ASSERT(a);
 
   return 0;
 }
