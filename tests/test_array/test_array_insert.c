@@ -1,181 +1,200 @@
+#include "../include/array.h"
+
 #include <assert.h>
 #include <errno.h>
 
-#include "../include/array.h"
-
 #ifdef __GNUC__
-  #define MAYBE_UNUSED __attribute__((unused))
+#define MAYBE_UNUSED __attribute__((unused))
 #else
-  #define MAYBE_UNUSED
+#define MAYBE_UNUSED
 #endif
 
-static void assert_array_invariants(const Array* array MAYBE_UNUSED) {
-  assert(array != NULL);
-  assert(array_capacity(array) >= array_size(array));
+static void
+assert_array_invariants(const Array* array MAYBE_UNUSED)
+{
+    assert(array != NULL);
+    assert(array_capacity(array) >= array_size(array));
 }
 
-static void test_array_insert_into_empty(void) {
-  Array* array = array_init(sizeof(int));
-  assert(array);
+static void
+test_array_insert_into_empty(void)
+{
+    Array* array = array_init(sizeof(int));
+    assert(array);
 
-  int value MAYBE_UNUSED = 10;
+    int value MAYBE_UNUSED = 10;
 
-  assert(array_insert(array, &value, 0) == 0);
+    assert(array_insert(array, &value, 0) == 0);
 
-  assert(array_size(array) == 1);
+    assert(array_size(array) == 1);
 
-  int out MAYBE_UNUSED;
-  assert(array_get(array, 0, &out) == 0);
-  assert(out == value);
+    int out MAYBE_UNUSED;
+    assert(array_get(array, 0, &out) == 0);
+    assert(out == value);
 
-  array_delete(&array);
+    array_delete(&array);
 }
 
-static void test_array_insert_at_front(void) {
-  /// ARRANGE
+static void
+test_array_insert_at_front(void)
+{
+    /// ARRANGE
 
-  Array* array = array_init(sizeof(int));
-  assert(array);
-  assert_array_invariants(array);
-
-  const size_t initial_capacity  MAYBE_UNUSED = array_capacity(array);
-
-  /// ACT
-
-  const int values[] = {1, 2, 3, 4, 5};
-  const size_t n = sizeof(values) / sizeof(values[0]);
-
-  for (size_t i = 0; i < n; ++i) {
-    assert(array_insert(array, &values[i], 0) == 0);
-
-    // size increase
-    assert(array_size(array) == i + 1);
-
-    // invariants must hold
+    Array* array = array_init(sizeof(int));
+    assert(array);
     assert_array_invariants(array);
-  }
 
-  /// ASSERT
+    const size_t initial_capacity MAYBE_UNUSED = array_capacity(array);
 
-  for (size_t i = 0; i < n; ++i) {
+    /// ACT
+
+    const int values[] = {1, 2, 3, 4, 5};
+    const size_t n = sizeof(values) / sizeof(values[0]);
+
+    for(size_t i = 0; i < n; ++i)
+    {
+        assert(array_insert(array, &values[i], 0) == 0);
+
+        // size increase
+        assert(array_size(array) == i + 1);
+
+        // invariants must hold
+        assert_array_invariants(array);
+    }
+
+    /// ASSERT
+
+    for(size_t i = 0; i < n; ++i)
+    {
+        int out MAYBE_UNUSED;
+
+        assert(array_get(array, i, &out) == 0);
+        assert(out == values[n - i - 1]);
+    }
+
+    /// ACT
+
+    int v MAYBE_UNUSED = 100;
+
+    const size_t old_size MAYBE_UNUSED = array_size(array);
+
+    assert(array_insert(array, &v, 0) == 0);
+
+    /// ASSERT
+
+    assert(array_size(array) == old_size + 1);
+
     int out MAYBE_UNUSED;
+    assert(array_get(array, 0, &out) == 0);
+    assert(out == v);
 
-    assert(array_get(array, i, &out) == 0);
-    assert(out == values[n - i - 1]);
-  }
+    /// ASSERT
 
-  /// ACT
+    for(size_t i = 1; i < array_size(array); ++i)
+    {
+        int current MAYBE_UNUSED = 0;
+        int previous MAYBE_UNUSED = 0;
 
-  int v MAYBE_UNUSED = 100;
+        assert(array_get(array, i, &current) == 0);
+        assert(array_get(array, i - 1, &previous) == 0);
 
-  const size_t old_size MAYBE_UNUSED = array_size(array);
+        // compare with original reversed sequence
+        assert(current == values[n - i]);
+    }
 
-  assert(array_insert(array, &v, 0) == 0);
+    /// ASSERT
 
-  /// ASSERT
+    assert(array_capacity(array) >= initial_capacity);
 
-  assert(array_size(array) == old_size + 1);
+    assert_array_invariants(array);
 
-  int out MAYBE_UNUSED;
-  assert(array_get(array, 0, &out) == 0);
-  assert(out == v);
-
-  /// ASSERT
-
-  for (size_t i = 1; i < array_size(array); ++i) {
-    int current MAYBE_UNUSED = 0;
-    int previous MAYBE_UNUSED = 0;
-
-    assert(array_get(array, i, &current) == 0);
-    assert(array_get(array, i - 1, &previous) == 0);
-
-    // compare with original reversed sequence
-    assert(current == values[n - i]);
-  }
-
-  /// ASSERT
-
-  assert(array_capacity(array) >= initial_capacity);
-
-  assert_array_invariants(array);
-
-  array_delete(&array);
+    array_delete(&array);
 }
 
-static void test_array_insert_in_middle(void) {
-  Array* array = array_init(sizeof(int));
-  assert(array);
+static void
+test_array_insert_in_middle(void)
+{
+    Array* array = array_init(sizeof(int));
+    assert(array);
 
-  const int initial[] = {1, 2, 3, 4, 5};
-  const size_t initial_n = sizeof(initial) / sizeof(initial[0]);
+    const int initial[] = {1, 2, 3, 4, 5};
+    const size_t initial_n = sizeof(initial) / sizeof(initial[0]);
 
-  for (size_t i = 0; i < initial_n; ++i) {
-    assert(array_insert(array, &initial[i], i) == 0);
-  }
+    for(size_t i = 0; i < initial_n; ++i)
+    {
+        assert(array_insert(array, &initial[i], i) == 0);
+    }
 
-  const size_t initial_size MAYBE_UNUSED = array_size(array);
+    const size_t initial_size MAYBE_UNUSED = array_size(array);
 
-  int value MAYBE_UNUSED = 100;
-  assert(array_insert(array, &value, 3) == 0);
+    int value MAYBE_UNUSED = 100;
+    assert(array_insert(array, &value, 3) == 0);
 
-  const int expect[] = {1, 2, 3, 100, 4, 5};
-  const size_t expect_n = sizeof(expect) / sizeof(expect[0]);
+    const int expect[] = {1, 2, 3, 100, 4, 5};
+    const size_t expect_n = sizeof(expect) / sizeof(expect[0]);
 
-  assert(array_size(array) == initial_size + 1);
+    assert(array_size(array) == initial_size + 1);
 
-  for (size_t i = 0; i < expect_n; ++i) {
-    int out MAYBE_UNUSED;
-    assert(array_get(array, i, &out) == 0);
-    assert(out == expect[i]);
-  }
+    for(size_t i = 0; i < expect_n; ++i)
+    {
+        int out MAYBE_UNUSED;
+        assert(array_get(array, i, &out) == 0);
+        assert(out == expect[i]);
+    }
 
-  array_delete(&array);
+    array_delete(&array);
 }
 
-static void test_array_insert_at_back(void) {
-  Array* array = array_init(sizeof(int));
-  assert(array);
+static void
+test_array_insert_at_back(void)
+{
+    Array* array = array_init(sizeof(int));
+    assert(array);
 
-  const int initial[] = {1, 2, 3, 4, 5};
-  const size_t initial_n = sizeof(initial) / sizeof(initial[0]);
+    const int initial[] = {1, 2, 3, 4, 5};
+    const size_t initial_n = sizeof(initial) / sizeof(initial[0]);
 
-  for (size_t i = 0; i < initial_n; ++i) {
-    assert(array_insert(array, &initial[i], i) == 0);
-  }
+    for(size_t i = 0; i < initial_n; ++i)
+    {
+        assert(array_insert(array, &initial[i], i) == 0);
+    }
 
-  const size_t initial_size MAYBE_UNUSED = array_size(array);
+    const size_t initial_size MAYBE_UNUSED = array_size(array);
 
-  int value MAYBE_UNUSED = 100;
-  assert(array_insert(array, &value, array_size(array)) == 0);
+    int value MAYBE_UNUSED = 100;
+    assert(array_insert(array, &value, array_size(array)) == 0);
 
-  const int expect[] = {1, 2, 3, 4, 5, 100};
-  const size_t expect_n = sizeof(expect) / sizeof(expect[0]);
+    const int expect[] = {1, 2, 3, 4, 5, 100};
+    const size_t expect_n = sizeof(expect) / sizeof(expect[0]);
 
-  assert(array_size(array) == initial_size + 1);
+    assert(array_size(array) == initial_size + 1);
 
-  for (size_t i = 0; i < expect_n; ++i) {
-    int out MAYBE_UNUSED;
-    assert(array_get(array, i, &out) == 0);
-    assert(out == expect[i]);
-  }
+    for(size_t i = 0; i < expect_n; ++i)
+    {
+        int out MAYBE_UNUSED;
+        assert(array_get(array, i, &out) == 0);
+        assert(out == expect[i]);
+    }
 
-  array_delete(&array);
+    array_delete(&array);
 }
 
-static void test_array_insert_self_insertion(void) {
-  Array* array = array_init(sizeof(int));
-  assert(array);
+static void
+test_array_insert_self_insertion(void)
+{
+    Array* array = array_init(sizeof(int));
+    assert(array);
 
-  int value MAYBE_UNUSED = 1;
-  assert(array_insert(array, &value, 0) == 0);
+    int value MAYBE_UNUSED = 1;
+    assert(array_insert(array, &value, 0) == 0);
 
-  const int* p = array_data(array);
+    const int* p = array_data(array);
 
-  int error MAYBE_UNUSED = array_insert(array, p, 0);
+    int error MAYBE_UNUSED = array_insert(array, p, 0);
 
-  assert(error == EINVAL);
+    assert(error == EINVAL);
 
-  array_delete(&array);
+    array_delete(&array);
 }
 
 // static void test_array_insert_empty_at_zero(void) {
@@ -443,21 +462,23 @@ static void test_array_insert_self_insertion(void) {
 //   array_delete(&array);
 // }
 
-void run_array_insert_tests(void) {
-  test_array_insert_into_empty();
-  test_array_insert_at_front();
-  test_array_insert_in_middle();
-  test_array_insert_at_back();
-  test_array_insert_self_insertion();
-  // test_array_insert_empty_at_zero();
-  // test_array_insert_at_end_on_empty();
-  // test_array_insert_single_element_middle();
-  // test_array_insert_front_on_nonempty();
-  // test_array_insert_back_equivalent_to_push();
-  // test_array_insert_middle_single();
-  // test_array_insert_at_last_position();
-  // test_array_insert_when_full_capacity();
-  // test_array_insert_triggers_realloc();
-  // test_array_insert_no_change_enough_space();
-  // test_array_insert_back();
+void
+run_array_insert_tests(void)
+{
+    test_array_insert_into_empty();
+    test_array_insert_at_front();
+    test_array_insert_in_middle();
+    test_array_insert_at_back();
+    test_array_insert_self_insertion();
+    // test_array_insert_empty_at_zero();
+    // test_array_insert_at_end_on_empty();
+    // test_array_insert_single_element_middle();
+    // test_array_insert_front_on_nonempty();
+    // test_array_insert_back_equivalent_to_push();
+    // test_array_insert_middle_single();
+    // test_array_insert_at_last_position();
+    // test_array_insert_when_full_capacity();
+    // test_array_insert_triggers_realloc();
+    // test_array_insert_no_change_enough_space();
+    // test_array_insert_back();
 }

@@ -1,106 +1,130 @@
+#include "../include/array.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/array.h"
-
 #ifdef __GNUC__
-  #define MAYBE_UNUSED __attribute__((unused))
+#define MAYBE_UNUSED __attribute__((unused))
 #else
-  #define MAYBE_UNUSED
+#define MAYBE_UNUSED
 #endif
 
-static void test_array_init_and_delete(void) {
-  Array* a = array_init(sizeof(int));
-  assert(a != NULL);
-  array_delete(&a);
+static void
+test_array_init_and_delete(void)
+{
+    Array* a = array_init(sizeof(int));
+    assert(a != NULL);
+    array_delete(&a);
 }
 
-static void test_array_init_zero_size(void) {
-  Array* a = array_init(0);
-  assert(a == NULL);
-  array_delete(&a);
+static void
+test_array_init_zero_size(void)
+{
+    Array* a = array_init(0);
+    assert(a == NULL);
+    array_delete(&a);
 }
 
-static void test_array_init_large_size(void) {
-  size_t size = (((size_t)-1) / 2);
+static void
+test_array_init_large_size(void)
+{
+    size_t size = (((size_t) -1) / 2);
 
-  Array* a = array_init(size);
+    Array* a = array_init(size);
 
-  assert(a == NULL);
+    assert(a == NULL);
 
-  array_delete(&a);
+    array_delete(&a);
 }
 
-static void test_array_delete_null(void) { array_delete(NULL); }
-
-static void test_array_delete_nonempty(void) {
-  Array* a = array_init(sizeof(int));
-
-  assert(a != NULL);
-
-  array_delete(&a);
+static void
+test_array_delete_null(void)
+{
+    array_delete(NULL);
 }
 
-static void test_array_delete_double(void) {
-  Array* a = array_init(sizeof(int));
-  assert(a != NULL);
+static void
+test_array_delete_nonempty(void)
+{
+    Array* a = array_init(sizeof(int));
 
-  array_delete(&a);
-  array_delete(&a);
+    assert(a != NULL);
+
+    array_delete(&a);
 }
 
-static void test_array_insert_empty_array(void) {
-  Array* a = array_init(sizeof(int));
-  assert(a != NULL);
+static void
+test_array_delete_double(void)
+{
+    Array* a = array_init(sizeof(int));
+    assert(a != NULL);
 
-  int value1 MAYBE_UNUSED = 1;
-  size_t out MAYBE_UNUSED = 0u;
-
-  assert(array_insert(a, &value1, 0) == 0);
-  assert(array_size(a) == 1);
-  assert(array_get(a, 0, &out) == 0);
-  assert(out == 1);
-
-  array_delete(&a);
+    array_delete(&a);
+    array_delete(&a);
 }
 
-static void test_array_insert_null_array(void) {
-  int v MAYBE_UNUSED = 1;
+static void
+test_array_insert_empty_array(void)
+{
+    Array* a = array_init(sizeof(int));
+    assert(a != NULL);
 
-  assert(array_insert(NULL, &v, 0) != 0);  // NULL array
+    int value1 MAYBE_UNUSED = 1;
+    size_t out MAYBE_UNUSED = 0u;
+
+    assert(array_insert(a, &value1, 0) == 0);
+    assert(array_size(a) == 1);
+    assert(array_get(a, 0, &out) == 0);
+    assert(out == 1);
+
+    array_delete(&a);
 }
 
-static void test_array_insert_null_value(void) {
-  Array* a = array_init(sizeof(int));
-  assert(a != NULL);
+static void
+test_array_insert_null_array(void)
+{
+    int v MAYBE_UNUSED = 1;
 
-  assert(array_insert(a, NULL, 0) != 0);  // NULL value
-
-  array_delete(&a);
+    assert(array_insert(NULL, &v, 0) != 0); // NULL array
 }
 
-static void test_array_insert_invalid_index(void) {
-  Array* a = array_init(sizeof(int));
-  assert(a != NULL);
+static void
+test_array_insert_null_value(void)
+{
+    Array* a = array_init(sizeof(int));
+    assert(a != NULL);
 
-  int v MAYBE_UNUSED = 1;
+    assert(array_insert(a, NULL, 0) != 0); // NULL value
 
-  assert(array_insert(a, &v, 1) != 0);  // index > size (array is empty)
-  assert(array_insert(a, &v, 0) == 0);
-
-  array_delete(&a);
+    array_delete(&a);
 }
 
-void run_array_smoke_tests(void) {
-  test_array_init_and_delete();
-  test_array_init_zero_size();
-  test_array_init_large_size();
-  test_array_delete_null();
-  test_array_delete_nonempty();
-  test_array_delete_double();
-  test_array_insert_empty_array();
-  test_array_insert_null_array();
-  test_array_insert_null_value();
-  test_array_insert_invalid_index();
+static void
+test_array_insert_invalid_index(void)
+{
+    Array* a = array_init(sizeof(int));
+    assert(a != NULL);
+
+    int v MAYBE_UNUSED = 1;
+
+    assert(array_insert(a, &v, 1) != 0); // index > size (array is empty)
+    assert(array_insert(a, &v, 0) == 0);
+
+    array_delete(&a);
+}
+
+void
+run_array_smoke_tests(void)
+{
+    test_array_init_and_delete();
+    test_array_init_zero_size();
+    test_array_init_large_size();
+    test_array_delete_null();
+    test_array_delete_nonempty();
+    test_array_delete_double();
+    test_array_insert_empty_array();
+    test_array_insert_null_array();
+    test_array_insert_null_value();
+    test_array_insert_invalid_index();
 }

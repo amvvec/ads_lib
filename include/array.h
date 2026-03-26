@@ -26,4 +26,4 @@ size_t array_size(const Array* array);
 
 const void* array_data(Array* a);
 
-#endif  // !ARRAY_H
+#endif // !ARRAY_H

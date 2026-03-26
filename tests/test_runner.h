@@ -3,4 +3,4 @@
 
 void test_runner(void);
 
-#endif  // !TEST_RUNNER_H
+#endif // !TEST_RUNNER_H
