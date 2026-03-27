@@ -98,7 +98,7 @@ mul_overflow(size_t a, size_t b, size_t* out)
 #if defined(__GNUC__) || defined(__clang__)
     return __builtin_mul_overflow(a, b, out);
 #else
-    if(b != 0 || a > SIZE_MAX / b) return EOVERFLOW;
+    if(b != 0 && a > SIZE_MAX / b) return EOVERFLOW;
     *out = a * b;
     return 0;
 #endif
