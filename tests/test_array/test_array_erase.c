@@ -88,7 +88,7 @@ test_array_erase_invalid(void)
     Array* a = array_init(sizeof(int));
     assert(a != NULL);
 
-    assert(array_push_back(a, &(int) {42}) == 0);
+    assert(array_push_back(a, &(int){42}) == 0);
 
     assert(array_erase(a, 1) == EINVAL);
     assert(array_erase(a, SIZE_MAX) == EINVAL);

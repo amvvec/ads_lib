@@ -8,7 +8,7 @@
 int
 main(void)
 {
-    srand((unsigned) time(NULL));
+    srand((unsigned)time(NULL));
     test_runner();
     return 0;
 }

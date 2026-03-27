@@ -17,7 +17,7 @@ AlwaysBreakAfterDefinitionReturnType: All
 AlwaysBreakAfterReturnType: AllDefinitions
 BreakBeforeBraces: Allman
 BreakBeforeTernaryOperators: true
-ColumnLimit: 80
+ColumnLimit: 100
 IncludeBlocks: Regroup
 IndentCaseLabels: true
 IndentWidth: 4 # do not use with UseTab function
@@ -27,7 +27,7 @@ MaxEmptyLinesToKeep: 1
 PointerAlignment: Left
 ReflowComments: false
 SortIncludes: true
-SpaceAfterCStyleCast: true
+SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: Never

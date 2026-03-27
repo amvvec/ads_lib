@@ -1,0 +1,2317 @@
+[33mcommit 9946a9f3a4863b7b881f0592e8617d3546e405f9[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Mar 26 21:40:06 2026 +0300
+
+    clang-format: update and use
+
+[33mcommit 596d078c77a99e8fb589ff6e2c727be19060d19c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 25 11:46:12 2026 +0300
+
+    refactor(array): simplify array_shrink_fit
+
+[33mcommit 9787882f2ccad840816b4decc9e765e581599591[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 25 11:42:45 2026 +0300
+
+    refactor(array): simplify do_push_back
+
+[33mcommit 4b44b5ecf559df3092f9ebc09674d26991022126[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 25 11:35:11 2026 +0300
+
+    refactor(array): simplify array_pop_front
+
+[33mcommit 5b9acd4ebbcda0fbe9af9152ef330536d9de6f52[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 25 11:34:25 2026 +0300
+
+    refactor(array): simplify array_pop_back
+
+[33mcommit 184449cacf535ba8050b09cb5928c0d8b58ba9da[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 25 11:28:58 2026 +0300
+
+    refactor(array): update getters and setters
+
+[33mcommit a160481b0e88b2a60dea7c11b0fb5f1f7a5d333b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 25 11:24:04 2026 +0300
+
+    refactor(array): update contracts and safety checks
+
+[33mcommit f50f4309d8442880539740c9d930c579e87fcb9d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Mar 24 04:51:15 2026 +0300
+
+    build(make): fix Makefile precedense
+
+[33mcommit 9b327ad0aa8deb7ea589972da82dfbdbaa90a7fb[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Mar 22 17:13:52 2026 +0300
+
+    test(array): add MAYBE_UNUSED parameter to unused variables (-Werror)
+
+[33mcommit 0af292e8d07fa010d9cdd35cde924afd7ccf2e04[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Mar 21 05:00:35 2026 +0300
+
+    refactor(array): update overflow check helpers' API
+
+[33mcommit c73b6373b45a2972d18513bf719bd5e78b0e994c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Mar 22 16:50:07 2026 +0300
+
+    build(make): modularize build system and add dependency tracking
+
+[33mcommit 262a11f288c049ca22816b30b50ea2943bfb5c71[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 18 19:53:58 2026 +0300
+
+    refactor(array): array_init
+
+[33mcommit dccae0dde6b52ff49853034cd07025620dd2760d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 18 19:43:53 2026 +0300
+
+    refactor(array): rewrite array setter and getter
+
+[33mcommit e0565fbb7ff3e972f87ffd8f01ea366922edb1b1[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 18 19:19:15 2026 +0300
+
+    refactor(array): decompose array_pop_back
+
+[33mcommit 78a87e158887b3420ac11a669362b2366cf7f6dd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 18 19:16:29 2026 +0300
+
+    refactor(array): decompose array_pop_front
+
+[33mcommit 0b72267f57fe57b1c4337eec0fc06f50aa6f9d9a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 18 19:10:05 2026 +0300
+
+    refactor(array): decompose array_push_back
+
+[33mcommit 59424fd7965da338157e21a812f8a88e37e5f91b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 18 17:25:13 2026 +0300
+
+    test(array): update test_array_insert_at_fronty
+
+[33mcommit 9dc565ad583bba89e2c8dc9e1d9ccba4f67c1315[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Mar 15 17:57:11 2026 +0300
+
+    refactor(array): add array_ensure_capacity to min code doubling
+
+[33mcommit fad02180e203017b26e1976a473bbc8533643241[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Mar 15 17:25:45 2026 +0300
+
+    refactor(array): array_push_back
+
+[33mcommit d6c2ce9efaa40e52ab0a2fabf4b9ccf12eda93be[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Mar 15 17:15:30 2026 +0300
+
+    feat(array): add self-isnsertion safety function
+
+[33mcommit 08472e21d9573141cb2c635bb40b38eac38e9d21[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Mar 15 17:06:39 2026 +0300
+
+    fix(array): add self-insertion safety for array_push_front
+
+[33mcommit 6dc848b98535b30240f4ef1fe1e14584358eb694[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Mar 15 07:26:44 2026 +0300
+
+    update and use clang-format
+
+[33mcommit ee5b73962cb5af93f6896cd36fa3d293fc01b89c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Mar 15 05:50:02 2026 +0300
+
+    refactor(array): decompose array_push_front
+
+[33mcommit ee5e09f2e79bd0d5875a8f741dc65946f629f113[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Mar 14 20:35:16 2026 +0300
+
+    fix(array): add self-insertion safety
+
+[33mcommit 081b52d7c34538f4ccdd610f151c75b8447b3916[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Mar 14 19:50:04 2026 +0300
+
+    test(array): add self-insertion test
+
+[33mcommit 76ed2bab7dc14fb11df61dacfaa7dde8e0e1eaf3[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Mar 14 16:23:28 2026 +0300
+
+    update README
+
+[33mcommit 6c7186c8542c651a5f103e10cd0cdd52966175aa[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Mar 14 16:08:42 2026 +0300
+
+    feat(array): add a->data getter
+
+[33mcommit 142c911e8ac565e88081643358d2e61068e0f870[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Mar 14 15:56:34 2026 +0300
+
+    refactor(array): decompose array_erase
+
+[33mcommit 85d173d4b9a9869a4d33ce163396a746079efe6c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Mar 14 13:52:48 2026 +0300
+
+    fix(array): delete unnecessary decompose
+
+[33mcommit e23790bc6187e3ef849487dd8fdecc906657c1a2[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Mar 13 11:30:48 2026 +0300
+
+    fix(array): fix bug in array_erase with tail bytes compute
+
+[33mcommit 4eec7a0c2d4e0d3f304b3678dd0188e6e9ba9b5b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Mar 13 02:35:05 2026 +0300
+
+    refactor(array): decompose array_capacity_grow
+    
+    split capacity growth logic into small helpers
+
+[33mcommit 5d769514e45070d370abd3678725901eba02dd6c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Mar 13 01:39:20 2026 +0300
+
+    add compiler extension macro for mul_overflow
+
+[33mcommit 63ba14654d24ff8c87248b75dc3d91819bbe02ed[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Mar 13 01:37:21 2026 +0300
+
+    add compiler extension macro for sub_overflow
+
+[33mcommit 3458f93ec5e0a9069c91f528012c40cfde03af4e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Mar 13 01:30:41 2026 +0300
+
+    add compiler extension macro for add_overflow
+
+[33mcommit 1e949e8f424101556118d07314ce8645bc9ac39d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Mar 9 16:43:37 2026 +0300
+
+    simplify array_insert helpers
+
+[33mcommit 982e4b4a92858b0e16e6d7d08ca498cd2d6b1f5e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Mar 9 16:41:15 2026 +0300
+
+    delete: array_insert_new_size. use increment instead
+
+[33mcommit de7ef6a3c867f75353c6d4f5ef8775cab7a02708[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Mar 7 23:01:24 2026 +0300
+
+    test(array_insert): add test_array_insert_at_back
+
+[33mcommit d04af007beeac04fbfdbc59830cc3c7f8942ca5d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Mar 7 22:55:02 2026 +0300
+
+    test(array_insert): add test_array_insert_in_middle
+
+[33mcommit 29ee10e7af36741c8208b0398856a1fc2d61e32c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Mar 6 20:13:49 2026 +0300
+
+    test(array_insert): refactor test_array_insert_at_front
+
+[33mcommit 515ae3d54db75c0d16c4d9be6d06f05afc18cf2f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Mar 6 19:41:50 2026 +0300
+
+    test(array_insert): add test_array_insert_into_front
+
+[33mcommit 51090ec0cee77a253f935465beff7f72bc413bbd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Mar 6 19:22:46 2026 +0300
+
+    test(array_insert): add test_array_insert_into_empty
+
+[33mcommit 95ce547b46235843c6b2d9c174d75305d4d80104[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Mar 5 19:12:10 2026 +0300
+
+    refactor(array_insert): update contracts and finish orchestration
+
+[33mcommit 166ef9c8a77bad88d1c76663b1b6a7508f47971a[m
+Merge: 67d83d0 2eb176a
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Mar 4 23:02:37 2026 +0300
+
+    Merge branch 'dev'
+
+[33mcommit 2eb176a260ad8a623f9f5dc03a54280769187c3b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Feb 28 14:22:53 2026 +0300
+
+    update .gitignore
+
+[33mcommit 67d83d0f1969154413670d18d2941fa567526249[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Feb 28 14:22:53 2026 +0300
+
+    update .gitignore
+
+[33mcommit 5c887938d5c79f98ff862c4c91356d2fab9bf92f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Feb 25 19:20:08 2026 +0300
+
+    edit: update array_insert contract
+
+[33mcommit 248ea19f3d2f7049ed50c49fce53cc18f4474f59[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Feb 24 16:54:01 2026 +0300
+
+    refactor(array): turn array_insert into orchestration layer
+
+[33mcommit cc9ff07614c61565d2f5ae7c9820de5f5cdfdaaf[m
+Merge: 82c6bcd 184cbb5
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Feb 20 20:39:26 2026 +0300
+
+    Merge branch 'refactor'
+
+[33mcommit 184cbb588f151ee1c35a7e5aed7a857f07b5b6ec[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Feb 20 17:51:14 2026 +0300
+
+    update whole directory
+    delete unused garbage
+
+[33mcommit 82c6bcd8545cb8406c5e0044f91fbe3cb60a6a6a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Feb 20 17:51:14 2026 +0300
+
+    update whole directory
+    delete unused garbage
+
+[33mcommit e41d1f68b8c837a4e944cb3b53bcffa550dad25e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Feb 20 17:43:14 2026 +0300
+
+    refactor array_invariant_check
+    add ARRAY_DEBUG helper
+
+[33mcommit 459774e943cb8896862ec34417288afafae8cd0a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Feb 20 13:46:53 2026 +0300
+
+    refactor array_insert
+    start of function decompose
+
+[33mcommit 118cb5c487685016f9201d2c03b37dfbfd10c479[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Feb 18 23:48:33 2026 +0300
+
+    refactor array_capacity_grow
+    remove if(a.element_size == 0) check
+    because if elem_size is corrupted then thats very wrong
+    should have add assert for the invariant
+
+[33mcommit f59d16e726ffcd192b0187547c8dda2419d96239[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Feb 18 16:12:55 2026 +0300
+
+    refactor array_delete
+    assume that *a == NULL which is safe for free()
+
+[33mcommit 4b68fa0d2584a9bced2b17a191a2d31ac07d7b29[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Feb 18 16:09:29 2026 +0300
+
+    update contract of array_delete
+
+[33mcommit f00da895968969dba523be37e9a6686bcc39a419[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Feb 16 16:02:14 2026 +0300
+
+    update ARR_INIT_CAP -> ARRAY_INITIAL_CAPACITY
+    add assert ARRAY_INITIAL_CAPACITY > 0 in array_init
+
+[33mcommit aa3d9b8293ba72ce2f550bca49e43f5153d45d95[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Feb 16 15:56:41 2026 +0300
+
+    refactor array_init
+    Array *tmp is now initiates with 1 instead of garbage
+
+[33mcommit dd78edbf95c9e23d675669efdbe07921579ced80[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Feb 15 14:32:11 2026 +0300
+
+    update and refactor overflow detection helpers and their contracts
+
+[33mcommit 4260cdbf55991ecf8a76854d097c715ee729364a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Feb 11 13:23:50 2026 +0300
+
+    refactor and simplify sub_underflow
+
+[33mcommit 6ee69054f4fdec3c480266df8038ed9b82519a9a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Feb 11 13:20:00 2026 +0300
+
+    refactor and simplify add_overflow
+
+[33mcommit b45e795f6a51a2a155b85fc800ed3127729b60df[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Feb 10 21:22:41 2026 +0300
+
+    update invariants list and opaque Array type
+
+[33mcommit 311935196f87a59989ff151bbb251f84a46c15df[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Feb 7 17:02:33 2026 +0300
+
+    add array_invariant function
+    use for assertion invaiants in other function
+
+[33mcommit 1eca28136ffc92fd0ac62df5f2c93af0d7cdab2f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Feb 5 04:35:53 2026 +0300
+
+    update invariant list
+    refactor array_init to commit model
+
+[33mcommit 462a1dfcdb22a311ff175c4df7a3ec72600bf051[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Feb 4 10:39:37 2026 +0300
+
+    add contract to array_init
+
+[33mcommit e80190f72fd9b52e0ba448b76730cd97d2d7bc8d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Feb 1 16:18:55 2026 +0300
+
+    update and refactor sub_underflow function
+    update contract, add math proofs
+
+[33mcommit 8bc84e15c01589bf494f5dbd899bb2c4cc527a7d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Feb 1 15:55:46 2026 +0300
+
+    update contract of add_overflow
+
+[33mcommit 7869c9eb4689952216f23c45f7e81766abb65f94[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Feb 1 15:52:12 2026 +0300
+
+    update and refactor add_overflow function
+    update contract, add math proofs
+
+[33mcommit 33da99015e85491ffe50595a6dc231728a434f72[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Jan 31 11:11:44 2026 +0300
+
+    add test_array_erase_empty
+
+[33mcommit 65a4d1fe991484799b9ca4740bebe7bdc5169e46[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Jan 30 13:15:21 2026 +0300
+
+    add test_array_erase_invalid
+
+[33mcommit 9f152d47b84462654f9f87546114414b0079f9f7[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Jan 29 01:21:21 2026 +0300
+
+    add test_array_erase_front
+
+[33mcommit 5305c197f54baafc816f46e8f75424b66c1d1976[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 28 06:59:21 2026 +0300
+
+    add test_array_erase_middle
+
+[33mcommit 8d39e95eb2282c4c36c4302ef71b6d24190e34dd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Jan 27 17:14:51 2026 +0300
+
+    fix UB
+    in test_array_erase_back:assert(array_erase(a, 9) == 0);
+    const size_t tail_bytes_count = a->size - (index - 1); defected
+    after mul_overflow check there was UB
+
+[33mcommit ec5631349b67a03e063c93ecef15696753b6c1da[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Jan 27 17:05:23 2026 +0300
+
+    add tests to array_erase
+
+[33mcommit 4dfee6da6793737ed8c8b3b1a7f4a4b86cf81f76[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Jan 26 12:12:12 2026 +0300
+
+    refactor vector container
+
+[33mcommit e7d9b96af900b47f557b72a53cb6fda7737d5378[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Jan 25 11:41:29 2026 +0300
+
+    refactor array_push_back
+    add mul_overflow check
+
+[33mcommit fe6eecb1f9b3498e977d12de5f0817cda94553bc[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Jan 25 11:32:51 2026 +0300
+
+    refactor array_push_front
+    fix mul_overflow cast
+
+[33mcommit b7e2d30050138355b2824eafd71f0a5ae85abf2e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Jan 24 09:45:21 2026 +0300
+
+    update contract of array_erase
+
+[33mcommit 25a629bf6fb8a627b93d0838a10259075b9d1652[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Jan 23 11:19:41 2026 +0300
+
+    use sub_overflow function in other functions
+
+[33mcommit 3d3deb0d383cfec1c6f7c1df9735f9b809899877[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Jan 23 11:11:24 2026 +0300
+
+    add subtraction overflow check function
+
+[33mcommit e8f73e677e355f6148773aae5e933a230afa3779[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Jan 22 21:42:59 2026 +0300
+
+    refactor array_erase
+    add multiply_overflow checks
+
+[33mcommit b77b41e2c346207f76251ee765f2d127c8054135[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 21 12:24:06 2026 +0300
+
+    update array tests
+
+[33mcommit 815c18f98591da84cdcb1c97e5d3d914898192d9[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 21 12:19:06 2026 +0300
+
+    fix function missuse
+
+[33mcommit f43717ea4f616a7f00af5ee2fc59f9b475dc8f7f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 21 12:13:51 2026 +0300
+
+    update contract of array_insert
+
+[33mcommit 10de82b3c206ed7f4138c538402c49f39ed0934c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 21 11:57:32 2026 +0300
+
+    delete useless asserts
+
+[33mcommit 90133052be9b521fbcc64de1c7a0506fd0b4b672[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 21 11:52:21 2026 +0300
+
+    refactor array_delete
+    use out-parameter idiom
+
+[33mcommit d566e0b2d5a734105b247130a1ad430f980b1bf2[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 21 11:23:53 2026 +0300
+
+    update contract of array_delete
+
+[33mcommit d28264fbb9dd9971ccbf7288296a6ad687930db8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Jan 20 16:02:51 2026 +0300
+
+    update contract of array_capacity_grow
+
+[33mcommit 5e6a842a33ccd2bdc33b55af968c3cf61a0910c5[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Jan 19 18:31:51 2026 +0300
+
+    refactor array_init
+    new_bytes can be 0 and a.data malloc leads to UB
+
+[33mcommit 5a11275e83a0f673dd90324fc707ae3fe46e9b15[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Jan 18 10:33:07 2026 +0300
+
+    update array_capacity_grow
+    add debug asserts
+
+[33mcommit 56f4c9eb9b01d57b08d98e62d2ec60bc369f369e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Jan 17 14:01:21 2026 +0300
+
+    refactor array_capacity_grow and delete dead code
+
+[33mcommit 554155dedd52f7cdf01768b65a68dcc644aaaa38[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Jan 16 02:04:21 2026 +0300
+
+    refactor array_capacity_grow
+    fix bug with UB in new_data realloc
+    UB would appear if new_bytes == 0
+    realloc return UB if bytes_move == 0
+
+[33mcommit 2c66a56ee383b2c39cbb6ffa12b80c1db0248ec5[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Jan 15 22:51:22 2026 +0300
+
+    upgrade Makefile
+    add ASAN, UBSAN, and LSAN
+
+[33mcommit 7dda6448d3ef3f73e39cc2aa8d27904c49bcefa5[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 14 18:44:32 2026 +0300
+
+    refactor and format Makefile
+
+[33mcommit 4d7ebf8cb0fd916cce7f4699a5c0581ec678f5c2[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 14 18:07:32 2026 +0300
+
+    update Makefile
+
+[33mcommit eebb83a1ef6a9daf46ee912df33778d9ecaa4587[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Jan 13 09:33:59 2026 +0300
+
+    refactor array_insert
+    add push_back option
+
+[33mcommit 8df17b453587dcc0cef8087bcf4b6ef075aeb954[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Jan 12 12:22:31 2026 +0300
+
+    update clang-format
+
+[33mcommit 74c2594f78ab031802ad779f80d86127e5b747f6[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Jan 12 12:19:39 2026 +0300
+
+    update array_insert contract and comments
+
+[33mcommit d498c6e9a803add793b95e7a6f9b7c2147cb4a3a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Jan 11 10:02:32 2026 +0300
+
+    refactor getters array_size and array_capacity
+
+[33mcommit 445007677fd150cf22a5cf5f18a3d93e1588eaee[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Jan 10 09:33:12 2026 +0300
+
+    refactor array_push_back
+
+[33mcommit 8388895123f0a7a403b25fda4345f058ebbfaabd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Jan 9 12:59:51 2026 +0300
+
+    update Makefile
+    add compilator's use-after-free option
+
+[33mcommit 9818f358cbf75f5864c70780fb311d87c6c5b65f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Jan 9 12:43:32 2026 +0300
+
+    refactor array_erase
+
+[33mcommit 5d02f6b88734b026821a45849340e4f4ea3990ad[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Jan 9 11:55:30 2026 +0300
+
+    refactor array_erase
+
+[33mcommit e605f4d1f62b8849b95058a09205839d891293f7[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Jan 8 10:39:12 2026 +0300
+
+    refactor array_insert
+
+[33mcommit 674a7d6b514663e4c77325199d8328cae34312ce[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Jan 8 10:36:32 2026 +0300
+
+    add contract to array_delete
+
+[33mcommit e6a722e939cb3c077378730b820d46d5f65dbc8f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 7 09:24:49 2026 +0300
+
+    refactor multiply_overflow
+
+[33mcommit d6a2b3572116b7e215200a61857512869dde9b9f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 7 10:23:50 2026 +0300
+
+    update array_insert contract
+
+[33mcommit 624d25bf11af1089fa01f0d9dc94219e3fb4a489[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 7 10:18:02 2026 +0300
+
+    refactor add_overflow
+
+[33mcommit 75eeeb52142c151839cc576ceb25b8f9a034881d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 7 10:16:20 2026 +0300
+
+    add add_overflow
+    use for a.size increment and memmove operation
+
+[33mcommit ac87b4e00c55791d33d32047a8d15bd578691e75[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Jan 7 10:10:41 2026 +0300
+
+    add a.element_size entry check before a mul_overflow check
+
+[33mcommit 052b307cc78b930c2b4f944b76d6221917e466ee[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Jan 6 07:41:10 2026 +0300
+
+    delete unused MAX_ELEMENT_SIZE
+    fix bug with mul in array_insert with valid new_bytes
+    refactor array_init
+
+[33mcommit e073e81665273c2610ec294b8fbcbf890c7d5f3c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Jan 5 16:08:41 2026 +0300
+
+    delete is_valid_element_size
+    because it is interfere ARRAY_INIT_CAPACITY strategy in future
+    add element_size check in array_init
+
+[33mcommit 338f5d52e83b2007219b3680eaf287dc76c84311[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Jan 5 16:01:05 2026 +0300
+
+    refactor multiply_overflow
+
+[33mcommit 986355a11b96923327666d23dfaca4080fb3f856[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Jan 4 04:22:06 2026 +0300
+
+    refactor array_capacity_grow
+    delete a.size == SIZE_MAX check
+
+[33mcommit 139fdd4266b8544e30c1de1975af7f5b8c543153[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Jan 4 03:57:41 2026 +0300
+
+    refactor array_shrink_fit
+
+[33mcommit 16493d47c5b0b2c1ad0636b9a3e51ee07e7d94af[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Jan 4 03:41:22 2026 +0300
+
+    delete array_grow_to_helper
+    refactor array_grow
+    every capacity grow now provided by array_grow
+    invariants are guarantee
+
+[33mcommit e1c6eb9cfccf2e417ffbf01740f681375a7d2c00[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Jan 3 20:26:19 2026 +0300
+
+    refactor array_grow_to
+
+[33mcommit b96232baf55adb2bde6c642afaecd64153a3a0ab[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Jan 3 19:51:21 2026 +0300
+
+    refactor array_init
+
+[33mcommit c5dd1585feef850cf182a5007d617dd0eb69be18[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Jan 2 15:22:31 2026 +0300
+
+    update MAX_ELEMENT_SIZE
+
+[33mcommit 5a02a8e1d5e602d3e8b95a4358c3a6d91b772523[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Jan 2 15:21:55 2026 +0300
+
+    refactor multiply_overflow
+
+[33mcommit b191aad7a66b62f114646b018992a2d8a82451be[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Jan 1 08:49:21 2026 +0300
+
+    add ARR_INIT_CAP variable
+
+[33mcommit 27929188a9b792fd192e9f0f9c90b5d09a45c73b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Jan 1 08:46:21 2026 +0300
+
+    add capacity check in array_capacity_grow_helper
+
+[33mcommit 682520d3739880320f827367d7c9d0c3c6917100[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Jan 1 08:31:06 2026 +0300
+
+    add test_array_insert_no_change_enough_space
+
+[33mcommit 1bb05be335b3e858aea745722691a2119722080c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 31 12:59:53 2025 +0300
+
+    add test_array_insert_triggers_realloc
+
+[33mcommit a4c2281874fb40b5a6fd9750c303f2d52c37e308[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 30 17:31:12 2025 +0300
+
+    add test_array_insert_when_full_capacity
+
+[33mcommit d23d2e8357dc5367074bb1df454fb9c814d56736[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 29 14:44:59 2025 +0300
+
+    add test_array_insert_at_last_position
+
+[33mcommit 8d09110f681f0f3eb0c62a0a5e9127cd8d152453[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Dec 28 16:51:31 2025 +0300
+
+    add test_array_insert_middle_single
+
+[33mcommit b002a4e2a4c7ac6d13ca3a407f8506f31bae5288[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 27 20:21:41 2025 +0300
+
+    add test_array_insert_back_equivalent_to_push_back
+
+[33mcommit a97a91cd4e583fa23f33c979add56229eaf9ccc4[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Dec 26 23:19:52 2025 +0300
+
+    add test_array_insert_front_on_nonempty
+
+[33mcommit 100447298b05710b35ae6850eac0c1bf0123d0a6[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 25 19:31:11 2025 +0300
+
+    add test_array_insert_single_element_middle
+
+[33mcommit 5a1cce8fc5eb029cfef6f4d509e8b0f81d333845[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 24 14:58:21 2025 +0300
+
+    add test_array_insert_at_end_on_empty
+
+[33mcommit 7899a270c66f2f8632c8c356dade1521c9d3e951[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 24 14:51:19 2025 +0300
+
+    add test_array_insert_empty_at_zero
+
+[33mcommit edd3c1c61de5e7c2b08775c351b627e012c9c6fd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 23 10:16:28 2025 +0300
+
+    update assert_array_invariants
+    leave universal invariant to fit any other test functions
+
+[33mcommit 481c5dca4ed10e3134f5fcaac3c40f30f2cae05e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 23 09:41:19 2025 +0300
+
+    update array_insert tests
+
+[33mcommit 19e5afbbec4127037a966e0d143aba0e8c54b158[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 23 07:12:51 2025 +0300
+
+    update assert_array_invariants
+
+[33mcommit 961a07d510254334439d36bbeeb5c129a8d5b0ce[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 22 23:09:44 2025 +0300
+
+    add assert_array_invariants
+
+[33mcommit 3c875511d9400472241ce6433d7943f0e1631ec1[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Dec 21 12:22:41 2025 +0300
+
+    update Makefile
+
+[33mcommit 8acc3aba0c5a7db36cd41476b8cfa30c0cd719b1[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 20 13:52:50 2025 +0300
+
+    update array_insert
+
+[33mcommit cd83efb54d598b8e266064a0f1928eb7e401f9e8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 20 00:12:41 2025 +0300
+
+    move a->element_size check before array_capacity_grow
+
+[33mcommit 1bf7e28d0850b443dacc5290ed7ac9d3357968e9[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 20 00:11:51 2025 +0300
+
+    add safety before a->size++
+
+[33mcommit 02afbce454a080d4b50def3ade55e90c8ffe8971[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 20 00:05:33 2025 +0300
+
+    update object variable safety check
+    a->capacity must be more than a->size
+
+[33mcommit 8404933870df37bcd7c0a9a8b3e9d4dfae973b38[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 20 00:03:12 2025 +0300
+
+    add check for a->element_size
+
+[33mcommit 780b53fe72f6373058558cb4e4f6e72891f33b2b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Dec 19 23:07:44 2025 +0300
+
+    add a->size overflow check in array_insert
+
+[33mcommit 65363e25a706700e2da44ba4458a17c406b0041a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Dec 19 22:52:11 2025 +0300
+
+    add invariant safety check in array_insert after array_capacity_grow_helper
+
+[33mcommit b41c8d064b3b7571b43fcd299f6b5e8db0fc8968[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 18 15:55:21 2025 +0300
+
+    add list of array invariants to the array incapsulation
+    remove @invariant index < a->size because there already is @pre index <= array_size(a)
+
+[33mcommit 32146c4ee9d223a08416ab6582636e313d87cffd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 18 15:32:19 2025 +0300
+
+    add input safety check and invariant check
+
+[33mcommit bd191032556cd2e63f89049f514d660b22d235cd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 18 15:23:51 2025 +0300
+
+    delete offset_helper
+    refactor array_erase
+
+[33mcommit 5c338fa14c6ac3a7d93ae12336bde489f65f7d40[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 17 13:03:43 2025 +0300
+
+    update array_insert tests
+
+[33mcommit abb72f5787025869bc6d25b5f60176f4af5682cf[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 17 12:59:09 2025 +0300
+
+    update array_insert tests
+
+[33mcommit 65c73f5bbe98f54bcc6ff4d5d844aefd434f0112[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 17 12:55:39 2025 +0300
+
+    update contract of array_insert
+    add array_capacity_grow_helper
+
+[33mcommit a20bd4fbf29529af170d997e688534e746c26d90[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 17 11:25:06 2025 +0300
+
+    move array insert tests to separate file
+
+[33mcommit b3b3b8eb63e6c32320b82a6f2ee546e882af6e19[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 17 11:13:28 2025 +0300
+
+    update test_array_insert_front
+
+[33mcommit f38c042972b0c52c3eeb217ce3a6307e22ded2ae[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 16 18:12:59 2025 +0300
+
+    refactor array_insert
+
+[33mcommit 051aa3c2c973aab7be4161d4565b3993dea62683[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 16 16:02:01 2025 +0300
+
+    update .gitignore
+
+[33mcommit 9692627583e99047de98f9e82d20488e94bb7684[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 16 16:01:48 2025 +0300
+
+    refactor capacity ensurence in array_insert
+
+[33mcommit 95dcd8486a3944de4b55a5d892dc84fb886bf05e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 22:25:21 2025 +0300
+
+    rename mult_overflow_size_t -> mult_overflow
+
+[33mcommit cfc01fe11bcf49ac07bf483909ef4c58f623dc3e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 22:19:09 2025 +0300
+
+    update test_array_insert_back
+    capacity initiate with ARR_INIT_CAP
+
+[33mcommit 92832bd2b259f96be4b1374167bbd2a67dd44d25[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 22:14:21 2025 +0300
+
+    refactor array_init
+    a->data allocates memory
+    a->capacity initiate
+
+[33mcommit 36fd067bdfdff4c4d96f09675e663935266b8f88[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 22:02:37 2025 +0300
+
+    refactor array_init
+    add a = NULL
+
+[33mcommit 3699732dbead1da9ce2d2ca8356c0469bb0a419a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 21:56:41 2025 +0300
+
+    refactor test_array_insert_back_*
+    now checks capacity growth
+
+[33mcommit dac87b5a3bc5ba14e621cdbfadde85c302a230e5[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 20:04:53 2025 +0300
+
+    delete if(index <= a->size)
+    index > a->size is validate
+
+[33mcommit 2cce6bfb44c244a6d5be8894ef1ede22b8fe8dd5[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 19:39:17 2025 +0300
+
+    refactor array_insert
+
+[33mcommit ffac5749885eaf2ee7d26da5cecc1f0f86850e0c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 19:34:49 2025 +0300
+
+    rename ARRAY_INIT_CAP -> ARR_INIT_CAP
+
+[33mcommit 904baa029e9827908c1c2638ddb3c192f856292c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 19:34:21 2025 +0300
+
+    refactor array_insert
+    update parameter validation
+
+[33mcommit 9a37b9fca28a2c487e509d10cdb0a68dcfef5dfe[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 15 19:32:32 2025 +0300
+
+    refactor array_insert/erase
+    use offset_helper
+
+[33mcommit c137e5dc39d2f5bc5f47d061500ce8b6975be5d2[m
+Merge: 99802a4 5070c5a
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Dec 14 21:57:24 2025 +0300
+
+    Merge branch 'main' of https://github.com/amvvec/algorithm_dataStructure_lib
+
+[33mcommit 99802a41b6fc9eedcf4ce56a7a485e80c51f7d2a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Dec 14 21:58:46 2025 +0300
+
+    add mult_overflow_size_t helper for array offset
+
+[33mcommit 266ed2aa8579d4bcb82d8b0cc5451c1198a9fba7[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 13 15:23:28 2025 +0300
+
+    add contract to array_insert
+
+[33mcommit 5070c5a463ab4e8193ddb77ed7d267546a533c6a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 13 15:23:28 2025 +0300
+
+    add contract to array_insert
+
+[33mcommit ce69ae6e3a21bd309979bf2aa8da4a1d57c17a52[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Dec 12 23:55:32 2025 +0300
+
+    update Makefile
+    add debug flag -g
+
+[33mcommit a1fa80a9e35fb485ddbf22e4c7046d97fe6e4005[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Dec 12 23:41:38 2025 +0300
+
+    add test_array_insert_front_preserve_order
+
+[33mcommit a27dedf0238188e340005645bace619ee65cf1b7[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Dec 12 23:14:35 2025 +0300
+
+    refactor array_shrink_to_fit
+
+[33mcommit 200daa2c75d5302668a4ceb330e6dd6e48f6752b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 11 16:20:42 2025 +0300
+
+    refactor test_array_init_basic -> test_array_init_and_delete
+
+[33mcommit 393bb01669bfa75e9841bcc9b305bde43e86730e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 11 16:03:29 2025 +0300
+
+    add test_array_insert_back_preserve_order
+
+[33mcommit 360b9983156ac015a033acc152f44ebb6a9b3699[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 10 13:37:14 2025 +0300
+
+    add test_array_insert_empty_array
+
+[33mcommit b6ce587f52d57d9d1ddc106c6d4cf480ef5d1b9a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 10 12:33:43 2025 +0300
+
+    add test_array_insert_invalid_index
+
+[33mcommit 215aa40e6fbf03c1d8294e19d4b82acac206439b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 10 12:21:54 2025 +0300
+
+    add test_array_insert_null_value
+
+[33mcommit 2c565ef63bf5f2acaefd18f747febb5daf2bcebd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 9 11:31:49 2025 +0300
+
+    refactor test_array_insert_null_array
+
+[33mcommit 8db87026d855da5beea2405d77ae390836b9b1a9[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 8 22:28:11 2025 +0300
+
+    add test_array_insert_null_array
+
+[33mcommit fcbbd4d8ec54618feb2392d6e5c954c7b49a4b0a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Dec 7 17:31:14 2025 +0300
+
+    add test_array_insert_invalid_index
+
+[33mcommit 9dcbe249adeb6e1d6d7fd3a0bbe443e97c62c322[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Dec 7 17:12:09 2025 +0300
+
+    add test_array_erase_basic
+
+[33mcommit 15674f67c99560a9f94e2afc6a3a47688429f8e3[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 6 02:18:02 2025 +0300
+
+    update test_array_insert_basic
+
+[33mcommit 823f05767004029da632cdc4ce616812fd248345[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Dec 6 02:13:59 2025 +0300
+
+    add test_array_insert_basic
+    update test log
+
+[33mcommit 122c255d065cd271aba47543ffc94b3467347a70[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Dec 5 11:49:31 2025 +0300
+
+    update array_insert
+
+[33mcommit e2ebc6f3d7cdb3c800e0d725e6c4a8002e76d61d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Dec 5 10:32:51 2025 +0300
+
+    update array_erase
+    decrease scope and pointer arithmetic
+    follow MISRA
+
+[33mcommit 6a711823b5e7f0f49a8083db5b583e5ac1c5715c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 4 19:37:44 2025 +0300
+
+    delete implicit safety check mult_overflow_size_t
+    initialize new_bytes
+
+[33mcommit c7d40a2ac01ef27e5b8d64da7595abeac2d2efd8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 4 03:56:51 2025 +0300
+
+    update mult_overflow_size_t
+    update safety check
+
+[33mcommit 7b551c47b5a0d2c91b7610757cc74ac1ee87d1b5[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 4 03:17:11 2025 +0300
+
+    update overflow check in array_grow_to
+
+[33mcommit 6c4aeb365efdb8a017874762dc1470beeceb8619[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Dec 4 02:42:19 2025 +0300
+
+    update array_delete
+    zero array variables
+
+[33mcommit aa1ee73d0758e22132f0498149fc872f680a875d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 3 12:25:44 2025 +0300
+
+    update malloc in array_init
+
+[33mcommit 7dbe0d79534ea9cff256ab851c4582c22c438d5e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 3 12:22:03 2025 +0300
+
+    refactor array_init
+
+[33mcommit 20db70e9d9a8249e6e3a503bb262f46dfe0ac9ab[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 3 11:55:32 2025 +0300
+
+    add is_valid_element_size to check size safety for array_init
+
+[33mcommit 8aa9bdb433f4c4dcac82529b280c043e7467146f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 3 11:09:44 2025 +0300
+
+    update MAX_ELEMENT_SIZE
+
+[33mcommit d701fd1037871848033dbf7ddf74cda84db5424a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Dec 3 10:48:29 2025 +0300
+
+    update .clang-format
+
+[33mcommit 6c0e3d614f18ad1229c8503a0da15bd411c110e3[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 2 16:49:07 2025 +0300
+
+    add MAX_ELEMENT_SIZE for upper bound safety
+
+[33mcommit eab4f6b495aa1a69d5cccb7c5a489b64c9a8a0cd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Dec 2 16:45:43 2025 +0300
+
+    fix the bug with unexisting type ArrayNode
+    void * new_data
+
+[33mcommit fc3c1eaf476b84f10f502d88c2dbb7e22a633f6c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 1 22:19:49 2025 +0300
+
+    refactor array_delete. add double delete safety
+
+[33mcommit 1f722cc4a23a7fb04189482d23df2c19da3bfd97[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 1 22:01:59 2025 +0300
+
+    refactor test_array_delete_double
+
+[33mcommit 19918c628a8e764e5368a172b9d0f1ccaf6fe680[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 1 01:11:44 2025 +0300
+
+    refactor test_array_delete_nonempty
+
+[33mcommit 9da976853d6289fcd1731578ad8a1b263122b582[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 1 01:09:13 2025 +0300
+
+    refactor test_array_delete_null
+
+[33mcommit baf47088bb81b9d243d041e6871a2c65da1018ca[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Dec 1 00:32:55 2025 +0300
+
+    refactor test_array_init_large_size
+
+[33mcommit 118126ed29e0eabeb1dad0997bc464cbe6a16f2d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 30 17:09:11 2025 +0300
+
+    refactor test_array_init_zero_size
+
+[33mcommit 0e9ffce2fb75075e00f12da428130da588ed9540[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 30 16:48:42 2025 +0300
+
+    refactor test_array_init
+
+[33mcommit b9d5cce2bb1a62afd031474d863efbba2bc09ef8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 30 16:34:00 2025 +0300
+
+    rename test_array.c
+
+[33mcommit a3f0d74e9a52eff698fbe72761e1a62a491d0109[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 30 11:36:13 2025 +0300
+
+    update .gitignore
+    ignore build/
+
+[33mcommit a554f43259c9b0eb383dcc0efa769ebdcc9ef4e1[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 29 10:04:02 2025 +0300
+
+    add test_avl_tree_null_safety test
+
+[33mcommit 94d9d9578f6505dc86dc904663bbf443e0e2d53f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 29 09:39:25 2025 +0300
+
+    add test_avl_tree_insert_and_balance test
+
+[33mcommit 910c521ee1032e385e9df5d255040c439e35808a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 29 09:17:31 2025 +0300
+
+    add test_avl_tree_init
+
+[33mcommit dc9c0a84e6d3149967fea5ddda226e0f5ccabdf0[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 29 09:10:00 2025 +0300
+
+    refactor test_runner
+
+[33mcommit 68f2191351cc2e2710466b07b355431d75c1fb44[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Nov 28 17:29:00 2025 +0300
+
+    update test_runner
+
+[33mcommit 485fbb53bfc02b8d4499cdc89276f5824a282702[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Nov 28 17:04:00 2025 +0300
+
+    update array_delete
+
+[33mcommit 43cb08b68e772d70b5547dcdad70eaa1d3a977f8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Nov 28 16:44:28 2025 +0300
+
+    delete array_free
+    update array_delete
+
+[33mcommit 126c5d0fd78e37b8bb8e062ad58593024348a9d3[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Nov 27 23:39:00 2025 +0300
+
+    update array_init
+
+[33mcommit 014cf24301e124828ae7b2c43cc50eba0f7b3c6c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Nov 27 22:07:00 2025 +0300
+
+    delete array_init
+    array_new do initialization of array
+
+[33mcommit a8595a0a1918de2985c4d824ce6d62e783308f73[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Nov 26 16:22:00 2025 +0300
+
+    update Makefile
+    add flags for code quality
+
+[33mcommit 814178c34a8c5a9125917761e5a78ac4a62d7b6d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Nov 26 15:33:00 2025 +0300
+
+    update .clang-format
+
+[33mcommit bdabeca5a880325692b34ec35d37350d437ec136[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Nov 26 23:58:00 2025 +0300
+
+    add -Wshadow -Wconversion flags
+
+[33mcommit 247654ae3cfc99aecf4c27b69a4e098d4164a217[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Nov 25 11:15:29 2025 +0300
+
+    update test_new_delete
+
+[33mcommit 5c633a6bd38b705f589b913cca26fd33f78787ef[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Nov 25 10:36:07 2025 +0300
+
+    add test_array_free_nonempty
+
+[33mcommit c62f8c3ba3f68c9770795a6261d1e54d3068db93[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Nov 25 10:33:31 2025 +0300
+
+    add test_array_free_null
+
+[33mcommit 453a63397b16a256eb74a2f556b9eaf8862ef866[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Nov 25 00:59:16 2025 +0300
+
+    add test_array_delete_nonempty
+
+[33mcommit b4679c13bc4c62fc9878ca96a5c6c6f6defa7f6b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Nov 25 00:56:01 2025 +0300
+
+    add test_array_delete_null. try delete NULL
+
+[33mcommit 4fa01726e463bbf457fffafbfce2859af35dd9ae[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Nov 25 00:51:14 2025 +0300
+
+    add test_array_new_large_size
+
+[33mcommit c8bdd2620a9b8a6a03dfc484d145765ea246f9b6[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Nov 25 00:50:43 2025 +0300
+
+    add overflow protection in array_init
+
+[33mcommit fce34da1693470e571ad3edba8c1c587f18e408a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Nov 24 23:48:00 2025 +0300
+
+    add test_array_new_zero_size
+    check zero-size initialize array
+
+[33mcommit 199747ff2bfacdaa7de27fa006b78557a8d73b02[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Nov 24 23:27:00 2025 +0300
+
+    update getter and setter
+
+[33mcommit 1b43c225fb442c9315f6f73a4aa0baf90c9788a7[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 23 14:31:00 2025 +0300
+
+    update getter and setter for new interface
+
+[33mcommit 80e40cbbff46c2e9143307da07e28658e6d2bd20[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 23 23:45:27 2025 +0300
+
+    update interface of Array
+    instead of ArrayNode * data; use void * data;
+
+[33mcommit 2cfac8a2b58ddc0f34b52eb63c817431cd256125[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 22 11:38:00 2025 +0300
+
+    refactor tests
+    create new tests in production style
+    add test_array_new
+
+[33mcommit 70ec274475cf9ff1239113625bd2a1c215ba6043[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Nov 21 17:09:00 2025 +0300
+
+    update array_shrink_to_fit
+
+[33mcommit 6c51119d77e7961208fce5d1fa41296492a6bb46[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Nov 21 16:55:00 2025 +0300
+
+    update Makefile. delete option with address sanitize
+
+[33mcommit e11f54c80de35061254588a0a0261e967538fc21[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Nov 21 16:32:00 2025 +0300
+
+    update Makefile
+    all *.o files are in build directory
+
+[33mcommit fd6c84c5e76f44d610a0a06c613968451d9f4b20[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 16 21:08:26 2025 +0300
+
+    add tests to array_shrink_to_fit()
+
+[33mcommit 108a6742be75ba19ee0ac5dd78d14920058dd63c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 15 02:23:00 2025 +0300
+
+    feat(array): add array_shrink_to_fit to reduce capacity to size
+    
+    - Implement array_shrink_to_fit(Array*) with:
+      * validation for NULL and overflow
+      * safe realloc usage (temporary pointer)
+      * special-case: free buffer when size == 0
+    - Returns 0 on success, EINVAL/EOVERFLOW/ENOMEM on error
+    - Includes unit test to verify capacity == size and data integrity
+
+[33mcommit 01c50a312ea549681cfbee7da923127e0564dc1b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Nov 14 18:44:09 2025 +0300
+
+    Add array_strerror() for human-readable error diagnostics
+    
+    - Implemented string conversion for ArrayStatus codes
+    - Enables consistent error reporting across all array operations
+    - Provides stable interface for logging, debugging, and user-facing diagnostics
+    - Covers all defined statuses with a fallback "unknown error" branch
+
+[33mcommit da2b2e446f3b286e4454fe5676e5e20b768727b6[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Nov 14 18:41:13 2025 +0300
+
+    Introduce internal ArrayStatus error enum for unified error handling
+    
+    - Added ArrayStatus enumeration with explicit status codes:
+      ERR_OK, ERR_NULL, ERR_OOB, ERR_ALLOC, ERR_EMPTY
+    - Eliminates reliance on global errno state
+    - Enables predictable, self-contained error propagation across array API
+    - Provides foundation for consistent diagnostics and future extension
+
+[33mcommit 52c34a38d58a77ec5c33bb5778d717894dfe39ec[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Nov 13 20:33:00 2025 +0300
+
+    add tests to array_erase()
+
+[33mcommit 82cbc746fb8c336fb6194db898f1b1d1894042b1[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Nov 12 22:24:03 2025 +0300
+
+    add array_erase()
+
+[33mcommit 1a290de76393e0169f7d735de96f6cc593e2c6f0[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Nov 11 22:36:00 2025 +0300
+
+    add tests to array_insert()
+
+[33mcommit 6f646e21ff2f92ae251bf4f646cbd01c99dfb26a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Nov 11 11:53:00 2025 +0300
+
+    add array_insert()
+
+[33mcommit af27f40a4e867ca6b714c320738f2643662248cc[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Nov 10 21:24:00 2025 +0300
+
+    add tests to array_pop_front()
+
+[33mcommit eb8c61cc66d2b0b244fb65b6744732e26a6b99b6[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Nov 10 20:42:00 2025 +0300
+
+    add array_pop_front()
+
+[33mcommit e1fe6a8742dd3d70515bd0a7d8ee5e4487246c30[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 9 22:24:00 2025 +0300
+
+    add tests to array_push_front()
+
+[33mcommit c450aa76c2ffb59270480950e1d5c3249a81046b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 9 21:36:00 2025 +0300
+
+    add array_push_front()
+
+[33mcommit 5db3e064a89ed38878131e047fab1e6941ba67fe[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 8 13:28:30 2025 +0300
+
+    add array_pop_back()
+    add test for pop_back
+
+[33mcommit 3df32e30d1a2ce694357b26d077ea7dc346b3119[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 8 20:31:00 2025 +0300
+
+    add tests to new array interface
+
+[33mcommit eb54a15030082d20ec566c823a87cec3caa60e3c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Nov 7 22:58:00 2025 +0300
+
+    change interface of array_push_back() for generic-design
+
+[33mcommit 135aadff75f70819cc4d61712840370761da6f2d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Nov 6 17:30:13 2025 +0300
+
+    add getter for array capacity
+
+[33mcommit fed8bc5ce6cb586cb6e143a9ee112e872b4d13fa[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Nov 6 17:28:24 2025 +0300
+
+    add getter for array size
+
+[33mcommit 01f4509161abf19602c9e0eede73b6b7e19e88e6[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Nov 3 12:26:45 2025 +0300
+
+    add setter for array
+
+[33mcommit a208336152fe86d24e58c730a057db38d8359bfd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Nov 3 12:25:04 2025 +0300
+
+    add getter for array
+
+[33mcommit 32b4f31e781da9abe8d52073a7e467dd2bf2087b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Nov 3 12:13:56 2025 +0300
+
+    fix array initialization in tests
+
+[33mcommit 7885ff72a0f7b11ec63a6b0f8ddd95cbffa66cbd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Nov 3 12:04:51 2025 +0300
+
+    feat(array): implement array_push_back with dynamic growth and safe error handling
+
+[33mcommit 526065ce8f1e7e2971ebe7e75afd248b975fdc07[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Nov 2 11:53:00 2025 +0300
+
+    fix array_init() and array_new()
+
+[33mcommit fe464e2610d70250dca85f271c1acb9559a32e16[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 1 02:51:00 2025 +0300
+
+    feat(array): fix mistake with new_data safety check
+    accidently check new_bytes instead of new_data
+
+[33mcommit 37276e64d3cf21f07281368c7d08057bb02e267d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 1 02:47:54 2025 +0300
+
+    feat(array): fix potential UB
+    
+    in array_grow_to() after new_capacity initialization
+    use EOVERFLOW instead of new reallocation
+    "new_capacity = start_capacity" <- potential UB
+
+[33mcommit e3e37711d324b23cb94dfa90fc59b785a4ecd379[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Nov 1 02:46:54 2025 +0300
+
+    feat(array): change array_grow_to() interface
+
+[33mcommit fa299727eacdb9050c9ebbc35fd205246191e94b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Oct 24 23:35:43 2025 +0300
+
+    feat(utils): add safe multiply_overflow_size_t with overflow detection
+
+[33mcommit 02a617c8ccb8a1f813cf4a3b4d0c4659dc108592[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Oct 23 23:48:00 2025 +0300
+
+    turn off tests
+
+[33mcommit d0252f8c09430306094ff9ed5d19cbd5015784bc[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Oct 23 23:37:00 2025 +0300
+
+    feat(array): add element_size and redesign init/new interface
+
+[33mcommit 07333cb262bfcbb03632e4a350bb529b9184eaa8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Oct 22 22:48:36 2025 +0300
+
+    refactor array: opaque type and ArrayNode, add elem_size for flexibility
+    
+    - ArrayNode introduced as element type
+    - Array struct now includes elem_size for generic usage
+    - Internal data pointer encapsulated
+    - Header no longer exposes internal fields
+
+[33mcommit 79795e092624769b47da317345d9bec51572be74[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Oct 21 17:15:47 2025 +0300
+
+    feat(array): add helper to detect multiplication overflow for size_t
+    
+    Introduced `multiply_overflow_size_t` function to safely compute
+    `count * element_size` without overflowing `size_t`. Returns -1 on
+    overflow, otherwise stores result in `*out_bytes` and returns 0.
+    
+    This helps prevent undefined behavior in dynamic array memory
+    allocation routines.
+
+[33mcommit 6f9a1d35c57a9f94a7941feafb19df520774fc10[m
+Merge: f869b00 7fca656
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Oct 20 22:55:35 2025 +0300
+
+    Merge branch 'feat'
+
+[33mcommit 7fca656548d944281d9bccf81ed7d6b11a57ba0f[m[33m ([m[1;31morigin/feat[m[33m)[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Oct 19 10:44:00 2025 +0300
+
+    feat: Add tests to array
+
+[33mcommit 2ba99d5c7bc0acd03f1c9b5ef76e1692194cebbd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Oct 20 22:02:59 2025 +0300
+
+    array: add node_array_free
+    
+    - Added node_array_delete for heap-allocated NodeArray.
+    - Ensures idempotent memory cleanup and predictable post-free state.
+
+[33mcommit 90768d31d838adfbe7ee49500a4a6c776849f254[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Oct 18 21:30:38 2025 +0300
+
+    array: implement node_array_grow_to and safe overflow checks
+    
+    - Added node_array_grow_to for dynamic capacity management.
+    - Uses multiply_overflow_size_t to prevent size_t overflow.
+    - Returns standard errno codes (EINVAL, ENOMEM, EOVERFLOW).
+    - Enables safe dynamic resizing of NodeArray.
+
+[33mcommit f869b00c089e0ad9a0d4094d3c659e548380b495[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Oct 18 21:30:38 2025 +0300
+
+    array: implement node_array_grow_to and safe overflow checks
+    
+    - Added node_array_grow_to for dynamic capacity management.
+    - Uses multiply_overflow_size_t to prevent size_t overflow.
+    - Returns standard errno codes (EINVAL, ENOMEM, EOVERFLOW).
+    - Enables safe dynamic resizing of NodeArray.
+
+[33mcommit e55d3911271338c83ce886277bc385d604bd652f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Oct 18 21:16:18 2025 +0300
+
+    feat(array): add node_array_new for heap allocation
+    
+    - Added node_array_new() to allocate a new NodeArray structure on the heap.
+    - Returns NULL if memory allocation fails (malloc returns NULL).
+    - Calls node_array_init() internally to ensure fields are set to a safe state.
+    - Acts as a constructor for dynamic NodeArray instances.
+
+[33mcommit 17c682025df74fa461c7b403b72b515b8c404397[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Oct 18 00:43:02 2025 +0300
+
+    feat(array): add node_array_init function
+    
+    - Added node_array_init(NodeArray* array) to initialize NodeArray structures.
+    - Checks for NULL pointer and returns EINVAL if invalid.
+    - Sets data to NULL, size to 0, and capacity to 0.
+    - Prepares NodeArray for safe use before memory allocation and further operations.
+
+[33mcommit 2cab512eab8d692e1b1ec989e5d835a4c97be296[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Oct 18 00:33:16 2025 +0300
+
+    feat(array): define Node and NodeArray structures
+    
+    - Node struct with int data
+    - NodeArray struct with pointer to Node, size, capacity
+    - Prepares ground for dynamic array operations
+
+[33mcommit 6dfa8456ef2755f28634da8103f545378f9569a6[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Oct 6 21:46:17 2025 +0300
+
+    add tests to skip list
+
+[33mcommit a4a7b6735c7c7727eace63bbdcb5f16fad6a4aec[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Oct 6 21:45:42 2025 +0300
+
+    WARNING: There are bugs with the memory
+    add skip list implementation
+
+[33mcommit 810bc781aa86549a2966b5857f4b6450c08c9a95[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 28 22:43:00 2025 +0300
+
+    add documentation to insertion sort
+
+[33mcommit 77c891153ff9b03ad78719eea3357e45175b566b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 28 22:42:32 2025 +0300
+
+    add tests to insertion sort algorithm
+
+[33mcommit c4063a19efcc6f7dc6dd12718571ff12aa65ecb1[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Sep 26 20:20:15 2025 +0300
+
+    add safety to insertion sort
+
+[33mcommit f91790d7c263a864eb527708d92463b8351e37fb[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Sep 26 20:05:24 2025 +0300
+
+    add insertion sort implementation. I forgot to do
+
+[33mcommit 7fbf884bb5cf3a79144447e17d56a97e3b56a4cd[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Sep 26 19:26:31 2025 +0300
+
+    fix graph and dijkstra tests
+
+[33mcommit 697d834b12672b7618a70fa59d137e017be19077[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Sep 25 19:34:50 2025 +0300
+
+    add documentation to dijkstra
+
+[33mcommit a57060a01cf39fc49b525c4bfd4ff19894e8cd0d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Sep 25 19:32:19 2025 +0300
+
+    add safety and sanity checks to dijkstra algorithm
+
+[33mcommit 2433a615021860431f1ab165beec5784169de798[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Sep 25 19:27:51 2025 +0300
+
+    add tests to dijkstra
+
+[33mcommit 770b82e5431312cf7b610e32ecbc4f2db6660c52[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Sep 24 21:29:05 2025 +0300
+
+    add dijkstra implementation
+
+[33mcommit 094416e2fc6922313fd50983939c9daa9801de87[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Sep 23 19:53:27 2025 +0300
+
+    add documentation to dfs
+
+[33mcommit 9c0453aa23a2d14df9f8e81a617e4091ad97072b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Sep 23 19:52:26 2025 +0300
+
+    add safety to dfs. delete some tests to dfs
+
+[33mcommit 8a8b96b4e0747bc9459ac8b3dc05d87afe2c35c0[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Sep 23 19:50:37 2025 +0300
+
+    add tests to dfs
+
+[33mcommit db41ee7a2f4a4af3f48ade6d84a815b895a059a4[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Sep 23 19:45:09 2025 +0300
+
+    add dfs algorithm implementation
+
+[33mcommit 247ec98f9d5b0452bb4e00a3e7a9fc9e39309bdb[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Sep 22 14:22:38 2025 +0300
+
+    add documentation to bfs
+
+[33mcommit 048c8cca8bde6ab9ef4bc29fb38e21fffacd87e6[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Sep 22 14:21:50 2025 +0300
+
+    add safety to bfs
+
+[33mcommit 361910485cbff69bd7faa27ad5eaa845edcf4ba9[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Sep 22 14:18:36 2025 +0300
+
+    add tests to bfs
+
+[33mcommit cd735682b0f36fb3e7c9146e4f91ad6787bcf894[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 21 20:38:59 2025 +0300
+
+    add basic bfs implementation
+
+[33mcommit 05e579fe5179f05c0614d16904fb1abec470e136[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 21 20:12:50 2025 +0300
+
+    add documentation to binary search
+
+[33mcommit 5f0c01a32965299545df5dde23b5ebe50bbea3f4[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 21 20:11:58 2025 +0300
+
+    add safety to binary search
+
+[33mcommit c389449c05524fbb0d28bd8a9f6231b0ab7d9811[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Sep 20 20:24:31 2025 +0300
+
+    add tests to binary search
+
+[33mcommit 371310d37c22551eb33ddaa43253b864d4bdafa3[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Sep 20 20:24:16 2025 +0300
+
+    add binary search implementation
+
+[33mcommit 0f5af5ce4ac9344bbb57c6363a7b4d9a94c460ce[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Sep 20 20:15:39 2025 +0300
+
+    add detailed documentation to graph
+
+[33mcommit a2eef2f69109c352495ddf6091806d9122ba7630[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Sep 20 20:12:17 2025 +0300
+
+    add safety to graph
+
+[33mcommit 5f54744eb63bef61ebd2da44c608af2372a0273f[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Sep 19 22:37:39 2025 +0300
+
+    add tests to graph
+
+[33mcommit 702f50c48ac0925fec02d6e17d3b86cf6f995b21[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Sep 19 22:35:30 2025 +0300
+
+    add new functions to graph
+
+[33mcommit 38c2add8748aae158326bb5243eab034e84a1c07[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Sep 18 23:45:10 2025 +0300
+
+    add graph implementation
+
+[33mcommit b3eb1deaea39e046bb7d933d33e28cffad403755[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Sep 17 15:54:50 2025 +0300
+
+    update README
+
+[33mcommit 0cb4e900b4543600f123f8cbb1e194adb0e5d99c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Sep 17 15:53:22 2025 +0300
+
+    add detailed documentation to avl tree
+
+[33mcommit fcfba8771af2b639f4744ed5c2159cdde99a966d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Sep 17 15:37:50 2025 +0300
+
+    add security checks to avl tree
+
+[33mcommit 2782386a871f63d69c3af487d73dd13a9dad3b13[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Sep 17 15:26:30 2025 +0300
+
+    add tests to avl tree
+    fix SEGV in tests
+
+[33mcommit 11003f7c367865a8ad26adb2b3381b3ed643dbea[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Sep 16 22:30:36 2025 +0300
+
+    add avl self-balancing tree implementation
+
+[33mcommit 9d7cfa730327d8a9a5d3ed170c51cae1ad930353[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Sep 15 21:34:16 2025 +0300
+
+    add detailed documentation to merge sort
+
+[33mcommit 4c2c87e61111a8639d1bc2ad4046bd9f09cdf4e5[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Sep 15 21:32:00 2025 +0300
+
+    add safety for merge sort
+
+[33mcommit d90e648768f46af831249e1ef66807a41618bd27[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 14 16:31:27 2025 +0300
+
+    add tests to merge sort
+
+[33mcommit 0a595e2f60b521cf33ba0d91710e86b73f188bc4[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 14 16:13:45 2025 +0300
+
+    add merge sort implementation
+
+[33mcommit 3a92382a047552d7e2400cf5d5f7dc44fddc2350[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 14 16:00:19 2025 +0300
+
+    update README.md
+
+[33mcommit 068b8c0d6b606c51b839a9976bf39e0ceecc6de6[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 14 15:58:15 2025 +0300
+
+    add detailed documentation to quick sort
+
+[33mcommit 7ee03b50418ad3c75e8cb457bf55cd5ce05ef53e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 14 00:32:18 2025 +0300
+
+    fix recursion termination in quick sort with low >= high
+
+[33mcommit 768cf06f0808df6bfea736893fc64c08aea11312[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 14 00:27:43 2025 +0300
+
+    add security checks to quick sort
+
+[33mcommit 6ad9df40b76a96c2e9fcf1b446369133cad38d14[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Sep 9 10:53:44 2025 +0300
+
+    delete algorithm and data_structure directories and move files to src
+
+[33mcommit e69d0c3411c119b8d47c5eda9ed9901596ba26d8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Mon Sep 8 21:41:23 2025 +0300
+
+    add tests for quick sort
+
+[33mcommit 4c6338641d0b38b9876bdc67be48d55b49c31400[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Sep 7 15:11:17 2025 +0300
+
+    fix misclick quicksort -> quick_sort in main.c
+
+[33mcommit 74e5104541521e23d47773929e91e2222a16b01c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Sep 5 20:41:56 2025 +0300
+
+    add tests to quick sort
+
+[33mcommit 286c868e90be0ced959e3dc69b645fe0d087b60d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Sep 5 20:41:38 2025 +0300
+
+    add quick sort implementation
+
+[33mcommit b22aa7e96a06d0ab65a456cc6cdcf7913ea9c8c8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Sep 4 16:57:36 2025 +0300
+
+    update README
+
+[33mcommit 7292146db77fdd10c5ef898edfe613f076b2f16b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Sep 4 16:56:15 2025 +0300
+
+    add detailed documentation to hash table
+
+[33mcommit 4c39289aed50f35654a43a734f75429222620f7d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Sep 4 16:50:07 2025 +0300
+
+    refactor: add security checks to hash table (NULL, size validation, allocation errors, duplicate keys)
+
+[33mcommit c95c7bd0a35135ae4e77e8b97aced24be05646e5[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Sep 3 13:47:03 2025 +0300
+
+    update: add description of Build and Run
+    README -> README.md
+
+[33mcommit 24ef58520832a9dc2f5f45d04d9ce525247c6291[m
+Merge: ba06c50 97834c5
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Sep 3 13:41:57 2025 +0300
+
+    Merge branch 'refactor'
+
+[33mcommit 97834c5154fba83ea76769323b43d4417bc80016[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Sep 3 13:32:42 2025 +0300
+
+    fix: tests in main.c
+    fix: pointer bug with heap-use-after-free in hash_table_free
+
+[33mcommit ba06c50990a5fad01db16a91961a625a4ee54359[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Sep 3 13:32:42 2025 +0300
+
+    fix: tests in main.c
+
+[33mcommit 286ea9410dba5a36012f1f0bd79408f5fa554bb7[m
+Merge: d3d503d d7c78df
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Sep 2 21:47:43 2025 +0300
+
+    Merge branch 'refactor'
+
+[33mcommit d7c78df1da693f91f658301b82bde26c91ed5a19[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Sep 2 19:45:06 2025 +0300
+
+    Add hash table implementation
+
+[33mcommit d3d503ddaea872c6eaca4a508ed3a2e46badcb9c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Sep 2 19:45:06 2025 +0300
+
+    Add hash table implementation
+
+[33mcommit 23082950e37239587b70a5af7ebca8fce8466f20[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Aug 31 00:13:39 2025 +0300
+
+    Add detailed documentation to vector
+    Add details to README
+
+[33mcommit 272389ba61b715d0a06c2ea5747aad59df03cf0a[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sun Aug 31 00:09:10 2025 +0300
+
+    Add initial tests for vector
+
+[33mcommit 9499fb2630b686022228a430edbe99ed35e694c0[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Aug 30 23:56:27 2025 +0300
+
+    Add basic security checks to vector (null, overflow, allocation errors)
+
+[33mcommit c43989963f0bbea5a103a976539539a38158e649[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Sat Aug 30 23:31:28 2025 +0300
+
+    Add basic vector implementation
+
+[33mcommit ce693e72c03aaab1fc49badb03d24a0396821d6d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Aug 29 19:13:45 2025 +0300
+
+    Add MIT License file and update README
+
+[33mcommit 5aef89d4fefc9c95bdd46dbcb277c9ce60f87655[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Aug 29 19:10:52 2025 +0300
+
+    Add security enhancements (buffer overflow, use-after-free, injection protection)
+
+[33mcommit ba2d8e936130c7fa25e759fcaa939460a7d95fd6[m
+Merge: 29510c7 d483fc4
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Aug 29 18:54:29 2025 +0300
+
+    Git history rebase
+
+[33mcommit d483fc4a15090850b1030bca6e7f2f506f701bca[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Aug 29 18:48:13 2025 +0300
+
+    Add safety for use-after-free, memory allocation, overflow, and injection for doubly linked list
+
+[33mcommit 552cf486ac7a7187969cff626eb2228d554f9006[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Aug 29 18:36:39 2025 +0300
+
+    Add safety for use-after-free, memory allocation, overflow, and injection for singly linked list
+
+[33mcommit 5f7d4a97050bfd3ca5abd7c34f4f9d31c63c1c20[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Aug 29 18:20:48 2025 +0300
+
+    Add overflow and injection safety for bubble sort
+
+[33mcommit 29510c75691e786e3c24b1e38694a757ba46e05c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Aug 29 18:48:13 2025 +0300
+
+    Add safety for use-after-free, memory allocation, overflow, and injection for doubly linked list
+
+[33mcommit 4e6d7cdd123346bd0bd19a024b41c38fc030bd85[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Aug 29 18:36:39 2025 +0300
+
+    Add safety for use-after-free, memory allocation, overflow, and injection for singly linked list
+
+[33mcommit 1321bbf298e06fc5fb026e013524e6baaf6e9134[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Fri Aug 29 18:20:48 2025 +0300
+
+    Add overflow and injection safety
+
+[33mcommit 7535b20d698529bc9cdd2ecedde85d2218ebf7d5[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Aug 28 12:33:00 2025 +0300
+
+    Create folders algorithm/ and data_sctructure/ in src/
+
+[33mcommit 11e45298900d3ded157e9f2a44fce80398fb975e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Aug 28 12:30:37 2025 +0300
+
+    Add detailed documentation for bubble_sort
+
+[33mcommit da29086de17bf923d8c5a6b8213943c9cd0723aa[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Aug 28 12:06:10 2025 +0300
+
+    Turn off -Werror -pedantic in Makefile for bubble_sort tests
+    Add tests for bubble_sort
+
+[33mcommit 5374e0b657f872529ebf9ac5bd45b40097f5d1d8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Aug 28 12:01:24 2025 +0300
+
+    Add safety checks for null pointers, empty list, and integer overflow
+
+[33mcommit 053d59666150356c919df7e78e6478ab12f30acf[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Aug 28 11:42:00 2025 +0300
+
+    Add bubble sort algorithm
+
+[33mcommit 7e62073aeba7c4165e6b2e53b751c804eac62e17[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Aug 28 11:10:30 2025 +0300
+
+    Fix function name conflicts
+
+[33mcommit ebb710357bf9e9751ce50977e90729ee0d0373ab[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Thu Aug 28 10:38:36 2025 +0300
+
+    Add limits.h to dlist.c and repair make build
+
+[33mcommit ec08442f5b0b62232d173270ba8dd97218d0482c[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Aug 27 23:51:34 2025 +0300
+
+    Add detailed documentation for dlist.c
+
+[33mcommit 5e36336f4aa878c6ad975eb5190e016e3f3f5707[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Aug 27 22:26:11 2025 +0300
+
+    Add safety checks for null pointers, empty list, and integer overflow
+
+[33mcommit 76fff0295c6d6423c8bf232b03bc2f02de66be5b[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Aug 27 21:56:06 2025 +0300
+
+    Add doubly linked list
+
+[33mcommit 4e5958553651a4a0c3e55f5a2722f12b3767e86e[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Aug 27 21:39:48 2025 +0300
+
+    Add docs for test_runner.c
+
+[33mcommit eca28a178e5d48f718c9e0d865dff1269e3303d8[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Aug 27 21:33:41 2025 +0300
+
+    Add test_runner.c
+    Change README.md
+    Turn off make test function in Makefile
+
+[33mcommit 1f92b570dce46f779ae5e5999eba07dbb5682350[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Aug 27 21:07:28 2025 +0300
+
+    Add test_runner.h
+
+[33mcommit 62bd2308e997257e996230938b51dcfd26e76a22[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Aug 27 19:07:51 2025 +0300
+
+    Add tests/test_slist.c
+
+[33mcommit 8360710c4350d6b0b1a15a9d79281aa82eef8a06[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Wed Aug 27 16:53:35 2025 +0300
+
+    Add src/ directory
+    Add *.c and *.h files
+
+[33mcommit 35c4d1de54add3692bbae867d2fcd6dc4203bb7d[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Aug 26 20:14:36 2025 +0300
+
+    Add README
+
+[33mcommit fcf1d25f907cc569b15477c6752f15dedb71f6b1[m
+Merge: 410ed13 b208f24
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Aug 26 19:42:18 2025 +0300
+
+    Merge branch 'main' of https://github.com/amvvec/algorithm_dataStructure_lib
+
+[33mcommit 410ed1395bc5b8d07f05489952bf090efe1db371[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Aug 26 19:27:30 2025 +0300
+
+    Add clang-format
+
+[33mcommit b208f24821657fe02c30e94000457df97ee94128[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Aug 26 19:27:30 2025 +0300
+
+    Add clang-format
+
+[33mcommit 929b4c0ac08fefa4da2928fca03922424077c383[m
+Merge: 6562ecc 47e46f1
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Aug 26 19:22:10 2025 +0300
+
+    Merge branch 'docs'
+
+[33mcommit 47e46f100a3ed8bc15f01ecfab3183ab44688fd9[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Aug 26 19:21:14 2025 +0300
+
+    Add detailed documentation to slist.c
+
+[33mcommit 6562ecc65d7fdf6b479ce3b2ad5fbe6e7e409a45[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Aug 26 17:52:42 2025 +0300
+
+    Add safety checks for null pointers, empty list, and integer overflow
+
+[33mcommit 6be79f8b2423a6b1be8fbc9aabeaec96df02fca1[m
+Author: Akira Sato <amvvec@gmail.com>
+Date:   Tue Aug 26 17:05:35 2025 +0300
+
+    Add singly linked list
+    Add createNode, deleteNode, insert Front and End, and freeList

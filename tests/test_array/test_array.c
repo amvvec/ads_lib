@@ -29,7 +29,7 @@ test_array_init_zero_size(void)
 static void
 test_array_init_large_size(void)
 {
-    size_t size = (((size_t) -1) / 2);
+    size_t size = (((size_t)-1) / 2);
 
     Array* a = array_init(size);
 

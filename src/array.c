@@ -11,12 +11,12 @@ static const size_t ARR_INIT_CAP = 8;
 
 /**
  * @invariant:
- *          - a != NULL
- *          - a->element_size > 0
- *          - a->size <= a->capacity
- *          - a->capacity > 0
- *          - a->data != NULL
- *          - a->capacity <= SIZE_MAX / a->element_size
+ *      - a != NULL
+ *      - a->element_size > 0
+ *      - a->size <= a->capacity
+ *      - a->capacity > 0
+ *      - a->data != NULL
+ *      - a->capacity <= SIZE_MAX / a->element_size
  */
 struct Array
 {
@@ -29,20 +29,11 @@ struct Array
 static inline int
 array_invariant_check(const Array* a)
 {
-    if(!a)
-    {
-        return EINVAL;
-    }
+    if(!a) return EINVAL;
 
-    if(a->element_size == 0)
-    {
-        return EINVAL;
-    }
+    if(a->element_size == 0) return EINVAL;
 
-    if(a->size > a->capacity)
-    {
-        return EINVAL;
-    }
+    if(a->size > a->capacity) return EINVAL;
 
     if(a->capacity == 0)
     {
@@ -71,7 +62,7 @@ array_invariant_check(const Array* a)
         if(array_invariant_check(a)) abort(); \
     } while(0)
 #else
-#define ARRAY_ASSERT(a) ((void) 0)
+#define ARRAY_ASSERT(a) ((void)0)
 #endif
 
 static inline int
@@ -120,7 +111,7 @@ array_self_insertion_safety(const Array* a, const void* value)
     if(mul_overflow(a->size, a->element_size, &_bytes)) return EOVERFLOW;
 
     const char* v = value;
-    const char* start = (const char*) a->data;
+    const char* start = (const char*)a->data;
     const char* end = start + _bytes;
 
     return v < end && v >= start;
@@ -223,8 +214,7 @@ array_reserve(Array* a)
     assert(a->element_size > 0);
 
     size_t new_bytes;
-    if(mul_overflow(new_capacity, a->element_size, &new_bytes))
-        return EOVERFLOW;
+    if(mul_overflow(new_capacity, a->element_size, &new_bytes)) return EOVERFLOW;
 
     void* new_data = realloc(a->data, new_bytes);
     if(!new_data) return ENOMEM;
@@ -294,8 +284,7 @@ array_ensure_capacity(Array* a, size_t extra)
  * @note No a.element_size check (ARRAY_ASSERT invariant check macro)
  */
 static inline int
-check_array_insert_entry(const Array* a, const void* restrict value,
-                         size_t index)
+check_array_insert_entry(const Array* a, const void* restrict value, size_t index)
 {
     if(!a || !value) return EINVAL;
 
@@ -329,14 +318,14 @@ do_insert(Array* restrict a, const void* restrict value, size_t index)
     if(mul_overflow(index, a->element_size, &insert_offset)) return EOVERFLOW;
 
     size_t tail_offset;
-    const size_t tail_count =
-        (a->size - index); // safe: index <= a->size validated by caller
-    if(mul_overflow(tail_count, a->element_size, &tail_offset))
-        return EOVERFLOW;
+    // safe: index <= a->size validated by caller
+    const size_t tail_count = (a->size - index);
+
+    if(mul_overflow(tail_count, a->element_size, &tail_offset)) return EOVERFLOW;
 
     if(array_self_insertion_safety(a, value)) return EINVAL;
 
-    char* base = (char*) a->data;
+    char* base = (char*)a->data;
 
     void* dst = base + insert_offset + a->element_size;
     void* src = base + insert_offset;
@@ -349,8 +338,7 @@ do_insert(Array* restrict a, const void* restrict value, size_t index)
 }
 
 /**
- * Inserts an element at the specified index, shifting subsequent elements
- * right.
+ * Inserts an element at the specified index, shifting subsequent elements right.
  *
  * @pre a != NULL
  * @pre value != NULL
@@ -360,8 +348,7 @@ do_insert(Array* restrict a, const void* restrict value, size_t index)
  * @post On success:
  *       - a.size is increased by 1
  *       - element at position index equals *value
- *       - elements from index+1 to new size-1 equal old elements from index to
- * old size-1
+ *       - elements from index+1 to new size-1 equal old elements from index to old size-1
  *       - relative order of remaining elements is preserved
  *
  * @post On failure:
@@ -436,10 +423,9 @@ do_erase(Array* a, size_t index)
         if(mul_overflow(index, a->element_size, &dst_offset)) return EOVERFLOW;
 
         size_t src_offset;
-        if(mul_overflow((index + 1), a->element_size, &src_offset))
-            return EOVERFLOW;
+        if(mul_overflow((index + 1), a->element_size, &src_offset)) return EOVERFLOW;
 
-        char* base = (char*) a->data;
+        char* base = (char*)a->data;
 
         void* dst = base + dst_offset;
         void* src = base + src_offset;
@@ -490,7 +476,7 @@ do_push_front(Array* restrict a, const void* restrict value)
 
     if(array_self_insertion_safety(a, value)) return EINVAL;
 
-    char* base = (char*) a->data;
+    char* base = (char*)a->data;
 
     void* dst = base + a->element_size;
 
@@ -538,7 +524,7 @@ do_push_back(Array* a, const void* value)
     size_t dst_offset;
     if(mul_overflow(a->size, a->element_size, &dst_offset)) return EOVERFLOW;
 
-    char* base = (char*) a->data;
+    char* base = (char*)a->data;
     void* dst = base + dst_offset;
     memcpy(dst, value, a->element_size);
 
@@ -577,7 +563,7 @@ array_pop_front(Array* a)
     size_t _bytes;
     if(mul_overflow((a->size - 1), a->element_size, &_bytes)) return;
 
-    char* base = (char*) a->data;
+    char* base = (char*)a->data;
     void* dst = base;
     void* src = base + a->element_size;
     memmove(dst, src, _bytes);
@@ -597,7 +583,7 @@ array_pop_back(Array* a)
     size_t bytes;
     if(mul_overflow(a->size, a->element_size, &bytes)) return;
 
-    char* base = (char*) a->data;
+    char* base = (char*)a->data;
     void* dst = base + bytes;
     memset(dst, 0, a->element_size);
 
@@ -614,7 +600,7 @@ array_get(const Array* a, size_t index, void* value)
     if(!a || !value) return EINVAL;
     if(index >= a->size) return EINVAL;
 
-    const char* base = (const char*) a->data;
+    const char* base = (const char*)a->data;
 
     memcpy(value, base + index * a->element_size, a->element_size);
 
@@ -631,7 +617,7 @@ array_set(Array* a, size_t index, const void* value)
     if(!a || !value) return EINVAL;
     if(index >= a->size) return EINVAL;
 
-    char* base = (char*) a->data;
+    char* base = (char*)a->data;
 
     void* dst = base + index * a->element_size;
 
