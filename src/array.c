@@ -113,24 +113,35 @@ safe_sub(size_t a, size_t b, size_t *out)
     return 0;
 }
 
-static inline int
-mul_overflow(size_t a, size_t b, size_t *out)
+static inline bool
+mul_overflow_raw(size_t a, size_t b, size_t *out)
 {
-    if(!out) return EINVAL;
+    assert(out);
+
 #if defined(__GNUC__) || defined(__clang__)
     return __builtin_mul_overflow(a, b, out);
 #else
     if(b != 0 && a > SIZE_MAX / b) return EOVERFLOW;
     *out = a * b;
-    return 0;
+    return false;
 #endif
+}
+
+static inline int
+safe_mul(size_t a, size_t b, size_t *out)
+{
+    if(!out) return EINVAL;
+
+    if(mul_overflow_raw(a, b, out)) return EOVERFLOW;
+
+    return 0;
 }
 
 static inline int
 array_self_insertion_safety(const Array *a, const void *value)
 {
     size_t _bytes;
-    if(mul_overflow(a->size, a->element_size, &_bytes)) return EOVERFLOW;
+    if(safe_mul(a->size, a->element_size, &_bytes)) return EOVERFLOW;
 
     const char *v = value;
     const char *start = (const char *)a->data;
@@ -166,7 +177,7 @@ array_init(size_t element_size)
     assert(ARR_INIT_CAP > 0);
 
     size_t _bytes;
-    if(mul_overflow(ARR_INIT_CAP, element_size, &_bytes)) return NULL;
+    if(safe_mul(ARR_INIT_CAP, element_size, &_bytes)) return NULL;
 
     Array *tmp = calloc(1, sizeof(*tmp));
     if(!tmp) return NULL;
@@ -236,8 +247,7 @@ array_reserve(Array *a)
     assert(a->element_size > 0);
 
     size_t new_bytes;
-    if(mul_overflow(new_capacity, a->element_size, &new_bytes))
-        return EOVERFLOW;
+    if(safe_mul(new_capacity, a->element_size, &new_bytes)) return EOVERFLOW;
 
     void *new_data = realloc(a->data, new_bytes);
     if(!new_data) return ENOMEM;
@@ -270,7 +280,7 @@ array_shrink_fit(Array *a)
     }
 
     size_t _bytes;
-    if(mul_overflow(a->size, a->element_size, &_bytes)) return EOVERFLOW;
+    if(safe_mul(a->size, a->element_size, &_bytes)) return EOVERFLOW;
 
     void *tmp = realloc(a->data, _bytes);
     if(!tmp) return ENOMEM;
@@ -339,14 +349,13 @@ static inline int
 do_insert(Array *restrict a, const void *restrict value, size_t index)
 {
     size_t insert_offset;
-    if(mul_overflow(index, a->element_size, &insert_offset)) return EOVERFLOW;
+    if(safe_mul(index, a->element_size, &insert_offset)) return EOVERFLOW;
 
     size_t tail_offset;
     // safe: index <= a->size validated by caller
     const size_t tail_count = (a->size - index);
 
-    if(mul_overflow(tail_count, a->element_size, &tail_offset))
-        return EOVERFLOW;
+    if(safe_mul(tail_count, a->element_size, &tail_offset)) return EOVERFLOW;
 
     if(array_self_insertion_safety(a, value)) return EINVAL;
 
@@ -442,13 +451,13 @@ do_erase(Array *a, size_t index)
     if(tail > 0)
     {
         size_t bytes;
-        if(mul_overflow(tail, a->element_size, &bytes)) return EOVERFLOW;
+        if(safe_mul(tail, a->element_size, &bytes)) return EOVERFLOW;
 
         size_t dst_offset;
-        if(mul_overflow(index, a->element_size, &dst_offset)) return EOVERFLOW;
+        if(safe_mul(index, a->element_size, &dst_offset)) return EOVERFLOW;
 
         size_t src_offset;
-        if(mul_overflow((index + 1), a->element_size, &src_offset))
+        if(safe_mul((index + 1), a->element_size, &src_offset))
             return EOVERFLOW;
 
         char *base = (char *)a->data;
@@ -498,7 +507,7 @@ static inline int
 do_push_front(Array *restrict a, const void *restrict value)
 {
     size_t bytes;
-    if(mul_overflow(a->size, a->element_size, &bytes)) return EOVERFLOW;
+    if(safe_mul(a->size, a->element_size, &bytes)) return EOVERFLOW;
 
     if(array_self_insertion_safety(a, value)) return EINVAL;
 
@@ -548,7 +557,7 @@ static inline int
 do_push_back(Array *a, const void *value)
 {
     size_t dst_offset;
-    if(mul_overflow(a->size, a->element_size, &dst_offset)) return EOVERFLOW;
+    if(safe_mul(a->size, a->element_size, &dst_offset)) return EOVERFLOW;
 
     char *base = (char *)a->data;
     void *dst = base + dst_offset;
@@ -587,7 +596,7 @@ array_pop_front(Array *a)
     if(!a) return;
 
     size_t _bytes;
-    if(mul_overflow((a->size - 1), a->element_size, &_bytes)) return;
+    if(safe_mul((a->size - 1), a->element_size, &_bytes)) return;
 
     char *base = (char *)a->data;
     void *dst = base;
@@ -607,7 +616,7 @@ array_pop_back(Array *a)
     if(!a) return;
 
     size_t bytes;
-    if(mul_overflow(a->size, a->element_size, &bytes)) return;
+    if(safe_mul(a->size, a->element_size, &bytes)) return;
 
     char *base = (char *)a->data;
     void *dst = base + bytes;
