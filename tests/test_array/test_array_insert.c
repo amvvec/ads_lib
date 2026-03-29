@@ -10,7 +10,7 @@
 #endif
 
 static void
-assert_array_invariants(const Array* array MAYBE_UNUSED)
+assert_array_invariants(const Array *array MAYBE_UNUSED)
 {
     assert(array != NULL);
     assert(array_capacity(array) >= array_size(array));
@@ -19,7 +19,7 @@ assert_array_invariants(const Array* array MAYBE_UNUSED)
 static void
 test_array_insert_into_empty(void)
 {
-    Array* array = array_init(sizeof(int));
+    Array *array = array_init(sizeof(int));
     assert(array);
 
     int value MAYBE_UNUSED = 10;
@@ -40,7 +40,7 @@ test_array_insert_at_front(void)
 {
     /// ARRANGE
 
-    Array* array = array_init(sizeof(int));
+    Array *array = array_init(sizeof(int));
     assert(array);
     assert_array_invariants(array);
 
@@ -114,7 +114,7 @@ test_array_insert_at_front(void)
 static void
 test_array_insert_in_middle(void)
 {
-    Array* array = array_init(sizeof(int));
+    Array *array = array_init(sizeof(int));
     assert(array);
 
     const int initial[] = {1, 2, 3, 4, 5};
@@ -148,7 +148,7 @@ test_array_insert_in_middle(void)
 static void
 test_array_insert_at_back(void)
 {
-    Array* array = array_init(sizeof(int));
+    Array *array = array_init(sizeof(int));
     assert(array);
 
     const int initial[] = {1, 2, 3, 4, 5};
@@ -182,13 +182,13 @@ test_array_insert_at_back(void)
 static void
 test_array_insert_self_insertion(void)
 {
-    Array* array = array_init(sizeof(int));
+    Array *array = array_init(sizeof(int));
     assert(array);
 
     int value MAYBE_UNUSED = 1;
     assert(array_insert(array, &value, 0) == 0);
 
-    const int* p = array_data(array);
+    const int *p = array_data(array);
 
     int error MAYBE_UNUSED = array_insert(array, p, 0);
 

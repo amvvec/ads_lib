@@ -12,7 +12,7 @@
 static void
 test_array_erase_back(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
     for(int i = 0; i < 10; ++i) assert(array_push_back(a, &i) == 0);
@@ -38,7 +38,7 @@ test_array_erase_back(void)
 static void
 test_array_erase_middle(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
     for(int i = 0; i < 7; ++i) assert(array_push_back(a, &i) == 0);
@@ -60,7 +60,7 @@ test_array_erase_middle(void)
 static void
 test_array_erase_front(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
     const int values[] = {10, 20, 30, 40};
@@ -85,7 +85,7 @@ test_array_erase_front(void)
 static void
 test_array_erase_invalid(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
     assert(array_push_back(a, &(int){42}) == 0);
@@ -100,7 +100,7 @@ test_array_erase_invalid(void)
 static void
 test_array_erase_empty(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
     assert(array_erase(a, 0) == EINVAL);

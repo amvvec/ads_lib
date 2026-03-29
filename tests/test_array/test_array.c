@@ -13,7 +13,7 @@
 static void
 test_array_init_and_delete(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
     array_delete(&a);
 }
@@ -21,7 +21,7 @@ test_array_init_and_delete(void)
 static void
 test_array_init_zero_size(void)
 {
-    Array* a = array_init(0);
+    Array *a = array_init(0);
     assert(a == NULL);
     array_delete(&a);
 }
@@ -31,7 +31,7 @@ test_array_init_large_size(void)
 {
     size_t size = (((size_t)-1) / 2);
 
-    Array* a = array_init(size);
+    Array *a = array_init(size);
 
     assert(a == NULL);
 
@@ -47,7 +47,7 @@ test_array_delete_null(void)
 static void
 test_array_delete_nonempty(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
 
     assert(a != NULL);
 
@@ -57,7 +57,7 @@ test_array_delete_nonempty(void)
 static void
 test_array_delete_double(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
     array_delete(&a);
@@ -67,7 +67,7 @@ test_array_delete_double(void)
 static void
 test_array_insert_empty_array(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
     int value1 MAYBE_UNUSED = 1;
@@ -92,7 +92,7 @@ test_array_insert_null_array(void)
 static void
 test_array_insert_null_value(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
     assert(array_insert(a, NULL, 0) != 0); // NULL value
@@ -103,7 +103,7 @@ test_array_insert_null_value(void)
 static void
 test_array_insert_invalid_index(void)
 {
-    Array* a = array_init(sizeof(int));
+    Array *a = array_init(sizeof(int));
     assert(a != NULL);
 
     int v MAYBE_UNUSED = 1;

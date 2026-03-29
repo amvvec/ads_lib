@@ -17,14 +17,14 @@ AlwaysBreakAfterDefinitionReturnType: All
 AlwaysBreakAfterReturnType: AllDefinitions
 BreakBeforeBraces: Allman
 BreakBeforeTernaryOperators: true
-ColumnLimit: 100
+ColumnLimit: 80
 IncludeBlocks: Regroup
 IndentCaseLabels: true
 IndentWidth: 4 # do not use with UseTab function
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false
 MaxEmptyLinesToKeep: 1
-PointerAlignment: Left
+PointerAlignment: Right
 ReflowComments: false
 SortIncludes: true
 SpaceAfterCStyleCast: false
