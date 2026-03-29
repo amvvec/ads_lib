@@ -89,17 +89,28 @@ safe_add(size_t a, size_t b, size_t *out)
     return 0;
 }
 
-static inline int
-sub_overflow(size_t a, size_t b, size_t *out)
+static inline bool
+sub_overflow_raw(size_t a, size_t b, size_t *out)
 {
-    if(!out) return EINVAL;
+    assert(out);
+
 #if defined(__GNUC__) || defined(__clang__)
-    return __builtin_sub_overflow(a, b, out);
+    return __builtin_add_overflow(a, b, out);
 #else
     if(a < b) return EOVERFLOW;
     *out = a - b;
-    return 0;
+    return false;
 #endif
+}
+
+static inline int
+safe_sub(size_t a, size_t b, size_t *out)
+{
+    if(!out) return EINVAL;
+
+    if(sub_overflow_raw(a, b, out)) return EOVERFLOW;
+
+    return 0;
 }
 
 static inline int
