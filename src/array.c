@@ -65,17 +65,28 @@ array_invariant_check(const Array *a)
 #define ARRAY_ASSERT(a) ((void)0)
 #endif
 
-static inline int
-add_overflow(size_t a, size_t b, size_t *out)
+static inline bool
+add_overflow_raw(size_t a, size_t b, size_t *out)
 {
-    if(!out) return EINVAL;
+    assert(out);
+
 #if defined(__GNUC__) || defined(__clang__)
     return __builtin_add_overflow(a, b, out);
 #else
-    if(a > SIZE_MAX - b) return EOVERFLOW;
+    if(a > SIZE_MAX - b) return true;
     *out = a + b;
-    return 0;
+    return false;
 #endif
+}
+
+static inline int
+safe_add(size_t a, size_t b, size_t *out)
+{
+    if(!out) return EINVAL;
+
+    if(add_overflow_raw(a, b, out)) return EOVERFLOW;
+
+    return 0;
 }
 
 static inline int
@@ -201,7 +212,7 @@ array_reserve(Array *a)
     if(!a) return EINVAL;
 
     size_t requiered_size;
-    if(add_overflow(a->size, 1, &requiered_size)) return EOVERFLOW;
+    if(safe_add(a->size, 1, &requiered_size)) return EOVERFLOW;
 
     if(a->capacity >= requiered_size) return 0; // enough capacity
 
@@ -266,7 +277,7 @@ array_ensure_capacity(Array *a, size_t extra)
 {
     size_t required_capacity;
 
-    if(add_overflow(a->size, extra, &required_capacity)) return EOVERFLOW;
+    if(safe_add(a->size, extra, &required_capacity)) return EOVERFLOW;
 
     if(required_capacity <= a->capacity) return 0; // enough capacity
 
