@@ -227,12 +227,8 @@ array_delete(Array **a)
 }
 
 static inline int
-array_reserve(Array *a)
+check_before_reserve(Array *a)
 {
-    ARRAY_ASSERT(a);
-
-    if(!a) return EINVAL;
-
     size_t requiered_size;
     if(safe_add(a->size, 1, &requiered_size)) return EOVERFLOW;
 
@@ -240,11 +236,15 @@ array_reserve(Array *a)
 
     if(a->capacity > SIZE_MAX / 2) return EOVERFLOW;
 
+    return 0;
+}
+
+static inline int
+do_reserve(Array *a)
+{
     assert(ARR_INIT_CAP > 1);
 
     size_t new_capacity = a->capacity ? (a->capacity * 2) : ARR_INIT_CAP;
-
-    assert(a->element_size > 0);
 
     size_t new_bytes;
     if(safe_mul(new_capacity, a->element_size, &new_bytes)) return EOVERFLOW;
@@ -254,6 +254,24 @@ array_reserve(Array *a)
 
     a->data = new_data;
     a->capacity = new_capacity;
+
+    return 0;
+}
+
+static inline int
+array_reserve(Array *a)
+{
+    ARRAY_ASSERT(a);
+
+    if(!a) return EINVAL;
+
+    int error;
+
+    error = check_before_reserve(a);
+    if(error) return error;
+
+    error = do_reserve(a);
+    if(error) return error;
 
     ARRAY_ASSERT(a);
 
