@@ -95,9 +95,9 @@ sub_overflow_raw(size_t a, size_t b, size_t *out)
     assert(out);
 
 #if defined(__GNUC__) || defined(__clang__)
-    return __builtin_add_overflow(a, b, out);
+    return __builtin_sub_overflow(a, b, out);
 #else
-    if(a < b) return EOVERFLOW;
+    if(a < b) return true;
     *out = a - b;
     return false;
 #endif
@@ -121,7 +121,7 @@ mul_overflow_raw(size_t a, size_t b, size_t *out)
 #if defined(__GNUC__) || defined(__clang__)
     return __builtin_mul_overflow(a, b, out);
 #else
-    if(b != 0 && a > SIZE_MAX / b) return EOVERFLOW;
+    if(b != 0 && a > SIZE_MAX / b) return true;
     *out = a * b;
     return false;
 #endif
