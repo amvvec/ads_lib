@@ -121,6 +121,20 @@ safe_add(size_t a, size_t b, size_t *out)
     return 0;
 }
 
+/*
+@brief
+Performs subtraction with overflow detection.
+Low-level primitive. No args validation.
+
+@pre
+out != NULL
+
+@post
+on success:
+    *out = a - b
+on failure:
+    *out = 0
+*/
 static inline bool
 sub_overflow_raw(size_t a, size_t b, size_t *out)
 {
