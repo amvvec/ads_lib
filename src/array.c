@@ -176,8 +176,22 @@ safe_sub(size_t a, size_t b, size_t *out)
     return 0;
 }
 
+/*
+@brief
+Performs multiplication with overflow detection.
+Low-level primitive. No args validation.
+
+@pre
+out != NULL
+
+@post
+on success:
+    *out = a - b
+on failure:
+    *out = 0
+*/
 static inline bool
-mul_overflow_raw(size_t a, size_t b, size_t *out)
+_mul_overflow(size_t a, size_t b, size_t *out)
 {
     assert(out);
 #if defined(__GNUC__) || defined(__clang__)
@@ -187,7 +201,7 @@ mul_overflow_raw(size_t a, size_t b, size_t *out)
         return true;
     }
 #else
-    if(__builtin_mul_overflow(a, b, out))
+    if(b != 0 && a > SIZE_MAX / b)
     {
         *out = 0;
         return true;
@@ -202,7 +216,7 @@ safe_mul(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
-    if(mul_overflow_raw(a, b, out)) return EOVERFLOW;
+    if(_mul_overflow(a, b, out)) return EOVERFLOW;
 
     return 0;
 }
