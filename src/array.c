@@ -136,17 +136,24 @@ on failure:
     *out = 0
 */
 static inline bool
-sub_overflow_raw(size_t a, size_t b, size_t *out)
+_sub_overflow(size_t a, size_t b, size_t *out)
 {
     assert(out);
-
 #if defined(__GNUC__) || defined(__clang__)
-    return __builtin_sub_overflow(a, b, out);
+    if(__builtin_sub_overflow(a, b, out))
+    {
+        *out = 0;
+        return true;
+    }
 #else
-    if(a < b) return true;
+    if(a < b)
+    {
+        *out = 0;
+        return true;
+    }
     *out = a - b;
-    return false;
 #endif
+    return false;
 }
 
 static inline int
@@ -154,7 +161,7 @@ safe_sub(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
-    if(sub_overflow_raw(a, b, out)) return EOVERFLOW;
+    if(_sub_overflow(a, b, out)) return EOVERFLOW;
 
     return 0;
 }
