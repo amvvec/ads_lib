@@ -79,11 +79,7 @@ array_invariant_check(const Array *a)
 static inline bool
 add_overflow_raw(size_t a, size_t b, size_t *out)
 {
-    assert(!out);
-    if(!out)
-    {
-        return EINVAL;
-    }
+    assert(out);
 #if defined(__GNUC__) || defined(__clang__)
     if((__builtin_add_overflow(a, b, out)))
     {
