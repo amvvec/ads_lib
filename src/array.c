@@ -72,12 +72,16 @@ Low-level primitive. No args validation.
 
 @pre
 out != NULL
+(UB otherwise; assertion in debug)
 
 @post
 on success:
     *out = a + b
 on failure:
     *out = 0
+
+@return
+false on success, true on failure
 */
 static inline bool
 _add_overflow(size_t a, size_t b, size_t *out)
@@ -109,7 +113,10 @@ Args validation.
 on success:
     *out = a + b
 on failure:
-    *out = 0
+    out is not modified
+
+@return
+0 on success, error code otherwise
 */
 static inline int
 safe_add(size_t a, size_t b, size_t *out)
@@ -128,12 +135,16 @@ Low-level primitive. No args validation.
 
 @pre
 out != NULL
+(UB otherwise; assertion in debug)
 
 @post
 on success:
     *out = a - b
 on failure:
     *out = 0
+
+@return
+false on success, true on failure
 */
 static inline bool
 _sub_overflow(size_t a, size_t b, size_t *out)
@@ -163,8 +174,11 @@ Args validation.
 @post
 on success:
     *out = a - b
-on failure
-    *out = 0
+on failure:
+    out is not modified
+
+@return
+0 on success, error code otherwise
 */
 static inline int
 safe_sub(size_t a, size_t b, size_t *out)
@@ -183,12 +197,16 @@ Low-level primitive. No args validation.
 
 @pre
 out != NULL
+(UB otherwise; assertion in debug)
 
 @post
 on success:
-    *out = a - b
+    *out = a * b
 on failure:
     *out = 0
+
+@return
+false on success, true on failure
 */
 static inline bool
 _mul_overflow(size_t a, size_t b, size_t *out)
@@ -217,9 +235,12 @@ Args validation.
 
 @post
 on success:
-    *out = a - b
-on failure
-    *out = 0
+    *out = a * b
+on failure:
+    out is not modified
+
+@return
+0 on success, error code otherwise
 */
 static inline int
 safe_mul(size_t a, size_t b, size_t *out)
