@@ -80,7 +80,7 @@ on failure:
     *out = 0
 */
 static inline bool
-add_overflow_raw(size_t a, size_t b, size_t *out)
+_add_overflow(size_t a, size_t b, size_t *out)
 {
     assert(out);
 #if defined(__GNUC__) || defined(__clang__)
@@ -105,7 +105,7 @@ safe_add(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
-    if(add_overflow_raw(a, b, out)) return EOVERFLOW;
+    if(_add_overflow(a, b, out)) return EOVERFLOW;
 
     return 0;
 }
