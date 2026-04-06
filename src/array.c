@@ -156,6 +156,16 @@ _sub_overflow(size_t a, size_t b, size_t *out)
     return false;
 }
 
+/*
+Safe wrapper over _sub_overflow.
+Args validation.
+
+@post
+on success:
+    *out = a - b
+on failure
+    *out = 0
+*/
 static inline int
 safe_sub(size_t a, size_t b, size_t *out)
 {
