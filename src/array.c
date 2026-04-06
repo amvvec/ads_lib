@@ -180,14 +180,21 @@ static inline bool
 mul_overflow_raw(size_t a, size_t b, size_t *out)
 {
     assert(out);
-
 #if defined(__GNUC__) || defined(__clang__)
-    return __builtin_mul_overflow(a, b, out);
+    if(__builtin_mul_overflow(a, b, out))
+    {
+        *out = 0;
+        return true;
+    }
 #else
-    if(b != 0 && a > SIZE_MAX / b) return true;
+    if(__builtin_mul_overflow(a, b, out))
+    {
+        *out = 0;
+        return true;
+    }
     *out = a * b;
-    return false;
 #endif
+    return false;
 }
 
 static inline int
