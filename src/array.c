@@ -65,6 +65,17 @@ array_invariant_check(const Array *a)
 #define ARRAY_ASSERT(a) ((void)0)
 #endif
 
+/*
+@brief Adds a, b with overflow check.
+
+@pre out != NULL
+
+@post on success return false:
+    - *out = a + b
+
+@post on failure return true:
+    - *out = 0
+*/
 static inline bool
 add_overflow_raw(size_t a, size_t b, size_t *out)
 {
