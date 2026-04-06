@@ -66,15 +66,18 @@ array_invariant_check(const Array *a)
 #endif
 
 /*
-@brief Adds a, b with overflow check.
+@brief
+Performs addition with overflow detection.
+Low-level primitive. Does not validate args.
 
-@pre out != NULL
+@pre
+out != NULL
 
-@post on success return false:
-    - *out = a + b
-
-@post on failure return true:
-    - *out = 0
+@post
+on success:
+    *out = a + b
+on failure:
+    *out = 0
 */
 static inline bool
 add_overflow_raw(size_t a, size_t b, size_t *out)
