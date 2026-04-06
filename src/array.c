@@ -68,7 +68,7 @@ array_invariant_check(const Array *a)
 /*
 @brief
 Performs addition with overflow detection.
-Low-level primitive. Does not validate args.
+Low-level primitive. No args validation.
 
 @pre
 out != NULL
@@ -100,6 +100,17 @@ _add_overflow(size_t a, size_t b, size_t *out)
     return false;
 }
 
+/*
+@brief
+Safe wrapper over _add_overflow.
+Args validation.
+
+@post
+on success:
+    *out = a + b
+on failure:
+    *out = 0
+*/
 static inline int
 safe_add(size_t a, size_t b, size_t *out)
 {
