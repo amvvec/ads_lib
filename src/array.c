@@ -88,12 +88,16 @@ static inline bool
 _add_overflow(size_t a, size_t b, size_t *out)
 {
     assert(out);
+// use compiler builtin when available
 #if defined(__GNUC__) || defined(__clang__)
     if((__builtin_add_overflow(a, b, out)))
     {
+        // builtin function can return garbage
+        // so zeroisation just in case
         *out = 0;
         return true;
     }
+// use portable overflow detection
 #else
     if(a > SIZE_MAX - b)
     {
@@ -119,7 +123,7 @@ on failure:
 @return
 0 on success, error code otherwise
 */
-static inline int
+int
 safe_add(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
@@ -154,9 +158,11 @@ _sub_overflow(size_t a, size_t b, size_t *out)
 #if defined(__GNUC__) || defined(__clang__)
     if(__builtin_sub_overflow(a, b, out))
     {
-        *out = 0;
+        // builtin function can return garbage
+        *out = 0; // zeroisation
         return true;
     }
+// use portable overflow detection
 #else
     if(a < b)
     {
@@ -181,7 +187,7 @@ on failure:
 @return
 0 on success, error code otherwise
 */
-static inline int
+int
 safe_sub(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
@@ -216,9 +222,11 @@ _mul_overflow(size_t a, size_t b, size_t *out)
 #if defined(__GNUC__) || defined(__clang__)
     if(__builtin_mul_overflow(a, b, out))
     {
-        *out = 0;
+        // builtin function can return garbage
+        *out = 0; // zeroisation
         return true;
     }
+// use portable overflow detection
 #else
     if(b != 0 && a > SIZE_MAX / b)
     {
@@ -243,7 +251,7 @@ on failure:
 @return
 0 on success, error code otherwise
 */
-static inline int
+int
 safe_mul(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
@@ -265,6 +273,10 @@ array_self_insertion_safety(const Array *a, const void *value)
 
     return v < end && v >= start;
 }
+
+/*
+
+*/
 
 /**
  * @brief Allocates and initializes a dynamic array.
