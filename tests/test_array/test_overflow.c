@@ -24,9 +24,21 @@ test_safe_add_zero(void)
     assert(out == 0);
 }
 
+static void
+test_safe_add_wraparound(void)
+{
+    size_t out = 111;
+
+    int er = safe_add(SIZE_MAX, SIZE_MAX, &out);
+
+    assert(er == 0);
+    assert(out == 0);
+}
+
 void
 run_overflow_tests(void)
 {
     test_safe_add_smoke();
     test_safe_add_zero();
+    test_safe_add_wraparound();
 }
