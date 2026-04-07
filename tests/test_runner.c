@@ -4,6 +4,7 @@
 #include "test_array/test_array_erase.c"
 #include "test_array/test_array_init.c"
 #include "test_array/test_array_insert.c"
+#include "test_array/test_overflow.c"
 
 #include <stdio.h>
 
@@ -16,6 +17,8 @@ test_runner(void)
     run_array_init_tests();
     run_array_insert_tests();
     run_array_smoke_tests();
+
+    run_overflow_tests();
 
     printf("All tests passed\n");
 }
