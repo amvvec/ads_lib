@@ -6,6 +6,10 @@
 
 typedef struct Array Array;
 
+int safe_add(size_t a, size_t b, size_t *out);
+int safe_sub(size_t a, size_t b, size_t *out);
+int safe_mul(size_t a, size_t b, size_t *out);
+
 Array *array_init(size_t element_size);
 void array_delete(Array **a);
 
