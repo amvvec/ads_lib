@@ -70,6 +70,9 @@ $(OBJECT_DIR)/%.o: %.c
 # include dependencies
 -include $(OBJECTS:.o=.d)
 
+run: all
+	./$(BINARIES)
+
 clean:
 	rm -rf build
 
