@@ -11,13 +11,13 @@ static const size_t ARR_INIT_CAP = 8;
 
 /*
 @invariant:
-    a != NULL
-    a->data != NULL
-    a->element_size > 0
-    a->capacity > 0
-    a->size <= a->capacity
-    a->size / a->element_size <= SIZE_MAX
-    a->capacity / a->element_size <= SIZE_MAX
+    - a != NULL
+    - a->data != NULL
+    - a->element_size > 0
+    - a->capacity > 0
+    - a->size <= a->capacity
+    - a->size / a->element_size <= SIZE_MAX
+    - a->capacity / a->element_size <= SIZE_MAX
 */
 struct Array
 {
@@ -40,17 +40,12 @@ array_invariant_check(const Array *a)
     if(a->capacity == 0)
     {
         if(a->data != NULL) return EINVAL;
-
         if(a->size != 0) return EINVAL;
     }
-    else
-    {
-        if(a->data == NULL) return EINVAL;
-    }
+    else if(a->data == NULL) return EINVAL;
 
     // overflow
     if(a->capacity > (SIZE_MAX / a->element_size)) return EOVERFLOW;
-
     if(a->size > (SIZE_MAX / a->element_size)) return EOVERFLOW;
 
     return 0;
