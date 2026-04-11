@@ -69,7 +69,9 @@ array_invariant_check(const Array *a)
 /*
 @brief
 Performs addition with overflow detection.
-Low-level primitive. No args validation.
+
+Low-level primitive (does not perform validation):
+caller must satisfy preconditions.
 
 @pre
 out != NULL
@@ -82,18 +84,16 @@ on failure:
     *out = 0
 
 @return
-false on success, true on failure
+false on success, true if overflow
 */
 static inline bool
-_add_overflow(size_t a, size_t b, size_t *out)
+add_overflow(size_t a, size_t b, size_t *out)
 {
     assert(out);
 // use compiler builtin when available
 #if defined(__GNUC__) || defined(__clang__)
-    if((__builtin_add_overflow(a, b, out)))
+    if(__builtin_add_overflow(a, b, out))
     {
-        // builtin function can return garbage
-        // so zeroisation just in case
         *out = 0;
         return true;
     }
@@ -111,14 +111,15 @@ _add_overflow(size_t a, size_t b, size_t *out)
 
 /*
 @brief
-Safe wrapper over _add_overflow.
+Safe wrapper over add_overflow.
 Args validation.
 
 @post
 on success:
     *out = a + b
 on failure:
-    out is not modified
+    EINVAL: *out is not accessed
+    EOVERFLOW: *out = 0 (from low-level primitive)
 
 @return
 0 on success, error code otherwise
@@ -128,7 +129,7 @@ safe_add(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
-    if(_add_overflow(a, b, out)) return EOVERFLOW;
+    if(add_overflow(a, b, out)) return EOVERFLOW;
 
     return 0;
 }
@@ -136,7 +137,9 @@ safe_add(size_t a, size_t b, size_t *out)
 /*
 @brief
 Performs subtraction with overflow detection.
-Low-level primitive. No args validation.
+
+Low-level primitive (does not perform validation):
+caller must satisfy preconditions.
 
 @pre
 out != NULL
@@ -149,17 +152,16 @@ on failure:
     *out = 0
 
 @return
-false on success, true on failure
+false on success, true if overflow
 */
 static inline bool
-_sub_overflow(size_t a, size_t b, size_t *out)
+sub_overflow(size_t a, size_t b, size_t *out)
 {
     assert(out);
 #if defined(__GNUC__) || defined(__clang__)
     if(__builtin_sub_overflow(a, b, out))
     {
-        // builtin function can return garbage
-        *out = 0; // zeroisation
+        *out = 0;
         return true;
     }
 // use portable overflow detection
@@ -175,14 +177,15 @@ _sub_overflow(size_t a, size_t b, size_t *out)
 }
 
 /*
-Safe wrapper over _sub_overflow.
+Safe wrapper over sub_overflow.
 Args validation.
 
 @post
 on success:
     *out = a - b
 on failure:
-    out is not modified
+    EINVAL: *out is not accessed
+    EOVERFLOW: *out = 0 (from low-level primitive)
 
 @return
 0 on success, error code otherwise
@@ -192,7 +195,7 @@ safe_sub(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
-    if(_sub_overflow(a, b, out)) return EOVERFLOW;
+    if(sub_overflow(a, b, out)) return EOVERFLOW;
 
     return 0;
 }
@@ -200,7 +203,9 @@ safe_sub(size_t a, size_t b, size_t *out)
 /*
 @brief
 Performs multiplication with overflow detection.
-Low-level primitive. No args validation.
+
+Low-level primitive (does not perform validation):
+caller must satisfy preconditions.
 
 @pre
 out != NULL
@@ -213,22 +218,21 @@ on failure:
     *out = 0
 
 @return
-false on success, true on failure
+false on success, true if overflow
 */
 static inline bool
-_mul_overflow(size_t a, size_t b, size_t *out)
+mul_overflow(size_t a, size_t b, size_t *out)
 {
     assert(out);
 #if defined(__GNUC__) || defined(__clang__)
     if(__builtin_mul_overflow(a, b, out))
     {
-        // builtin function can return garbage
-        *out = 0; // zeroisation
+        *out = 0;
         return true;
     }
 // use portable overflow detection
 #else
-    if(b != 0 && a > SIZE_MAX / b)
+    if(a != 0 && b > SIZE_MAX / a)
     {
         *out = 0;
         return true;
@@ -239,14 +243,15 @@ _mul_overflow(size_t a, size_t b, size_t *out)
 }
 
 /*
-Safe wrapper over _mul_overflow.
+Safe wrapper over mul_overflow.
 Args validation.
 
 @post
 on success:
     *out = a * b
 on failure:
-    out is not modified
+    EINVAL: *out is not accessed
+    EOVERFLOW: *out = 0 (from low-level primitive)
 
 @return
 0 on success, error code otherwise
@@ -256,7 +261,7 @@ safe_mul(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
-    if(_mul_overflow(a, b, out)) return EOVERFLOW;
+    if(mul_overflow(a, b, out)) return EOVERFLOW;
 
     return 0;
 }
