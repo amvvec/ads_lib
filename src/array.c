@@ -357,10 +357,10 @@ array_delete(Array **a)
 static inline int
 check_before_reserve(Array *a)
 {
-    size_t requiered_size;
-    if(safe_add(a->size, 1, &requiered_size)) return EOVERFLOW;
+    size_t required_size;
+    if(safe_add(a->size, 1, &required_size)) return EOVERFLOW;
 
-    if(a->capacity >= requiered_size) return 0; // enough capacity
+    if(a->capacity >= required_size) return 0; // enough capacity
 
     if(a->capacity > SIZE_MAX / 2) return EOVERFLOW;
 
@@ -675,7 +675,7 @@ do_push_front(Array *restrict a, const void *restrict value)
  *
  * @post On failure:
  *
- * @return 0 on succeess, error code otherwise.
+ * @return 0 on success, error code otherwise.
  */
 int
 array_push_front(Array *restrict a, const void *restrict value)
