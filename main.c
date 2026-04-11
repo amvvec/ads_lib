@@ -1,4 +1,4 @@
-#include "test_runner.h"
+#include "tests/test_runner.c"
 
 int
 main(void)
