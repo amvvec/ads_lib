@@ -75,7 +75,7 @@ test_array_insert_at_front(void)
         assert(array_get(array, i, &output) == 0);
 
         // compare with original reversed sequence
-        assert(output == values[n - i - 1]); 
+        assert(output == values[n - i - 1]);
     }
 
     /// act
@@ -112,33 +112,44 @@ test_array_insert_at_front(void)
 static void
 test_array_insert_in_middle(void)
 {
+    /// arrange
+
     Array *array = array_init(sizeof(int));
     assert(array);
+    assert_array_invariants(array);
 
     const int initial[] = {1, 2, 3, 4, 5};
-    const size_t initial_n = sizeof(initial) / sizeof(initial[0]);
+    const size_t n = sizeof(initial) / sizeof(initial[0]);
 
-    for(size_t i = 0; i < initial_n; ++i)
+    for(size_t i = 0; i < n; ++i)
     {
         assert(array_insert(array, &initial[i], i) == 0);
+
+        assert_array_invariants(array);
     }
 
-    const size_t initial_size MAYBE_UNUSED = array_size(array);
+    /// act
 
-    int value MAYBE_UNUSED = 100;
-    assert(array_insert(array, &value, 3) == 0);
+    const size_t old_size = array_size(array);
+
+    int value = 100;
+    assert(array_insert(array, &value, 3) == 0); // insert in middle
+
+    /// assert
+
+    assert(array_size(array) == old_size + 1);
 
     const int expect[] = {1, 2, 3, 100, 4, 5};
-    const size_t expect_n = sizeof(expect) / sizeof(expect[0]);
 
-    assert(array_size(array) == initial_size + 1);
-
-    for(size_t i = 0; i < expect_n; ++i)
+    // sanity check
+    for(size_t i = 0; i < n + 1; ++i)
     {
-        int out MAYBE_UNUSED;
-        assert(array_get(array, i, &out) == 0);
-        assert(out == expect[i]);
+        int output;
+        assert(array_get(array, i, &output) == 0);
+        assert(output == expect[i]);
     }
+
+    assert_array_invariants(array);
 
     array_delete(&array);
 }
