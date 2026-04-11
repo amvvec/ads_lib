@@ -196,6 +196,49 @@ test_array_insert_at_back(void)
     array_delete(&array);
 }
 
+static void
+test_array_insert_trigger_capacity_growth(void)
+{
+    /// arrange
+
+    Array *a = array_init(sizeof(int));
+    assert(a);
+    assert_array_invariants(a);
+
+    size_t initial_size = array_size(a);
+    size_t initial_capacity = array_capacity(a);
+
+    for(size_t i = 0; i < initial_capacity; ++i)
+    {
+        int value = (int)i;
+        assert(array_insert(a, &value, initial_size) == 0);
+    }
+
+    assert(array_size(a) >= initial_size);
+    assert(array_capacity(a) >= initial_capacity);
+
+    /// act
+
+    int value = 1;
+    assert(array_insert(a, &value, 0) == 0);
+
+    /// assert
+
+    assert(array_size(a) >= initial_size + 1);
+    assert(array_capacity(a) > initial_capacity);
+
+    int output;
+    assert(array_get(a, 0, &output) == 0);
+    assert(output == value);
+
+    int last_element;
+    assert(array_get(a, 1, &last_element) == 0);
+    assert(last_element == (int)(initial_capacity - 1));
+
+    assert_array_invariants(a);
+    array_delete(&a);
+}
+
 // static void
 // test_array_insert_self_insertion(void)
 // {
@@ -486,6 +529,7 @@ run_array_insert_tests(void)
     test_array_insert_at_front();
     test_array_insert_in_middle();
     test_array_insert_at_back();
+    test_array_insert_trigger_capacity_growth();
     // test_array_insert_self_insertion();
     // test_array_insert_empty_at_zero();
     // test_array_insert_at_end_on_empty();
