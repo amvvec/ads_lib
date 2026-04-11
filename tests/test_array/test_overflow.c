@@ -59,10 +59,21 @@ test_safe_add_no_overflow(void)
     assert(out == 0);
 }
 
+static void
+test_safe_add_null(void)
+{
+    size_t out = 1;
+
+    int er = safe_add(1, 1, NULL);
+    assert(er != 0);
+    assert(out == 1); // must not change
+}
+
 void
 run_overflow_tests(void)
 {
     test_safe_add_smoke();
     test_safe_add_wraparound();
     test_safe_add_no_overflow();
+    test_safe_add_null();
 }
