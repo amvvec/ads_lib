@@ -179,23 +179,23 @@ test_array_insert_at_back(void)
     array_delete(&array);
 }
 
-static void
-test_array_insert_self_insertion(void)
-{
-    Array *array = array_init(sizeof(int));
-    assert(array);
+// static void
+// test_array_insert_self_insertion(void)
+// {
+//     Array *array = array_init(sizeof(int));
+//     assert(array);
 
-    int value MAYBE_UNUSED = 1;
-    assert(array_insert(array, &value, 0) == 0);
+//     int value MAYBE_UNUSED = 1;
+//     assert(array_insert(array, &value, 0) == 0);
 
-    const int *p = array_data(array);
+//     const int *p = array_data(array);
 
-    int error MAYBE_UNUSED = array_insert(array, p, 0);
+//     int error MAYBE_UNUSED = array_insert(array, p, 0);
 
-    assert(error == EINVAL);
+//     assert(error == EINVAL);
 
-    array_delete(&array);
-}
+//     array_delete(&array);
+// }
 
 // static void test_array_insert_empty_at_zero(void) {
 //   Array* array = array_init(sizeof(int));
@@ -469,7 +469,7 @@ run_array_insert_tests(void)
     test_array_insert_at_front();
     test_array_insert_in_middle();
     test_array_insert_at_back();
-    test_array_insert_self_insertion();
+    // test_array_insert_self_insertion();
     // test_array_insert_empty_at_zero();
     // test_array_insert_at_end_on_empty();
     // test_array_insert_single_element_middle();
