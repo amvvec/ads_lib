@@ -21,16 +21,22 @@ test_array_insert_into_empty(void)
 {
     Array *array = array_init(sizeof(int));
     assert(array);
+    assert_array_invariants(array);
 
-    int value MAYBE_UNUSED = 10;
+    const size_t initial_size = array_size(array);
+
+    int value = 1;
 
     assert(array_insert(array, &value, 0) == 0);
 
     assert(array_size(array) == 1);
+    assert(array_size(array) == initial_size + 1);
 
-    int out MAYBE_UNUSED;
-    assert(array_get(array, 0, &out) == 0);
-    assert(out == value);
+    int output;
+    assert(array_get(array, 0, &output) == 0);
+    assert(output == value);
+
+    assert_array_invariants(array);
 
     array_delete(&array);
 }
