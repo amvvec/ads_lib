@@ -42,7 +42,8 @@ array_invariant_check(const Array *a)
         if(a->data != NULL) return EINVAL;
         if(a->size != 0) return EINVAL;
     }
-    else if(a->data == NULL) return EINVAL;
+    else if(a->data == NULL)
+        return EINVAL;
 
     // overflow
     if(a->capacity > (SIZE_MAX / a->element_size)) return EOVERFLOW;

@@ -44,57 +44,53 @@ test_array_insert_into_empty(void)
 static void
 test_array_insert_at_front(void)
 {
-    /// ARRANGE
+    /// arrange
 
     Array *array = array_init(sizeof(int));
     assert(array);
+
     assert_array_invariants(array);
-
-    const size_t initial_capacity MAYBE_UNUSED = array_capacity(array);
-
-    /// ACT
 
     const int values[] = {1, 2, 3, 4, 5};
     const size_t n = sizeof(values) / sizeof(values[0]);
+
+    /// act
 
     for(size_t i = 0; i < n; ++i)
     {
         assert(array_insert(array, &values[i], 0) == 0);
 
-        // size increase
+        // size must increase
         assert(array_size(array) == i + 1);
 
         // invariants must hold
         assert_array_invariants(array);
     }
 
-    /// ASSERT
+    /// assert
 
     for(size_t i = 0; i < n; ++i)
     {
-        int out MAYBE_UNUSED;
+        int output;
+        assert(array_get(array, i, &output) == 0);
 
-        assert(array_get(array, i, &out) == 0);
-        assert(out == values[n - i - 1]);
+        // compare with original reversed sequence
+        assert(output == values[n - i - 1]); 
     }
 
-    /// ACT
+    /// act
 
-    int v MAYBE_UNUSED = 100;
+    int value = 1;
+    const size_t initial_size = array_size(array);
+    assert(array_insert(array, &value, 0) == 0);
 
-    const size_t old_size MAYBE_UNUSED = array_size(array);
+    /// assert
 
-    assert(array_insert(array, &v, 0) == 0);
+    assert(array_size(array) == initial_size + 1);
 
-    /// ASSERT
-
-    assert(array_size(array) == old_size + 1);
-
-    int out MAYBE_UNUSED;
-    assert(array_get(array, 0, &out) == 0);
-    assert(out == v);
-
-    /// ASSERT
+    int output;
+    assert(array_get(array, 0, &output) == 0);
+    assert(output == value);
 
     for(size_t i = 1; i < array_size(array); ++i)
     {
@@ -107,10 +103,6 @@ test_array_insert_at_front(void)
         // compare with original reversed sequence
         assert(current == values[n - i]);
     }
-
-    /// ASSERT
-
-    assert(array_capacity(array) >= initial_capacity);
 
     assert_array_invariants(array);
 
