@@ -201,57 +201,61 @@ test_array_insert_trigger_capacity_growth(void)
 {
     /// arrange
 
-    Array *a = array_init(sizeof(int));
-    assert(a);
-    assert_array_invariants(a);
+    Array *array = array_init(sizeof(int));
+    assert(array);
+    assert_array_invariants(array);
 
-    size_t initial_size = array_size(a);
-    size_t initial_capacity = array_capacity(a);
+    size_t initial_size = array_size(array);
+    size_t initial_capacity = array_capacity(array);
 
     for(size_t i = 0; i < initial_capacity; ++i)
     {
         int value = (int)i;
-        assert(array_insert(a, &value, initial_size) == 0);
+        assert(array_insert(array, &value, initial_size) == 0);
     }
 
-    assert(array_size(a) >= initial_size);
-    assert(array_capacity(a) >= initial_capacity);
+    assert(array_size(array) >= initial_size);
+    assert(array_capacity(array) >= initial_capacity);
 
     /// act
 
     int value = 1;
-    assert(array_insert(a, &value, 0) == 0);
+    assert(array_insert(array, &value, 0) == 0);
 
     /// assert
 
-    assert(array_size(a) >= initial_size + 1);
-    assert(array_capacity(a) > initial_capacity);
+    assert(array_size(array) >= initial_size + 1);
+    assert(array_capacity(array) > initial_capacity);
 
     int output;
-    assert(array_get(a, 0, &output) == 0);
+    assert(array_get(array, 0, &output) == 0);
     assert(output == value);
 
     int last_element;
-    assert(array_get(a, 1, &last_element) == 0);
+    assert(array_get(array, 1, &last_element) == 0);
     assert(last_element == (int)(initial_capacity - 1));
 
-    assert_array_invariants(a);
-    array_delete(&a);
+    assert_array_invariants(array);
+    array_delete(&array);
 }
 
 static void
 test_array_insert_invalid_args(void)
 {
     /// arrange
-    Array *array = array_init(sizeof(int));
+
+    Array * array = array_init(sizeof(int));
     assert(array);
+    assert_array_invariants(array);
 
-    int value = 10;
-
+    int value = 1;
+    
     /// act + assert
+
     assert(array_insert(NULL, &value, 0) == EINVAL);
     assert(array_insert(array, NULL, 0) == EINVAL);
-
+    
+    assert_array_invariants(array);
     array_delete(&array);
 }
 
