@@ -4,7 +4,7 @@
 #include "test_array/test_array_erase.c"
 #include "test_array/test_array_init.c"
 #include "test_array/test_array_insert.c"
-#include "test_array/test_overflow.c"
+#include "test_array/test_overflow_detector.c"
 
 #include <stdio.h>
 
