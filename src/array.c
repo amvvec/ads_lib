@@ -90,6 +90,60 @@ add_overflow_raw(size_t a, size_t b, size_t *out)
 }
 
 /*
+Perform size_t subtraction with overflow detection.
+
+Note:
+Low-level primitive. No parameter validation.
+
+Pre:
+    - out != NULL (caller must validate)
+    - out may alias a or b
+
+Post:
+    On success:
+        - return false
+        - *out = a - b
+
+    On failure:
+        - return true
+        - *out is unchanged
+*/
+bool
+sub_overflow_raw(size_t a, size_t b, size_t *out)
+{
+    if(a < b) return true;
+    *out = a - b;
+    return false;
+}
+
+/*
+Perform size_t multiplication with overflow detection.
+
+Note:
+Low-level primitive. No parameter validation.
+
+Pre:
+    - out != NULL (caller must validate)
+    - out may alias a or b
+
+Post:
+    On success:
+        - return false
+        - *out = a * b
+
+    On failure:
+        - return true
+        - *out is unchanged
+*/
+static inline bool
+mul_overflow_raw(size_t a, size_t b, size_t *out)
+{
+    if(a != 0 && b > SIZE_MAX / a) return true;
+    *out = a * b;
+    return false;
+}
+
+/*
 Safe wrapper over add_overflow_raw.
 
 Post:
@@ -99,14 +153,14 @@ Post:
 
     On invalid parameter:
         - return non-zero error code
-        - no memory is accessed
+        - *out is not accessed
 
     On overflow:
         - return non-zero error code
         - *out is not modified
 */
 int
-safe_add(size_t a, size_t b, size_t *out)
+add_safe(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
@@ -119,133 +173,59 @@ safe_add(size_t a, size_t b, size_t *out)
 }
 
 /*
-@brief
-Performs subtraction with overflow detection.
+Safe wrapper over sub_overflow_raw
 
-Low-level primitive (does not perform validation):
-caller must satisfy preconditions.
+Post:
+    On success:
+        - return 0
+        - *out = a - b
 
-@pre
-out != NULL
-(UB otherwise; assertion in debug)
+    On invalid parameter:
+        - return error code
+        - *out is not accessed
 
-@post
-on success:
-    *out = a - b
-on failure:
-    *out = 0
-
-@return
-false on success, true if overflow
-*/
-static inline bool
-sub_overflow(size_t a, size_t b, size_t *out)
-{
-    assert(out);
-#if defined(__GNUC__) || defined(__clang__)
-    if(__builtin_sub_overflow(a, b, out))
-    {
-        *out = 0;
-        return true;
-    }
-// use portable overflow detection
-#else
-    if(a < b)
-    {
-        *out = 0;
-        return true;
-    }
-    *out = a - b;
-#endif
-    return false;
-}
-
-/*
-Safe wrapper over sub_overflow.
-Args validation.
-
-@post
-on success:
-    *out = a - b
-on failure:
-    EINVAL: *out is not accessed
-    EOVERFLOW: *out = 0 (from low-level primitive)
-
-@return
-0 on success, error code otherwise
+    On overflow:
+        - return error code
+        - *out is not modified
 */
 int
-safe_sub(size_t a, size_t b, size_t *out)
+sub_safe(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
-    if(sub_overflow(a, b, out)) return EOVERFLOW;
+    size_t tmp;
+    if(sub_overflow_raw(a, b, &tmp)) return EOVERFLOW;
+
+    *out = tmp;
 
     return 0;
 }
 
 /*
-@brief
-Performs multiplication with overflow detection.
+Safe wrapper over mul_overflow_raw
 
-Low-level primitive (does not perform validation):
-caller must satisfy preconditions.
+Post:
+    On success:
+        - return 0
+        - *out = a * b
 
-@pre
-out != NULL
-(UB otherwise; assertion in debug)
+    On invalid parameter:
+        - return error code
+        - *out is not accessed
 
-@post
-on success:
-    *out = a * b
-on failure:
-    *out = 0
-
-@return
-false on success, true if overflow
-*/
-static inline bool
-mul_overflow(size_t a, size_t b, size_t *out)
-{
-    assert(out);
-#if defined(__GNUC__) || defined(__clang__)
-    if(__builtin_mul_overflow(a, b, out))
-    {
-        *out = 0;
-        return true;
-    }
-// use portable overflow detection
-#else
-    if(a != 0 && b > SIZE_MAX / a)
-    {
-        *out = 0;
-        return true;
-    }
-    *out = a * b;
-#endif
-    return false;
-}
-
-/*
-Safe wrapper over mul_overflow.
-Args validation.
-
-@post
-on success:
-    *out = a * b
-on failure:
-    EINVAL: *out is not accessed
-    EOVERFLOW: *out = 0 (from low-level primitive)
-
-@return
-0 on success, error code otherwise
+    On overflow:
+        - return error code
+        - *out is not modified
 */
 int
-safe_mul(size_t a, size_t b, size_t *out)
+mul_safe(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
-    if(mul_overflow(a, b, out)) return EOVERFLOW;
+    size_t tmp;
+    if(mul_overflow_raw(a, b, &tmp)) return EOVERFLOW;
+
+    *out = tmp;
 
     return 0;
 }
@@ -254,7 +234,7 @@ static inline int
 array_self_insertion_safety(const Array *a, const void *value)
 {
     size_t _bytes;
-    if(safe_mul(a->size, a->element_size, &_bytes)) return EOVERFLOW;
+    if(mul_safe(a->size, a->element_size, &_bytes)) return EOVERFLOW;
 
     const char *v = value;
     const char *start = (const char *)a->data;
@@ -262,10 +242,6 @@ array_self_insertion_safety(const Array *a, const void *value)
 
     return v < end && v >= start;
 }
-
-/*
-
-*/
 
 /**
  * @brief Allocates and initializes a dynamic array.
@@ -294,7 +270,7 @@ array_init(size_t element_size)
     assert(ARR_INIT_CAP > 0);
 
     size_t _bytes;
-    if(safe_mul(ARR_INIT_CAP, element_size, &_bytes)) return NULL;
+    if(mul_safe(ARR_INIT_CAP, element_size, &_bytes)) return NULL;
 
     Array *tmp = calloc(1, sizeof(*tmp));
     if(!tmp) return NULL;
@@ -347,7 +323,7 @@ static inline int
 check_before_reserve(Array *a)
 {
     size_t required_size;
-    if(safe_add(a->size, 1, &required_size)) return EOVERFLOW;
+    if(add_safe(a->size, 1, &required_size)) return EOVERFLOW;
 
     if(a->capacity >= required_size) return 0; // enough capacity
 
@@ -364,7 +340,7 @@ do_reserve(Array *a)
     size_t new_capacity = a->capacity ? (a->capacity * 2) : ARR_INIT_CAP;
 
     size_t new_bytes;
-    if(safe_mul(new_capacity, a->element_size, &new_bytes)) return EOVERFLOW;
+    if(mul_safe(new_capacity, a->element_size, &new_bytes)) return EOVERFLOW;
 
     void *new_data = realloc(a->data, new_bytes);
     if(!new_data) return ENOMEM;
@@ -415,7 +391,7 @@ array_shrink_fit(Array *a)
     }
 
     size_t _bytes;
-    if(safe_mul(a->size, a->element_size, &_bytes)) return EOVERFLOW;
+    if(mul_safe(a->size, a->element_size, &_bytes)) return EOVERFLOW;
 
     void *tmp = realloc(a->data, _bytes);
     if(!tmp) return ENOMEM;
@@ -433,7 +409,7 @@ array_ensure_capacity(Array *a, size_t extra)
 {
     size_t required_capacity;
 
-    if(safe_add(a->size, extra, &required_capacity)) return EOVERFLOW;
+    if(add_safe(a->size, extra, &required_capacity)) return EOVERFLOW;
 
     if(required_capacity <= a->capacity) return 0; // enough capacity
 
@@ -484,13 +460,13 @@ static inline int
 do_insert(Array *restrict a, const void *restrict value, size_t index)
 {
     size_t insert_offset;
-    if(safe_mul(index, a->element_size, &insert_offset)) return EOVERFLOW;
+    if(mul_safe(index, a->element_size, &insert_offset)) return EOVERFLOW;
 
     size_t tail_offset;
     // safe: index <= a->size validated by caller
     const size_t tail_count = (a->size - index);
 
-    if(safe_mul(tail_count, a->element_size, &tail_offset)) return EOVERFLOW;
+    if(mul_safe(tail_count, a->element_size, &tail_offset)) return EOVERFLOW;
 
     if(array_self_insertion_safety(a, value)) return EINVAL;
 
@@ -586,13 +562,13 @@ do_erase(Array *a, size_t index)
     if(tail > 0)
     {
         size_t bytes;
-        if(safe_mul(tail, a->element_size, &bytes)) return EOVERFLOW;
+        if(mul_safe(tail, a->element_size, &bytes)) return EOVERFLOW;
 
         size_t dst_offset;
-        if(safe_mul(index, a->element_size, &dst_offset)) return EOVERFLOW;
+        if(mul_safe(index, a->element_size, &dst_offset)) return EOVERFLOW;
 
         size_t src_offset;
-        if(safe_mul((index + 1), a->element_size, &src_offset))
+        if(mul_safe((index + 1), a->element_size, &src_offset))
             return EOVERFLOW;
 
         char *base = (char *)a->data;
@@ -642,7 +618,7 @@ static inline int
 do_push_front(Array *restrict a, const void *restrict value)
 {
     size_t bytes;
-    if(safe_mul(a->size, a->element_size, &bytes)) return EOVERFLOW;
+    if(mul_safe(a->size, a->element_size, &bytes)) return EOVERFLOW;
 
     if(array_self_insertion_safety(a, value)) return EINVAL;
 
@@ -692,7 +668,7 @@ static inline int
 do_push_back(Array *a, const void *value)
 {
     size_t dst_offset;
-    if(safe_mul(a->size, a->element_size, &dst_offset)) return EOVERFLOW;
+    if(mul_safe(a->size, a->element_size, &dst_offset)) return EOVERFLOW;
 
     char *base = (char *)a->data;
     void *dst = base + dst_offset;
@@ -731,7 +707,7 @@ array_pop_front(Array *a)
     if(!a) return;
 
     size_t _bytes;
-    if(safe_mul((a->size - 1), a->element_size, &_bytes)) return;
+    if(mul_safe((a->size - 1), a->element_size, &_bytes)) return;
 
     char *base = (char *)a->data;
     void *dst = base;
@@ -751,7 +727,7 @@ array_pop_back(Array *a)
     if(!a) return;
 
     size_t bytes;
-    if(safe_mul(a->size, a->element_size, &bytes)) return;
+    if(mul_safe(a->size, a->element_size, &bytes)) return;
 
     char *base = (char *)a->data;
     void *dst = base + bytes;
