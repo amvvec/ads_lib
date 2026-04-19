@@ -63,16 +63,17 @@ array_invariant_check(const Array *a)
 #endif
 
 /*
+@brief:
 Perform size_t addition with overflow detection.
 
-Note:
+@note:
 Low-level primitive. No parameter validation.
 
-Pre:
+@pre:
     - out != NULL (caller must validate)
     - out may alias a or b
 
-Post:
+@post:
     On success:
         - return false
         - *out = a + b
@@ -82,7 +83,7 @@ Post:
         - *out is unchanged
 */
 bool
-add_overflow_raw(size_t a, size_t b, size_t *out)
+add_overflow(size_t a, size_t b, size_t *out)
 {
     if(a > SIZE_MAX - b) return true;
     *out = a + b;
@@ -90,16 +91,17 @@ add_overflow_raw(size_t a, size_t b, size_t *out)
 }
 
 /*
+@brief:
 Perform size_t subtraction with overflow detection.
 
-Note:
+@note:
 Low-level primitive. No parameter validation.
 
-Pre:
+@pre:
     - out != NULL (caller must validate)
     - out may alias a or b
 
-Post:
+@post:
     On success:
         - return false
         - *out = a - b
@@ -109,7 +111,7 @@ Post:
         - *out is unchanged
 */
 bool
-sub_overflow_raw(size_t a, size_t b, size_t *out)
+sub_overflow(size_t a, size_t b, size_t *out)
 {
     if(a < b) return true;
     *out = a - b;
@@ -117,16 +119,17 @@ sub_overflow_raw(size_t a, size_t b, size_t *out)
 }
 
 /*
+@brief:
 Perform size_t multiplication with overflow detection.
 
-Note:
+@note:
 Low-level primitive. No parameter validation.
 
-Pre:
+@pre:
     - out != NULL (caller must validate)
     - out may alias a or b
 
-Post:
+@post:
     On success:
         - return false
         - *out = a * b
@@ -136,7 +139,7 @@ Post:
         - *out is unchanged
 */
 bool
-mul_overflow_raw(size_t a, size_t b, size_t *out)
+mul_overflow(size_t a, size_t b, size_t *out)
 {
     if(a != 0 && b > SIZE_MAX / a) return true;
     *out = a * b;
@@ -144,19 +147,20 @@ mul_overflow_raw(size_t a, size_t b, size_t *out)
 }
 
 /*
-Safe wrapper over add_overflow_raw.
+@brief:
+Safe wrapper over add_overflow.
 
-Post:
+@post:
     On success:
         - return 0
         - *out = a + b
 
     On invalid parameter:
-        - return non-zero error code
+        - return error code
         - *out is not accessed
 
     On overflow:
-        - return non-zero error code
+        - return error code
         - *out is not modified
 */
 int
@@ -165,7 +169,7 @@ add_safe(size_t a, size_t b, size_t *out)
     if(!out) return EINVAL;
 
     size_t tmp;
-    if(add_overflow_raw(a, b, &tmp)) return EOVERFLOW;
+    if(add_overflow(a, b, &tmp)) return EOVERFLOW;
 
     *out = tmp;
 
@@ -173,9 +177,10 @@ add_safe(size_t a, size_t b, size_t *out)
 }
 
 /*
-Safe wrapper over sub_overflow_raw
+@brief:
+Safe wrapper over sub_overflow
 
-Post:
+@post:
     On success:
         - return 0
         - *out = a - b
@@ -194,7 +199,7 @@ sub_safe(size_t a, size_t b, size_t *out)
     if(!out) return EINVAL;
 
     size_t tmp;
-    if(sub_overflow_raw(a, b, &tmp)) return EOVERFLOW;
+    if(sub_overflow(a, b, &tmp)) return EOVERFLOW;
 
     *out = tmp;
 
@@ -202,9 +207,10 @@ sub_safe(size_t a, size_t b, size_t *out)
 }
 
 /*
-Safe wrapper over mul_overflow_raw
+@brief:
+Safe wrapper over mul_overflow
 
-Post:
+@post:
     On success:
         - return 0
         - *out = a * b
@@ -223,7 +229,7 @@ mul_safe(size_t a, size_t b, size_t *out)
     if(!out) return EINVAL;
 
     size_t tmp;
-    if(mul_overflow_raw(a, b, &tmp)) return EOVERFLOW;
+    if(mul_overflow(a, b, &tmp)) return EOVERFLOW;
 
     *out = tmp;
 
