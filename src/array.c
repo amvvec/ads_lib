@@ -135,7 +135,7 @@ Post:
         - return true
         - *out is unchanged
 */
-static inline bool
+bool
 mul_overflow_raw(size_t a, size_t b, size_t *out)
 {
     if(a != 0 && b > SIZE_MAX / a) return true;
@@ -243,39 +243,39 @@ array_self_insertion_safety(const Array *a, const void *value)
     return v < end && v >= start;
 }
 
-/**
- * @brief Allocates and initializes a dynamic array.
- *
- * Domain: element_size -> [1, SIZE_MAX]
- *
- * @pre element_size > 0
- *
- * @post On success (return != NULL):
- *          - a->size == 0
- *          - a->capacity == ARR_INIT_CAP
- *          - a->element_size == element_size
- *          - a->data != NULL
- *          - ARR_INIT_CAP * element_size <= SIZE_MAX
- *
- * @post On failure (return == NULL):
- *          - no memory is leaked
- *
- * @note Guarantees that the returned object satisfies all Array invariants.
- */
+/*
+@brief:
+Initialize a dynamic array.
+
+@note:
+Returned object satisfies all Array invariants.
+
+@pre:
+    - element_size > 0
+
+@post:
+    On success (return != NULL):
+        - a->capacity == ARR_INIT_CAP
+        - a->data != NULL
+        - a->element_size == element_size
+        - a->size == 0
+        - ARR_INIT_CAP * element_size did not overflow
+
+    On failure: (return == NULL)
+        - no memory is leaked
+*/
 Array *
 array_init(size_t element_size)
 {
     if(element_size == 0) return NULL;
 
-    assert(ARR_INIT_CAP > 0);
-
-    size_t _bytes;
-    if(mul_safe(ARR_INIT_CAP, element_size, &_bytes)) return NULL;
+    size_t new_bytes;
+    if(mul_safe(ARR_INIT_CAP, element_size, &new_bytes)) return NULL;
 
     Array *tmp = calloc(1, sizeof(*tmp));
     if(!tmp) return NULL;
 
-    void *data = malloc(_bytes);
+    void *data = malloc(new_bytes);
     if(!data)
     {
         free(tmp);
@@ -283,28 +283,36 @@ array_init(size_t element_size)
     }
 
     tmp->data = data;
-    tmp->size = 0;
     tmp->element_size = element_size;
+    tmp->size = 0;
     tmp->capacity = ARR_INIT_CAP;
 
     return tmp;
 }
 
-/**
- * @brief Destroys the dynamic array and releases all owned memory.
- *
- * Domain: a and *a may be NULL.
- *
- * @post If a != NULL and *a != NULL:
- *          - the internal buffer is freed
- *          - the Array object is freed
- *          - *a is set to NULL
- *
- * @post If a == NULL or *a == NULL:
- *          - no action is performed
- *
- * @note This function is idempotent when called with the same pointer.
- */
+/*
+@brief:
+Delete the dynamic array and releases owned memory
+
+@pre:
+    - *a may be NULL
+    - a may be NULL
+
+@post:
+    if a != NULL && *a != NULL:
+        - (*a)->data is freed
+        - *a is freed
+        - *a is set to NULL
+
+    if a == NULL && *a == NULL:
+        - no action
+
+@post:
+No memory is leaked
+
+@note:
+Function is idempotent
+*/
 void
 array_delete(Array **a)
 {
@@ -314,7 +322,6 @@ array_delete(Array **a)
     {
         free((*a)->data);
         free(*a);
-
         *a = NULL;
     }
 }
