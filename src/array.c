@@ -63,69 +63,57 @@ array_invariant_check(const Array *a)
 #endif
 
 /*
-@brief
-Performs addition with overflow detection.
+Perform size_t addition with overflow detection.
 
-Low-level primitive (does not perform validation):
-caller must satisfy preconditions.
+Note:
+Low-level primitive. No parameter validation.
 
-@pre
-out != NULL
-(UB otherwise; assertion in debug)
+Pre:
+    - out != NULL (caller must validate)
+    - out may alias a or b
 
-@post
-on success:
-    *out = a + b
-on failure:
-    *out = 0
+Post:
+    On success:
+        - return false
+        - *out = a + b
 
-@return
-false on success, true if overflow
+    On failure:
+        - return true
+        - *out is unchanged
 */
-static inline bool
-add_overflow(size_t a, size_t b, size_t *out)
+bool
+add_overflow_raw(size_t a, size_t b, size_t *out)
 {
-    assert(out);
-// use compiler builtin when available
-#if defined(__GNUC__) || defined(__clang__)
-    if(__builtin_add_overflow(a, b, out))
-    {
-        *out = 0;
-        return true;
-    }
-// use portable overflow detection
-#else
-    if(a > SIZE_MAX - b)
-    {
-        *out = 0;
-        return true;
-    }
+    if(a > SIZE_MAX - b) return true;
     *out = a + b;
-#endif
     return false;
 }
 
 /*
-@brief
-Safe wrapper over add_overflow.
-Args validation.
+Safe wrapper over add_overflow_raw.
 
-@post
-on success:
-    *out = a + b
-on failure:
-    EINVAL: *out is not accessed
-    EOVERFLOW: *out = 0 (from low-level primitive)
+Post:
+    On success:
+        - return 0
+        - *out = a + b
 
-@return
-0 on success, error code otherwise
+    On invalid parameter:
+        - return non-zero error code
+        - no memory is accessed
+
+    On overflow:
+        - return non-zero error code
+        - *out is not modified
 */
 int
 safe_add(size_t a, size_t b, size_t *out)
 {
     if(!out) return EINVAL;
 
-    if(add_overflow(a, b, out)) return EOVERFLOW;
+    size_t tmp;
+    if(add_overflow_raw(a, b, &tmp)) return EOVERFLOW;
+
+    *out = tmp;
 
     return 0;
 }
