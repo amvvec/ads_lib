@@ -24,10 +24,7 @@ INCLUDES := -I$(INCLUDE_DIR)
 DEPENDENCY_FLAGS := -MMD -MP
 
 WARNINGS := \
-	-Wall -Werror -Wextra -Wpedantic -Wshadow \
-	-Wunused-value \
-	-Wunused-variable \
-	-Wunused-parameter
+	-Wall -Werror -Wextra -Wpedantic -Wshadow
 
 BASE_FLAGS := \
 	$(STANDARD) \
