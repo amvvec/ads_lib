@@ -28,6 +28,4 @@ int array_set(Array *a, size_t index, const void *value);
 size_t array_capacity(const Array *array);
 size_t array_size(const Array *array);
 
-const void *array_data(Array *a);
-
 #endif // !ARRAY_H

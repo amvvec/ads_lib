@@ -845,9 +845,3 @@ array_capacity(const Array *a)
 {
     return a ? a->capacity : 0;
 }
-
-const void *
-array_data(Array *a)
-{
-    return a ? a->data : NULL;
-}
