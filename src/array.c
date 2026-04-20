@@ -332,6 +332,13 @@ array_delete(Array **a)
     }
 }
 
+/*
+@brief:
+
+@pre:
+
+@post:
+*/
 static inline int
 check_before_reserve(Array *a)
 {
@@ -373,6 +380,14 @@ array_reserve(Array *a)
 
     int error;
 
+    /*
+    FIX:
+    need to reduce allocation calls of this function
+    before actual capacity reserving
+
+    TODO:
+    use array_ensure_capacity
+    */
     error = check_before_reserve(a);
     if(error) return error;
 
