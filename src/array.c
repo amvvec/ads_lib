@@ -444,6 +444,28 @@ array_ensure_capacity(Array *a, size_t extra)
     return array_reserve(a);
 }
 
+int
+array_size_safe_increment(Array *a)
+{
+    size_t new_size;
+    if(add_safe(a->size, 1, &new_size)) return EOVERFLOW;
+
+    a->size = new_size;
+
+    return 0;
+}
+
+int
+array_size_safe_decrement(Array *a)
+{
+    size_t new_size;
+    if(sub_safe(a->size, 1, &new_size)) return EOVERFLOW;
+
+    a->size = new_size;
+
+    return 0;
+}
+
 /**
  * Validates preconditions for array_insert.
  *
@@ -546,7 +568,8 @@ array_insert(Array *a, const void *restrict value, size_t index)
     error = do_insert(a, value, index);
     if(error) return error;
 
-    a->size++;
+    error = array_size_safe_increment(a);
+    if(error) return error;
 
     ARRAY_ASSERT(a);
 
@@ -607,8 +630,6 @@ do_erase(Array *a, size_t index)
         memmove(dst, src, bytes);
     }
 
-    a->size--;
-
     return 0;
 }
 
@@ -623,6 +644,9 @@ array_erase(Array *a, size_t index)
     if(error) return error;
 
     error = do_erase(a, index);
+    if(error) return error;
+
+    error = array_size_safe_decrement(a);
     if(error) return error;
 
     ARRAY_ASSERT(a);
@@ -685,7 +709,8 @@ array_push_front(Array *restrict a, const void *restrict value)
     error = do_push_front(a, value);
     if(error) return error;
 
-    a->size++;
+    error = array_size_safe_increment(a);
+    if(error) return error;
 
     ARRAY_ASSERT(a);
 
@@ -720,7 +745,8 @@ array_push_back(Array *a, const void *value)
     error = do_push_back(a, value);
     if(error) return error;
 
-    a->size++;
+    error = array_size_safe_increment(a);
+    if(error) return error;
 
     ARRAY_ASSERT(a);
 
@@ -734,6 +760,8 @@ array_pop_front(Array *a)
 
     if(!a) return;
 
+    int error;
+
     size_t _bytes;
     if(mul_safe((a->size - 1), a->element_size, &_bytes)) return;
 
@@ -742,7 +770,8 @@ array_pop_front(Array *a)
     void *src = base + a->element_size;
     memmove(dst, src, _bytes);
 
-    a->size--;
+    error = array_size_safe_decrement(a);
+    if(error) return;
 
     ARRAY_ASSERT(a);
 }
@@ -754,6 +783,8 @@ array_pop_back(Array *a)
 
     if(!a) return;
 
+    int error;
+
     size_t bytes;
     if(mul_safe(a->size, a->element_size, &bytes)) return;
 
@@ -761,7 +792,8 @@ array_pop_back(Array *a)
     void *dst = base + bytes;
     memset(dst, 0, a->element_size);
 
-    a->size--;
+    error = array_size_safe_decrement(a);
+    if(error) return;
 
     ARRAY_ASSERT(a);
 }
