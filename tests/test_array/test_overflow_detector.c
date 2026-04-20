@@ -69,6 +69,23 @@ test_add_safe_no_overflow(void)
     assert(output == SIZE_MAX);
 }
 
+static void
+test_add_safe_self_alias(void)
+{
+    size_t out1 = 1;
+    size_t out2 = 1;
+
+    int er;
+
+    er = add_safe(out1, out2, &out1);
+    assert(er == 0);
+    assert(out1 == 2);
+
+    er = add_safe(out1, out2, &out2);
+    assert(er == 0);
+    assert(out2 == 3);
+}
+
 void
 run_overflow_tests(void)
 {
@@ -76,4 +93,5 @@ run_overflow_tests(void)
     test_add_safe_null();
     test_add_safe_wraparound();
     test_add_safe_no_overflow();
+    test_add_safe_self_alias();
 }
