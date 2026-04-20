@@ -4,7 +4,7 @@
 #include <errno.h>
 
 static void
-test_safe_add_smoke(void)
+test_add_safe_smoke(void)
 {
     size_t output = 1;
 
@@ -14,7 +14,7 @@ test_safe_add_smoke(void)
 }
 
 static void
-test_safe_add_null(void)
+test_add_safe_null(void)
 {
     size_t output = 1; // this should be rewritten
 
@@ -24,7 +24,7 @@ test_safe_add_null(void)
 }
 
 static void
-test_safe_add_wraparound(void)
+test_add_safe_wraparound(void)
 {
     size_t output = 1;
     int error;
@@ -47,7 +47,7 @@ test_safe_add_wraparound(void)
 }
 
 static void
-test_safe_add_no_overflow(void)
+test_add_safe_no_overflow(void)
 {
     size_t output = 1;
     int error;
@@ -72,8 +72,8 @@ test_safe_add_no_overflow(void)
 void
 run_overflow_tests(void)
 {
-    test_safe_add_smoke();
-    test_safe_add_null();
-    test_safe_add_wraparound();
-    test_safe_add_no_overflow();
+    test_add_safe_smoke();
+    test_add_safe_null();
+    test_add_safe_wraparound();
+    test_add_safe_no_overflow();
 }
