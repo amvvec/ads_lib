@@ -31,7 +31,7 @@ int
 array_invariant_validation(const Array *array)
 {
     if(!array) return EINVAL;
-    
+
     if(array->capacity == 0)
     {
         if(array->data != NULL) return EINVAL;
@@ -319,65 +319,40 @@ array_delete(Array **a)
     }
 }
 
-/*
-@brief:
-
-@pre:
-
-@post:
-*/
-static inline int
-check_before_reserve(Array *a)
+int array_reserve(Array *a)
 {
-    size_t required_size;
-    if(add_safe(a->size, 1, &required_size)) return EOVERFLOW;
+    if(!a)
+    {
+        return EINVAL;
+    }
 
-    if(a->capacity >= required_size) return 0; // enough capacity
+    // check if growth needed
+    if(a->size < a->capacity)
+    {
+        return 0; // enough capacity
+    }
 
-    if(a->capacity > SIZE_MAX / 2) return EOVERFLOW;
+    if(a->capacity > SIZE_MAX / 2)
+    {
+        return EOVERFLOW;
+    }
 
-    return 0;
-}
-
-static inline int
-do_reserve(Array *a)
-{
-    assert(ARR_INIT_CAP > 1);
-
-    size_t new_capacity = a->capacity ? (a->capacity * 2) : ARR_INIT_CAP;
+    size_t new_capacity = (a->capacity == 0) ? ARR_INIT_CAP : a->capacity * 2;
 
     size_t new_bytes;
-    if(mul_safe(new_capacity, a->element_size, &new_bytes)) return EOVERFLOW;
+    if(mul_safe(new_capacity, a->element_size, &new_bytes))
+    {
+        return EOVERFLOW;
+    }
 
     void *new_data = realloc(a->data, new_bytes);
-    if(!new_data) return ENOMEM;
+    if(!new_data)
+    {
+        return ENOMEM;
+    }
 
     a->data = new_data;
     a->capacity = new_capacity;
-
-    return 0;
-}
-
-static inline int
-array_reserve(Array *a)
-{
-    if(!a) return EINVAL;
-
-    int error;
-
-    /*
-    FIX:
-    need to reduce allocation calls of this function
-    before actual capacity reserving
-
-    TODO:
-    use array_ensure_capacity
-    */
-    error = check_before_reserve(a);
-    if(error) return error;
-
-    error = do_reserve(a);
-    if(error) return error;
 
     return 0;
 }
