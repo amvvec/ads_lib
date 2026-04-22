@@ -36,7 +36,7 @@ CFLAGS := \
 
 ifeq ($(BUILD), debug)
 	CFLAGS += \
-		-DDEBUG \
+		-DARRAY_DEBUG \
 		-O0 \
 		-g3
 else ifeq ($(BUILD), release)

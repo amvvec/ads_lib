@@ -21,46 +21,33 @@ static const size_t ARR_INIT_CAP = 8;
 */
 struct Array
 {
-    void *data;
-    size_t size;
     size_t capacity;
+    void *data;
     size_t element_size;
+    size_t size;
 };
 
-static inline int
-array_invariant_check(const Array *a)
+int
+array_invariant_validation(const Array *array)
 {
-    if(!a) return EINVAL;
-
-    if(a->element_size == 0) return EINVAL;
-
-    // a.size <= a.capacity
-    if(a->size > a->capacity) return EINVAL;
-
-    if(a->capacity == 0)
+    if(!array) return EINVAL;
+    
+    if(array->capacity == 0)
     {
-        if(a->data != NULL) return EINVAL;
-        if(a->size != 0) return EINVAL;
+        if(array->data != NULL) return EINVAL;
+        if(array->size != 0) return EINVAL;
     }
-    else if(a->data == NULL)
-        return EINVAL;
+    else
+    {
+        if(array->data == NULL) return EINVAL;
+    }
 
-    // overflow
-    if(a->capacity > (SIZE_MAX / a->element_size)) return EOVERFLOW;
-    if(a->size > (SIZE_MAX / a->element_size)) return EOVERFLOW;
+    if(array->element_size == 0) return EINVAL;
+
+    if(array->size > array->capacity) return EINVAL;
 
     return 0;
 }
-
-#ifdef ARRAY_DEBUG
-#define ARRAY_ASSERT(a) \
-    do \
-    { \
-        if(array_invariant_check(a)) abort(); \
-    } while(0)
-#else
-#define ARRAY_ASSERT(a) ((void)0)
-#endif
 
 /*
 @brief:
@@ -374,8 +361,6 @@ do_reserve(Array *a)
 static inline int
 array_reserve(Array *a)
 {
-    ARRAY_ASSERT(a);
-
     if(!a) return EINVAL;
 
     int error;
@@ -394,16 +379,12 @@ array_reserve(Array *a)
     error = do_reserve(a);
     if(error) return error;
 
-    ARRAY_ASSERT(a);
-
     return 0;
 }
 
 static inline int
 array_shrink_fit(Array *a)
 {
-    ARRAY_ASSERT(a);
-
     if(!a) return EINVAL;
 
     if(a->capacity == a->size) return 0; // enough memory
@@ -426,8 +407,6 @@ array_shrink_fit(Array *a)
 
     a->data = tmp;
     a->capacity = a->size;
-
-    ARRAY_ASSERT(a);
 
     return 0;
 }
@@ -474,8 +453,6 @@ array_size_safe_decrement(Array *a)
  * @pre index <= a.size
  *
  * @return 0 on success, error code otherwise
- *
- * @note No a.element_size check (ARRAY_ASSERT invariant check macro)
  */
 static inline int
 check_array_insert_entry(const Array *a, const void *restrict value,
@@ -555,8 +532,6 @@ do_insert(Array *restrict a, const void *restrict value, size_t index)
 int
 array_insert(Array *a, const void *restrict value, size_t index)
 {
-    ARRAY_ASSERT(a);
-
     int error; // contain error return from function.
 
     error = check_array_insert_entry(a, value, index);
@@ -570,8 +545,6 @@ array_insert(Array *a, const void *restrict value, size_t index)
 
     error = array_size_safe_increment(a);
     if(error) return error;
-
-    ARRAY_ASSERT(a);
 
     return 0;
 }
@@ -636,8 +609,6 @@ do_erase(Array *a, size_t index)
 int
 array_erase(Array *a, size_t index)
 {
-    ARRAY_ASSERT(a);
-
     int error;
 
     error = check_array_erase_entry(a, index);
@@ -648,8 +619,6 @@ array_erase(Array *a, size_t index)
 
     error = array_size_safe_decrement(a);
     if(error) return error;
-
-    ARRAY_ASSERT(a);
 
     return 0;
 }
@@ -697,8 +666,6 @@ do_push_front(Array *restrict a, const void *restrict value)
 int
 array_push_front(Array *restrict a, const void *restrict value)
 {
-    ARRAY_ASSERT(a);
-
     if(!a || !value) return EINVAL;
 
     int error;
@@ -711,8 +678,6 @@ array_push_front(Array *restrict a, const void *restrict value)
 
     error = array_size_safe_increment(a);
     if(error) return error;
-
-    ARRAY_ASSERT(a);
 
     return 0;
 }
@@ -733,8 +698,6 @@ do_push_back(Array *a, const void *value)
 int
 array_push_back(Array *a, const void *value)
 {
-    ARRAY_ASSERT(a);
-
     if(!a || !value) return EINVAL;
 
     int error;
@@ -748,16 +711,12 @@ array_push_back(Array *a, const void *value)
     error = array_size_safe_increment(a);
     if(error) return error;
 
-    ARRAY_ASSERT(a);
-
     return 0;
 }
 
 void
 array_pop_front(Array *a)
 {
-    ARRAY_ASSERT(a);
-
     if(!a) return;
 
     int error;
@@ -772,15 +731,11 @@ array_pop_front(Array *a)
 
     error = array_size_safe_decrement(a);
     if(error) return;
-
-    ARRAY_ASSERT(a);
 }
 
 void
 array_pop_back(Array *a)
 {
-    ARRAY_ASSERT(a);
-
     if(!a) return;
 
     int error;
@@ -794,15 +749,11 @@ array_pop_back(Array *a)
 
     error = array_size_safe_decrement(a);
     if(error) return;
-
-    ARRAY_ASSERT(a);
 }
 
 int
 array_get(const Array *a, size_t index, void *value)
 {
-    ARRAY_ASSERT(a);
-
     if(!a || !value) return EINVAL;
     if(index >= a->size) return EINVAL;
 
@@ -810,16 +761,12 @@ array_get(const Array *a, size_t index, void *value)
 
     memcpy(value, base + index * a->element_size, a->element_size);
 
-    ARRAY_ASSERT(a);
-
     return 0;
 }
 
 int
 array_set(Array *a, size_t index, const void *value)
 {
-    ARRAY_ASSERT(a);
-
     if(!a || !value) return EINVAL;
     if(index >= a->size) return EINVAL;
 
@@ -828,8 +775,6 @@ array_set(Array *a, size_t index, const void *value)
     void *dst = base + index * a->element_size;
 
     memcpy(dst, value, a->element_size);
-
-    ARRAY_ASSERT(a);
 
     return 0;
 }
