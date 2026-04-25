@@ -319,40 +319,23 @@ array_delete(Array **a)
     }
 }
 
-int array_reserve(Array *a)
+int
+array_reserve(Array *a)
 {
-    if(!a)
-    {
-        return EINVAL;
-    }
+    if(!a) return EINVAL;
 
-    // check if growth needed
-    if(a->size < a->capacity)
-    {
-        return 0; // enough capacity
-    }
+    if(a->capacity > a->size) return 0; // enough capacity
 
-    if(a->capacity > SIZE_MAX / 2)
-    {
-        return EOVERFLOW;
-    }
+    size_t capacity = (a->capacity == 0) ? ARR_INIT_CAP : (a->capacity * 2);
 
-    size_t new_capacity = (a->capacity == 0) ? ARR_INIT_CAP : a->capacity * 2;
+    size_t bytes;
+    if(mul_safe(capacity, a->element_size, &bytes)) return EOVERFLOW;
 
-    size_t new_bytes;
-    if(mul_safe(new_capacity, a->element_size, &new_bytes))
-    {
-        return EOVERFLOW;
-    }
+    void *data = realloc(a->data, bytes);
+    if(!data) ENOMEM;
 
-    void *new_data = realloc(a->data, new_bytes);
-    if(!new_data)
-    {
-        return ENOMEM;
-    }
-
-    a->data = new_data;
-    a->capacity = new_capacity;
+    a->data = data;
+    a->capacity = capacity;
 
     return 0;
 }
@@ -384,18 +367,6 @@ array_shrink_fit(Array *a)
     a->capacity = a->size;
 
     return 0;
-}
-
-static inline int
-array_ensure_capacity(Array *a, size_t extra)
-{
-    size_t required_capacity;
-
-    if(add_safe(a->size, extra, &required_capacity)) return EOVERFLOW;
-
-    if(required_capacity <= a->capacity) return 0; // enough capacity
-
-    return array_reserve(a);
 }
 
 int
@@ -677,7 +648,7 @@ array_push_back(Array *a, const void *value)
 
     int error;
 
-    error = array_ensure_capacity(a, 1);
+    error = array_reserve(a);
     if(error) return error;
 
     error = do_push_back(a, value);
