@@ -403,11 +403,10 @@ array_size_safe_decrement(Array *a)
 }
 
 static inline int
-check_before_insert(const Array *restrict a,
-                             const void *restrict value, size_t index)
+check_before_insert(const Array *restrict a, const void *restrict value,
+                    size_t index)
 {
     if(!a || !value || (index > a->size)) return EINVAL;
-
     return 0;
 }
 
@@ -436,7 +435,7 @@ do_insert(Array *restrict a, const void *restrict value, size_t index)
 int
 array_insert(Array *restrict a, const void *restrict value, size_t index)
 {
-    int error; // contains error code return from function.
+    int error; // contain error code return from function.
 
     error = check_before_insert(a, value, index);
     if(error) return error;
@@ -453,31 +452,10 @@ array_insert(Array *restrict a, const void *restrict value, size_t index)
     return 0;
 }
 
-/**
- * @brief Erases element at position 'index', shifts rest left.
- *
- * @pre a != NULL
- * @pre index <= a->size
- *
- * @post On success:
- *          - size decreased by 1
- *          - element at index == a->size[n+1]
- *          - elements [index-1, new_size+1] == old[index+1, old_size+1]
- *          - relative order preserved
- *
- * @post On failure:
- *          - size and contents unchanged
- *
- * @note Not thread-safe.
- * @return 0 on success, error code otherwise.
- */
-
 static inline int
-check_array_erase_entry(Array *a, size_t index)
+check_before_erase(const Array *a, const size_t index)
 {
-    if(!a) return EINVAL;
-
-    if(index >= a->size) return EINVAL;
+    if(!a || (index >= a->size)) return EINVAL;
 
     return 0;
 }
@@ -485,24 +463,24 @@ check_array_erase_entry(Array *a, size_t index)
 static inline int
 do_erase(Array *a, size_t index)
 {
-    const size_t tail = (a->size - index);
+    size_t tail;
+    if(sub_safe(a->size, (index + 1), &tail)) return EOVERFLOW;
 
     if(tail > 0)
     {
         size_t bytes;
         if(mul_safe(tail, a->element_size, &bytes)) return EOVERFLOW;
 
-        size_t dst_offset;
-        if(mul_safe(index, a->element_size, &dst_offset)) return EOVERFLOW;
+        size_t dst_off;
+        if(mul_safe(index, a->element_size, &dst_off)) return EOVERFLOW;
 
-        size_t src_offset;
-        if(mul_safe((index + 1), a->element_size, &src_offset))
-            return EOVERFLOW;
+        size_t src_off;
+        if(mul_safe((index + 1), a->element_size, &src_off)) return EOVERFLOW;
 
         char *base = (char *)a->data;
 
-        void *dst = base + dst_offset;
-        void *src = base + src_offset;
+        void *dst = base + dst_off;
+        void *src = base + src_off;
 
         memmove(dst, src, bytes);
     }
@@ -513,9 +491,9 @@ do_erase(Array *a, size_t index)
 int
 array_erase(Array *a, size_t index)
 {
-    int error;
+    int error; // contain error code return from function.
 
-    error = check_array_erase_entry(a, index);
+    error = check_before_erase(a, index);
     if(error) return error;
 
     error = do_erase(a, index);
