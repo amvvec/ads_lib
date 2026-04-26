@@ -402,96 +402,43 @@ array_size_safe_decrement(Array *a)
     return 0;
 }
 
-/**
- * Validates preconditions for array_insert.
- *
- * @pre a != NULL
- * @pre value != NULL
- * @pre index <= a.size
- *
- * @return 0 on success, error code otherwise
- */
 static inline int
-check_array_insert_entry(const Array *a, const void *restrict value,
-                         size_t index)
+check_before_insert(const Array *restrict a,
+                             const void *restrict value, size_t index)
 {
-    if(!a || !value) return EINVAL;
-
-    if(index > a->size) return EINVAL;
+    if(!a || !value || (index > a->size)) return EINVAL;
 
     return 0;
 }
 
-/**
- * Performs the core insertion: shifts tail right and copies value.
- *
- * @pre a != NULL && a.element_size > 0
- * @pre value != NULL
- * @pre index <= a.size
- * @pre enough capacity already reserved (a.capacity > a.size)
- *
- * @post On success:
- *          - elements [index+1, a->size] == old elements [index, a.size-1]
- *          - element at index == *value
- *          - a.size unchanged
- *
- * @post On failure:
- *          - a contents unchanged
- *
- * @return 0 on success, error code otherwise
- */
 static inline int
 do_insert(Array *restrict a, const void *restrict value, size_t index)
 {
     size_t insert_offset;
     if(mul_safe(index, a->element_size, &insert_offset)) return EOVERFLOW;
 
-    size_t tail_offset;
-    // safe: index <= a->size validated by caller
-    const size_t tail_count = (a->size - index);
-
-    if(mul_safe(tail_count, a->element_size, &tail_offset)) return EOVERFLOW;
-
-    if(array_self_insertion_safety(a, value)) return EINVAL;
+    size_t tail_bytes;
+    size_t tail_count = (a->size - index);
+    if(mul_safe(tail_count, a->element_size, &tail_bytes)) return EOVERFLOW;
 
     char *base = (char *)a->data;
 
     void *dst = base + insert_offset + a->element_size;
     void *src = base + insert_offset;
 
-    memmove(dst, src, tail_offset);
+    memmove(dst, src, tail_bytes);
 
     memcpy(src, value, a->element_size);
 
     return 0;
 }
 
-/**
- * Inserts an element at the specified index, shifting subsequent elements right.
- *
- * @pre a != NULL
- * @pre value != NULL
- * @pre index <= a.size
- * @pre a.element_size > 0
- *
- * @post On success:
- *       - a.size is increased by 1
- *       - element at position index equals *value
- *       - elements from index+1 to new size-1 equal old elements from index to old size-1
- *       - relative order of remaining elements is preserved
- *
- * @post On failure:
- *       - a size and contents remain unchanged
- *       - capacity may increase
- *
- * @return 0 on success, error code otherwise
- */
 int
-array_insert(Array *a, const void *restrict value, size_t index)
+array_insert(Array *restrict a, const void *restrict value, size_t index)
 {
-    int error; // contain error return from function.
+    int error; // contains error code return from function.
 
-    error = check_array_insert_entry(a, value, index);
+    error = check_before_insert(a, value, index);
     if(error) return error;
 
     error = array_reserve(a, a->size + 1);
