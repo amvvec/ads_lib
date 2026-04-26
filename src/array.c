@@ -1,5 +1,7 @@
 #include "../include/array.h"
 
+#include "../include/allocator.h"
+
 #include <assert.h>
 #include <errno.h>
 #include <memory.h>
@@ -26,6 +28,8 @@ struct Array
     void *data;
     size_t element_size;
     size_t size;
+
+    const Allocator *allocator;
 };
 
 int
@@ -480,9 +484,6 @@ array_erase(Array *a, size_t index)
     if(!a || (index >= a->size)) return EINVAL;
 
     int error; // contain error code return from function.
-
-    error = check_before_erase(a, index);
-    if(error) return error;
 
     error = do_erase(a, index);
     if(error) return error;
