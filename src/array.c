@@ -403,14 +403,6 @@ array_size_safe_decrement(Array *a)
 }
 
 static inline int
-check_before_insert(const Array *restrict a, const void *restrict value,
-                    size_t index)
-{
-    if(!a || !value || (index > a->size)) return EINVAL;
-    return 0;
-}
-
-static inline int
 do_insert(Array *restrict a, const void *restrict value, size_t index)
 {
     size_t insert_offset;
@@ -435,6 +427,8 @@ do_insert(Array *restrict a, const void *restrict value, size_t index)
 int
 array_insert(Array *restrict a, const void *restrict value, size_t index)
 {
+    if(!a || !value || (index > a->size)) return EINVAL;
+
     int error; // contain error code return from function.
 
     error = check_before_insert(a, value, index);
@@ -448,14 +442,6 @@ array_insert(Array *restrict a, const void *restrict value, size_t index)
 
     error = array_size_safe_increment(a);
     if(error) return error;
-
-    return 0;
-}
-
-static inline int
-check_before_erase(const Array *a, const size_t index)
-{
-    if(!a || (index >= a->size)) return EINVAL;
 
     return 0;
 }
@@ -491,6 +477,8 @@ do_erase(Array *a, size_t index)
 int
 array_erase(Array *a, size_t index)
 {
+    if(!a || (index >= a->size)) return EINVAL;
+
     int error; // contain error code return from function.
 
     error = check_before_erase(a, index);
@@ -505,54 +493,33 @@ array_erase(Array *a, size_t index)
     return 0;
 }
 
-static inline int
-array_push_front_ensure_capacity(Array *a)
-{
-    if(a->capacity == a->size)
-    {
-        int error = array_reserve(a, a->size + 1);
-        if(error) return error;
-    }
-
-    return 0;
-}
-
-static inline int
+int
 do_push_front(Array *restrict a, const void *restrict value)
 {
     size_t bytes;
     if(mul_safe(a->size, a->element_size, &bytes)) return EOVERFLOW;
-
-    if(array_self_insertion_safety(a, value)) return EINVAL;
 
     char *base = (char *)a->data;
 
     void *dst = base + a->element_size;
 
     memmove(dst, base, bytes);
-
     memcpy(base, value, a->element_size);
 
     return 0;
 }
 
-/**
- * @brief Inserts value to first index, shifts rest right.
- *
- * @post On success:
- *
- * @post On failure:
- *
- * @return 0 on success, error code otherwise.
- */
 int
 array_push_front(Array *restrict a, const void *restrict value)
 {
     if(!a || !value) return EINVAL;
 
-    int error;
+    int error; // contain error code return from function.
 
-    error = array_push_front_ensure_capacity(a);
+    error = check_before_push_front(a, value);
+    if(error) return error;
+
+    error = array_reserve(a, a->size + 1);
     if(error) return error;
 
     error = do_push_front(a, value);
