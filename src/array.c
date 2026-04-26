@@ -8,6 +8,7 @@
 #include <stdlib.h>
 
 static const size_t ARR_INIT_CAP = 8;
+static const size_t ARR_GROWTH_FACTOR = 2;
 
 /*
 @invariant:
@@ -320,22 +321,32 @@ array_delete(Array **a)
 }
 
 int
-array_reserve(Array *a)
+array_reserve(Array *a, size_t min_capacity)
 {
     if(!a) return EINVAL;
 
-    if(a->capacity > a->size) return 0; // enough capacity
+    assert(array_invariant_validation(a) == 0);
 
-    size_t capacity = (a->capacity == 0) ? ARR_INIT_CAP : (a->capacity * 2);
+    if(min_capacity <= a->capacity) return 0; // enough capacity
 
-    size_t bytes;
-    if(mul_safe(capacity, a->element_size, &bytes)) return EOVERFLOW;
+    size_t new_capacity = a->capacity ? a->capacity : ARR_INIT_CAP;
 
-    void *data = realloc(a->data, bytes);
-    if(!data) ENOMEM;
+    while(new_capacity < min_capacity)
+    {
+        if(mul_safe(new_capacity, ARR_GROWTH_FACTOR, &new_capacity))
+        {
+            return EOVERFLOW;
+        }
+    }
 
-    a->data = data;
-    a->capacity = capacity;
+    size_t new_bytes;
+    if(mul_safe(new_capacity, a->element_size, &new_bytes)) return EOVERFLOW;
+
+    void *tmp = realloc(a->data, new_bytes);
+    if(!tmp) return ENOMEM;
+
+    a->data = tmp;
+    a->capacity = new_capacity;
 
     return 0;
 }
@@ -483,7 +494,7 @@ array_insert(Array *a, const void *restrict value, size_t index)
     error = check_array_insert_entry(a, value, index);
     if(error) return error;
 
-    error = array_reserve(a);
+    error = array_reserve(a, a->size + 1);
     if(error) return error;
 
     error = do_insert(a, value, index);
@@ -574,7 +585,7 @@ array_push_front_ensure_capacity(Array *a)
 {
     if(a->capacity == a->size)
     {
-        int error = array_reserve(a);
+        int error = array_reserve(a, a->size + 1);
         if(error) return error;
     }
 
@@ -648,7 +659,7 @@ array_push_back(Array *a, const void *value)
 
     int error;
 
-    error = array_reserve(a);
+    error = array_reserve(a, a->size + 1);
     if(error) return error;
 
     error = do_push_back(a, value);
