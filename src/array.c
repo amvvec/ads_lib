@@ -435,9 +435,6 @@ array_insert(Array *restrict a, const void *restrict value, size_t index)
 
     int error; // contain error code return from function.
 
-    error = check_before_insert(a, value, index);
-    if(error) return error;
-
     error = array_reserve(a, a->size + 1);
     if(error) return error;
 
@@ -516,9 +513,6 @@ array_push_front(Array *restrict a, const void *restrict value)
     if(!a || !value) return EINVAL;
 
     int error; // contain error code return from function.
-
-    error = check_before_push_front(a, value);
-    if(error) return error;
 
     error = array_reserve(a, a->size + 1);
     if(error) return error;
