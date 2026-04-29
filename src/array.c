@@ -226,19 +226,6 @@ mul_safe(size_t a, size_t b, size_t *out)
     return 0;
 }
 
-static inline int
-array_self_insertion_safety(const Array *a, const void *value)
-{
-    size_t _bytes;
-    if(mul_safe(a->size, a->element_size, &_bytes)) return EOVERFLOW;
-
-    const char *v = value;
-    const char *start = (const char *)a->data;
-    const char *end = start + _bytes;
-
-    return v < end && v >= start;
-}
-
 /*
 @brief:
 Initialize a dynamic array.
