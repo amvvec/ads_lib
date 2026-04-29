@@ -28,8 +28,6 @@ struct Array
     void *data;
     size_t element_size;
     size_t size;
-
-    const Allocator *allocator;
 };
 
 int
