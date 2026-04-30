@@ -282,16 +282,15 @@ Delete the dynamic array and releases owned memory
     - a may be NULL
 
 @post:
+    - no memory is leaked
+
     if a != NULL && *a != NULL:
         - (*a)->data is freed
         - *a is freed
         - *a is set to NULL
 
-    if a == NULL && *a == NULL:
+    if a == NULL || *a == NULL:
         - no action
-
-@post:
-No memory is leaked
 
 @note:
 Function is idempotent
