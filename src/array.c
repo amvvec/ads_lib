@@ -226,6 +226,35 @@ mul_safe(size_t a, size_t b, size_t *out)
     return 0;
 }
 
+int
+array_create(Array **out, size_t element_size)
+{
+    if(!out || element_size == 0) return EINVAL;
+
+    *out = NULL;
+
+    size_t new_bytes;
+    if(mul_safe(ARR_INIT_CAP, element_size, &new_bytes)) return EOVERFLOW;
+
+    Array *tmp = memory_allocator(sizeof(*tmp));
+    if(!tmp) return ENOMEM;
+
+    tmp->data = memory_allocator(new_bytes);
+    if(!tmp->data)
+    {
+        memory_free(tmp);
+        return ENOMEM;
+    }
+
+    tmp->capacity = ARR_INIT_CAP;
+    tmp->element_size = element_size;
+    tmp->size = 0;
+
+    *out = tmp;
+
+    return 0;
+}
+
 /*
 @brief:
 Initialize a dynamic array.
