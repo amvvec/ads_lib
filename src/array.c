@@ -226,6 +226,36 @@ mul_safe(size_t a, size_t b, size_t *out)
     return 0;
 }
 
+/*
+@brief:
+Create a dynamic array object and allocate initial storage.
+
+@note:
+Created object satisfies all Array invariants.
+
+@pre:
+    - out != NULL
+    - element_size > 0
+
+@ownership:
+    - caller receives ownership of *out object
+    - caller must release object with array_destroy()
+
+@post:
+    On success:
+        - return 0
+        - *out != NULL
+        - (*out)->data != NULL
+        - (*out)->capacity == ARR_INIT_CAP
+        - (*out)->element_size == element_size
+        - (*out)->size == 0
+        - ARR_INIT_CAP * element_size do not overflow
+
+    On failure:
+        - return error code
+        - *out == NULL
+        - no memory is leaked
+*/
 int
 array_create(Array **out, size_t element_size)
 {
