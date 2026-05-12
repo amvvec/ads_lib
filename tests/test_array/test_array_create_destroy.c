@@ -20,8 +20,17 @@ test_array_create_null_object(void)
 }
 
 void
+test_array_create_invalid_element_size(void)
+{
+    Array *a = NULL;
+    assert(array_create(&a, 0) == EINVAL);
+    assert(a == NULL);
+}
+
+void
 run_array_create_destroy_tests(void)
 {
     test_array_create_valid();
     test_array_create_null_object();
+    test_array_create_invalid_element_size();
 }
