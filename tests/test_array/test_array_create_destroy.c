@@ -27,10 +27,16 @@ test_array_create_invalid_element_size(void)
     assert(a == NULL);
 }
 
+void test_array_destroy_null(void)
+{
+    array_destroy(NULL);
+}
+
 void
 run_array_create_destroy_tests(void)
 {
     test_array_create_valid();
     test_array_create_null_object();
     test_array_create_invalid_element_size();
+    test_array_destroy_null();
 }

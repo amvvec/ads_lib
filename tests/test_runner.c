@@ -1,8 +1,8 @@
 #include "test_runner.h"
 
 #include "test_array/test_array.c"
-#include "test_array/test_array_erase.c"
 #include "test_array/test_array_create_destroy.c"
+#include "test_array/test_array_erase.c"
 #include "test_array/test_array_init.c"
 #include "test_array/test_array_insert.c"
 #include "test_array/test_overflow_detector.c"
