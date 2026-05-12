@@ -11,6 +11,8 @@ int sub_safe(size_t a, size_t b, size_t *out);
 int mul_safe(size_t a, size_t b, size_t *out);
 
 int array_create(Array **out, size_t element_size);
+void array_destroy(Array **object);
+
 Array *array_init(size_t element_size);
 void array_delete(Array **a);
 

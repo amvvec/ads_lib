@@ -299,6 +299,45 @@ array_create(Array **object, size_t element_size)
 }
 
 /*
+API
+
+@responsibility
+Releases array object and all owned resources.
+
+@ownership
+Consumes ownership of array *object.
+Destroyed object lifetime ends after successful call.
+Function is null-safe and idempotent.
+
+@lifetime
+Ends object lifetime.
+*/
+
+/*
+Contract
+
+@pre:
+    - object may be NULL
+    - *object may be NULL
+
+@post:
+    - owned internal buffer released
+    - owned object released
+    - *object == NULL if object != NULL
+    - no memory leaked
+*/
+void
+array_destroy(Array **object)
+{
+    if(object && *object)
+    {
+        memory_free((*object)->data);
+        memory_free(*object);
+        *object = NULL;
+    }
+}
+
+/*
 @brief:
 Initialize a dynamic array.
 
@@ -343,45 +382,6 @@ array_init(size_t element_size)
     tmp->capacity = ARR_INIT_CAP;
 
     return tmp;
-}
-
-/*
-API
-
-@responsibility
-Releases array object and all owned resources.
-
-@ownership
-Consumes ownership of array *object.
-Destroyed object lifetime ends after successful call.
-Function is null-safe and idempotent.
-
-@lifetime
-Ends object lifetime.
-*/
-
-/*
-Contract
-
-@pre:
-    - object may be NULL
-    - *object may be NULL
-
-@post:
-    - owned internal buffer released
-    - owned object released
-    - *object == NULL if object != NULL
-    - no memory leaked
-*/
-void
-array_destroy(Array **object)
-{
-    if(object && *object)
-    {
-        memory_free((*object)->data);
-        memory_free(*object);
-        *object = NULL;
-    }
 }
 
 /*
