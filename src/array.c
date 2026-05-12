@@ -227,11 +227,26 @@ mul_safe(size_t a, size_t b, size_t *out)
 }
 
 /*
-@brief:
-Create a dynamic array object and allocate initial storage.
+API
+
+@responsibility
+Creates a dynamic array object in usable state.
+
+@ownership
+Caller must release object.
+
+Object lifetime starts after success return
+Object lifetime ends after destroy
+*/
+
+/*
+Contract
+
+@brief
+Creates a dynamic array object and allocates initial storage.
 
 @note:
-Created object satisfies all Array invariants.
+Returned object satisfies all Array invariants.
 
 @pre:
     - out != NULL
@@ -242,8 +257,7 @@ Created object satisfies all Array invariants.
     - caller must release object with array_destroy()
 
 @post:
-    On success:
-        - return 0
+    On success (return == 0):
         - *out != NULL
         - (*out)->data != NULL
         - (*out)->capacity == ARR_INIT_CAP
@@ -251,17 +265,16 @@ Created object satisfies all Array invariants.
         - (*out)->size == 0
         - ARR_INIT_CAP * element_size do not overflow
 
-    On failure:
-        - return error code
+    On failure (return != 0):
         - *out == NULL
         - no memory is leaked
 */
 int
-array_create(Array **out, size_t element_size)
+array_create(Array **object, size_t element_size)
 {
-    if(!out || element_size == 0) return EINVAL;
+    if(!object || !element_size) return EINVAL;
 
-    *out = NULL;
+    *object = NULL;
 
     size_t new_bytes;
     if(mul_safe(ARR_INIT_CAP, element_size, &new_bytes)) return EOVERFLOW;
@@ -280,7 +293,7 @@ array_create(Array **out, size_t element_size)
     tmp->element_size = element_size;
     tmp->size = 0;
 
-    *out = tmp;
+    *object = tmp;
 
     return 0;
 }
