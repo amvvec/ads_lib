@@ -42,6 +42,17 @@ test_array_destroy_null_object(void)
 }
 
 void
+test_array_destroy_nullifies_pointer(void)
+{
+    Array *a = NULL;
+
+    assert(array_create(&a, sizeof(int)) == 0);
+
+    array_destroy(&a);
+    assert(a == NULL);
+}
+
+void
 run_array_create_destroy_tests(void)
 {
     test_array_create_valid();
@@ -49,4 +60,5 @@ run_array_create_destroy_tests(void)
     test_array_create_invalid_element_size();
     test_array_destroy_null();
     test_array_destroy_null_object();
+    test_array_destroy_nullifies_pointer();
 }
